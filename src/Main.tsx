@@ -1,6 +1,5 @@
-import React, { Component } from "react";
-import Navbar from "./components/Navbar";
+import React from "react";
 
 export default function Main() {
-  return <Navbar />;
+  return <div>Hello, world</div>;
 }
