@@ -6,10 +6,10 @@ export default function AuthButtons() {
   return (
     <Stack spacing={2} direction="row">
       <Button variant="contained" color="secondary">
-        Войти
+        Sign In
       </Button>
       <Button variant="contained" color="secondary">
-        Зарегистрироваться
+        Sign Up
       </Button>
     </Stack>
   );

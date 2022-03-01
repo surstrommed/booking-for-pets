@@ -1,9 +1,8 @@
 const path = require("path");
 const HtmlWebpackPlugin = require("html-webpack-plugin");
-const CopyPlugin = require("copy-webpack-plugin");
 
 module.exports = {
-  entry: "./src/App.ts",
+  entry: "./src/App.tsx",
   target: "web",
   module: {
     rules: [
@@ -24,12 +23,6 @@ module.exports = {
         ],
       },
     ],
-    // loaders: [
-    //   { exclude: ["node_modules"], loader: "babel", test: /\.jsx?$/ },
-    //   { loader: "style-loader!css-loader", test: /\.css$/ },
-    //   { loader: "url-loader", test: /\.gif$/ },
-    //   { loader: "file-loader", test: /\.(ttf|eot|svg)$/ },
-    // ],
   },
   resolve: {
     extensions: ["", ".tsx", ".ts", ".js", ".jsx"],
