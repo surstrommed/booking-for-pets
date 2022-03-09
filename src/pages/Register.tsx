@@ -9,7 +9,7 @@ export default function Register() {
       <Typography variant="h5" gutterBottom component="div">
         Fill in the fields to register an account:
       </Typography>
-      <AuthForm signup={true} />
+      <AuthForm signup />
     </Box>
   );
 }

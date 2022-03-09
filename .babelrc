@@ -4,7 +4,7 @@
     ["@babel/preset-react", { "runtime": "automatic" }],
     "@babel/preset-typescript"
   ],
-  "plugins": ["react-hot-loader/babel"],
+  "plugins": ["@babel/transform-runtime"],
   "env": {
     "production": {
       "presets": ["minify"]

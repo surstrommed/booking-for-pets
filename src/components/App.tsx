@@ -5,7 +5,7 @@ import Navbar from "./Navbar";
 import { CustomRouter } from "./CustomRouter";
 import { createBrowserHistory } from "history";
 
-const history = createBrowserHistory();
+export const history = createBrowserHistory();
 
 export default function App() {
   return (

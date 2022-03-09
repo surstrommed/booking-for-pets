@@ -12,10 +12,11 @@ import AuthButtons from "./AuthButtons";
 import Profile from "./Profile";
 
 const pages = ["Products", "Pricing", "Blog"];
+type ButtonEvent = React.MouseEvent<HTMLButtonElement>;
 
 export default function Navbar() {
   const [anchorElNav, setAnchorElNav] = useState(null);
-  const handleOpenNavMenu = (event: any) => {
+  const handleOpenNavMenu = (event: ButtonEvent) => {
     setAnchorElNav(event.currentTarget);
   };
   const handleCloseNavMenu = () => {
@@ -86,7 +87,7 @@ export default function Navbar() {
               </Button>
             ))}
           </Box>
-          <Profile />
+          {localStorage?.authToken ? <Profile /> : <AuthButtons />}
         </Toolbar>
       </Container>
     </AppBar>

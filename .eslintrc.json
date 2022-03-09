@@ -19,6 +19,7 @@
   },
   "plugins": ["react", "@typescript-eslint", "prettier"],
   "rules": {
+    "@typescript-eslint/no-inferrable-types": "off",
     "prettier/prettier": [
       "error",
       {
