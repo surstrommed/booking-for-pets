@@ -10,7 +10,7 @@
     "start-dev": "webpack serve --config=configs/webpack/dev.js",
     "start-prod": "npm run build && node express.js",
     "test": "jest --coverage --watchAll --config=configs/jest.json",
-    "mockapi": "npx ts-node ./server/server.ts"
+    "server": "ts-node ./server/server.ts"
   },
   "devDependencies": {
     "@babel/cli": "^7.16.7",
@@ -59,10 +59,17 @@
     "@material-ui/icons": "^4.11.2",
     "@mui/material": "^5.4.4",
     "@types/json-server": "^0.14.4",
+    "@types/react-redux": "^7.1.23",
+    "@types/redux-saga": "^0.10.5",
     "axios": "^0.26.0",
     "bootstrap": "^5.1.3",
+    "fs": "^0.0.1-security",
     "history": "^5.3.0",
+    "json-server-auth": "^2.1.0",
     "react-bootstrap": "^2.2.0",
-    "react-router-dom": "^6.2.2"
+    "react-redux": "^7.2.6",
+    "react-router-dom": "^6.2.2",
+    "redux": "^4.1.2",
+    "redux-saga": "^1.1.3"
   }
 }

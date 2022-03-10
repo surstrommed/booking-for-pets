@@ -6,29 +6,32 @@ import Menu from "@mui/material/Menu";
 import MenuItem from "@mui/material/MenuItem";
 import Typography from "@mui/material/Typography";
 import IconButton from "@mui/material/IconButton";
-import { history } from "./App";
+import { connect } from "react-redux";
+import { actionAuthLogout } from "./../actions/types";
+
+type Logout = () => object;
+interface IProfile {
+  auth: object;
+  actionLogOut: Logout;
+}
 
 type ButtonEvent = React.MouseEvent<HTMLButtonElement>;
 
-export default function Profile() {
+const Profile = ({ auth, actionLogOut }: IProfile) => {
   const [anchorElUser, setAnchorElUser] = useState(null);
   const handleOpenUserMenu = (event: ButtonEvent) => {
     setAnchorElUser(event.currentTarget);
   };
+
   const handleCloseUserMenu = () => {
     setAnchorElUser(null);
-  };
-
-  const doLogout = () => {
-    localStorage.removeItem("authToken");
-    history.go(0);
   };
 
   return (
     <Box sx={{ flexGrow: 0 }}>
       <Tooltip title="Open settings">
         <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
-          <Avatar alt="Semy Sharp" src="/static/images/avatar/2.jpg" />
+          <Avatar alt="Semy Sharp" />
         </IconButton>
       </Tooltip>
       <Menu
@@ -47,16 +50,22 @@ export default function Profile() {
         open={Boolean(anchorElUser)}
         onClose={handleCloseUserMenu}
       >
-        <MenuItem onClick={handleCloseUserMenu}>
+        <MenuItem>
           <Typography textAlign="center">Profile</Typography>
         </MenuItem>
-        <MenuItem onClick={handleCloseUserMenu}>
+        <MenuItem>
           <Typography textAlign="center">Settings</Typography>
         </MenuItem>
-        <MenuItem onClick={doLogout}>
-          <Typography textAlign="center">Logout</Typography>
+        <MenuItem>
+          <Typography textAlign="center" onClick={() => actionLogOut()}>
+            Logout
+          </Typography>
         </MenuItem>
       </Menu>
     </Box>
   );
-}
+};
+
+export const CProfile = connect((state) => ({ promise: state.auth }), {
+  actionLogOut: actionAuthLogout,
+})(Profile);

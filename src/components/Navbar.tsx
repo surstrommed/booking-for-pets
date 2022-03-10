@@ -9,7 +9,7 @@ import Container from "@mui/material/Container";
 import Button from "@mui/material/Button";
 import MenuItem from "@mui/material/MenuItem";
 import AuthButtons from "./AuthButtons";
-import Profile from "./Profile";
+import { CProfile } from "./Profile";
 
 const pages = ["Products", "Pricing", "Blog"];
 type ButtonEvent = React.MouseEvent<HTMLButtonElement>;
@@ -87,7 +87,7 @@ export default function Navbar() {
               </Button>
             ))}
           </Box>
-          {localStorage?.authToken ? <Profile /> : <AuthButtons />}
+          {localStorage?.authToken ? <CProfile /> : <AuthButtons />}
         </Toolbar>
       </Container>
     </AppBar>

@@ -1,19 +1,23 @@
-/* eslint-disable @typescript-eslint/ban-ts-comment */
 import jsonServer from "json-server";
-import { mockData } from "./data/index";
 const server = jsonServer.create();
-const router = jsonServer.router(mockData);
+const router = jsonServer.router("./server/db.json");
 const middlewares = jsonServer.defaults();
 
 server.use(middlewares);
+
+server.get("/echo", (req, res) => {
+  res.jsonp(req.query);
+});
+
+server.use(jsonServer.bodyParser);
+server.use((req, res, next) => {
+  if (req.method === "POST") {
+    req.body.createdAt = Date.now();
+  }
+  next();
+});
+
 server.use(router);
-
-// @ts-ignore
-router.render = (req, res) => {
-  const data = res.locals.data;
-  res.jsonp(data);
-};
-
 server.listen(3000, () => {
-  console.log("JSON server is running");
+  console.log("JSON Server is running");
 });
