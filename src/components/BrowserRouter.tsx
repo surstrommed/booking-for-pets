@@ -1,7 +1,7 @@
 import React, { useState, useLayoutEffect } from "react";
 import { Router } from "react-router-dom";
 
-export const CustomRouter = ({ history, ...props }) => {
+export const BrowserRouter = ({ history, ...props }) => {
   const [state, setState] = useState({
     action: history.action,
     location: history.location,

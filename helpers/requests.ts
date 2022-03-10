@@ -1,8 +1,9 @@
 import { UserModel } from "./../server/api-models";
-import { userUrl, jwtCode } from "./index";
+import { jwtCode } from "./index";
 import { history } from "./../src/components/App";
+import { addUser, getUsers } from "./../server/api/api";
 
-async function myFetch(url = "", data = {}, type?: string) {
+export async function myFetch(url = "", data = {}, type?: string) {
   const response = await fetch(
     url,
     type && {
@@ -15,24 +16,6 @@ async function myFetch(url = "", data = {}, type?: string) {
   );
   return await response.json();
 }
-
-const getUsers = async () => {
-  try {
-    const users: UserModel[] = await myFetch(userUrl);
-    return users;
-  } catch (error) {
-    console.log(error);
-  }
-};
-
-const addUser = async (userData: UserModel) => {
-  try {
-    const users: UserModel = await myFetch(userUrl, userData, "POST");
-    return users;
-  } catch (error) {
-    console.log(error);
-  }
-};
 
 export const signIn = async (email: string, password: string) => {
   try {

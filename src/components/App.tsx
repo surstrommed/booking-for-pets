@@ -2,18 +2,18 @@ import React from "react";
 import "./../assets/scss/App.scss";
 import Main from "./../pages/Main";
 import Navbar from "./Navbar";
-import { CustomRouter } from "./CustomRouter";
 import { createBrowserHistory } from "history";
+import { BrowserRouter } from "./BrowserRouter";
 
 export const history = createBrowserHistory();
 
 export default function App() {
   return (
-    <CustomRouter history={history}>
+    <BrowserRouter history={history}>
       <div className="App">
         <Navbar />
         <Main />
       </div>
-    </CustomRouter>
+    </BrowserRouter>
   );
 }
