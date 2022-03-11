@@ -1,4 +1,8 @@
-import { isUnregistered, isAuthenticated, usersRequest } from "../../helpers";
+import {
+  isUnregistered,
+  isAuthenticated,
+  usersRequest,
+} from "../../server/api/api";
 import { actionPromise } from "./types";
 
 export const actionLogin = (email: string, password: string) => {

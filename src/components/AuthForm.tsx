@@ -19,8 +19,8 @@ import {
 import { actionFullLogin, actionFullRegister } from "./../actions/types";
 import { connect } from "react-redux";
 
-type Login = (login: string, password: string) => object;
-type Register = (login: string, password: string) => object;
+type Login = (email: string, password: string) => object;
+type Register = (email: string, login: string, password: string) => object;
 interface IAuth {
   promise: object;
   onLogin: Login;

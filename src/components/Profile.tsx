@@ -1,11 +1,18 @@
 import React, { useState } from "react";
-import Box from "@mui/material/Box";
-import Avatar from "@mui/material/Avatar";
-import Tooltip from "@mui/material/Tooltip";
-import Menu from "@mui/material/Menu";
-import MenuItem from "@mui/material/MenuItem";
-import Typography from "@mui/material/Typography";
-import IconButton from "@mui/material/IconButton";
+import {
+  AppBar,
+  Box,
+  Toolbar,
+  Typography,
+  IconButton,
+  Switch,
+  FormControlLabel,
+  FormGroup,
+  MenuItem,
+  Menu,
+} from "@mui/material/";
+import MenuIcon from "@mui/icons-material/Menu";
+import AccountCircle from "@mui/icons-material/AccountCircle";
 import { connect } from "react-redux";
 import { actionAuthLogout } from "./../actions/types";
 
@@ -28,40 +35,76 @@ const Profile = ({ auth, actionLogOut }: IProfile) => {
   };
 
   return (
-    <Box sx={{ flexGrow: 0 }}>
-      <Tooltip title="Open settings">
-        <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
-          <Avatar alt="Semy Sharp" />
-        </IconButton>
-      </Tooltip>
-      <Menu
-        sx={{ mt: "45px" }}
-        id="menu-appbar"
-        anchorEl={anchorElUser}
-        anchorOrigin={{
-          vertical: "top",
-          horizontal: "right",
-        }}
-        keepMounted
-        transformOrigin={{
-          vertical: "top",
-          horizontal: "right",
-        }}
-        open={Boolean(anchorElUser)}
-        onClose={handleCloseUserMenu}
-      >
-        <MenuItem>
-          <Typography textAlign="center">Profile</Typography>
-        </MenuItem>
-        <MenuItem>
-          <Typography textAlign="center">Settings</Typography>
-        </MenuItem>
-        <MenuItem>
-          <Typography textAlign="center" onClick={() => actionLogOut()}>
-            Logout
+    <Box sx={{ flexGrow: 1 }}>
+      <FormGroup>
+        <FormControlLabel
+          control={
+            <Switch
+              checked={auth}
+              onChange={handleChange}
+              aria-label="login switch"
+            />
+          }
+          label={auth ? "Logout" : "Login"}
+        />
+      </FormGroup>
+      <AppBar position="static">
+        <Toolbar>
+          <IconButton
+            size="large"
+            edge="start"
+            color="inherit"
+            aria-label="menu"
+            sx={{ mr: 2 }}
+          >
+            <MenuIcon />
+          </IconButton>
+          <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
+            Photos
           </Typography>
-        </MenuItem>
-      </Menu>
+          {auth && (
+            <div>
+              <IconButton
+                size="large"
+                aria-label="account of current user"
+                aria-controls="menu-appbar"
+                aria-haspopup="true"
+                onClick={handleMenu}
+                color="inherit"
+              >
+                <AccountCircle />
+              </IconButton>
+              <Menu
+                id="menu-appbar"
+                anchorEl={anchorEl}
+                anchorOrigin={{
+                  vertical: "top",
+                  horizontal: "right",
+                }}
+                keepMounted
+                transformOrigin={{
+                  vertical: "top",
+                  horizontal: "right",
+                }}
+                open={Boolean(anchorEl)}
+                onClose={handleClose}
+              >
+                <MenuItem>
+                  <Typography textAlign="center">Profile</Typography>
+                </MenuItem>
+                <MenuItem>
+                  <Typography textAlign="center">Settings</Typography>
+                </MenuItem>
+                <MenuItem>
+                  <Typography textAlign="center" onClick={() => actionLogOut()}>
+                    Logout
+                  </Typography>
+                </MenuItem>
+              </Menu>
+            </div>
+          )}
+        </Toolbar>
+      </AppBar>
     </Box>
   );
 };

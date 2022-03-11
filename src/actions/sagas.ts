@@ -10,7 +10,7 @@ import { Action } from "redux";
 import { history } from "./../components/App";
 
 interface ILogin {
-  login: string;
+  email: string;
   password: string;
 }
 interface LoginAction extends Action, ILogin {
@@ -42,8 +42,8 @@ export function* promiseWatcher() {
   yield takeEvery("PROMISE_START", promiseWorker);
 }
 
-function* loginWorker({ login, password }: ILogin) {
-  const token = yield call(promiseWorker, actionLogin(login, password));
+function* loginWorker({ email, password }: ILogin) {
+  const token = yield call(promiseWorker, actionLogin(email, password));
   console.log("Login worker: ", token);
   if (token) {
     yield put(actionAuthLogin(token));
@@ -58,7 +58,7 @@ export function* loginWatcher() {
 
 function* registerWorker({ email, login, password }: IRegister) {
   yield call(promiseWorker, actionRegister(email, login, password));
-  const token = yield call(promiseWorker, actionLogin(login, password));
+  const token = yield call(promiseWorker, actionLogin(email, password));
   console.log("Register worker: ", token);
   if (token) {
     yield put(actionAuthLogin(token));
