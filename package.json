@@ -55,6 +55,7 @@
   "dependencies": {
     "@emotion/react": "^11.8.1",
     "@emotion/styled": "^11.8.1",
+<<<<<<< HEAD
     "@fontsource/roboto": "^4.5.3",
     "@material-ui/icons": "^4.11.2",
     "@mui/material": "^5.4.4",
@@ -64,5 +65,37 @@
     "history": "^5.3.0",
     "react-bootstrap": "^2.2.0",
     "react-router-dom": "^6.2.2"
+=======
+    "@mui/material": "^5.4.3",
+    "@types/react-router": "^5.1.18",
+    "copy-webpack-plugin": "^10.2.4",
+    "react": "^17.0.2",
+    "react-dom": "^17.0.2"
+  },
+  "devDependencies": {
+    "@babel/cli": "^7.0.0",
+    "@babel/core": "^7.17.5",
+    "@babel/preset-env": "^7.16.11",
+    "@babel/preset-react": "^7.16.7",
+    "@types/react-dom": "^17.0.11",
+    "@typescript-eslint/eslint-plugin": "^5.12.1",
+    "@typescript-eslint/parser": "^5.12.1",
+    "babel-eslint": "^10.1.0",
+    "babel-loader": "^8.2.3",
+    "css-loader": "^6.6.0",
+    "eslint": "^8.10.0",
+    "eslint-config-prettier": "^8.4.0",
+    "eslint-plugin-prettier": "^4.0.0",
+    "eslint-plugin-react": "^7.29.2",
+    "html-webpack-plugin": "^5.5.0",
+    "jest": "^27.5.1",
+    "prettier": "2.5.1",
+    "style-loader": "^3.3.1",
+    "ts-loader": "^9.2.6",
+    "typescript": "^4.5.5",
+    "webpack": "^5.69.1",
+    "webpack-cli": "^4.9.2",
+    "webpack-dev-server": "^3.11.3"
+>>>>>>> feat/1-webpack
   }
 }
