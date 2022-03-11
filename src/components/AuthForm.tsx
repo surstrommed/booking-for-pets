@@ -10,19 +10,25 @@ import {
   IconButton,
 } from "@mui/material";
 import { Visibility, VisibilityOff } from "@material-ui/icons";
-import { signUp, signIn } from "./../../helpers/requests";
 import { Link } from "react-router-dom";
 import {
   validateEmail,
   validatePassword,
   validateLogin,
 } from "./../../helpers/index";
+import { actionFullLogin, actionFullRegister } from "./../actions/types";
+import { connect } from "react-redux";
 
-interface Auth {
+type Login = (email: string, password: string) => object;
+type Register = (email: string, login: string, password: string) => object;
+interface IAuth {
+  promise: object;
+  onLogin: Login;
+  onRegister: Register;
   signup?: boolean;
 }
 
-export default function AuthForm({ signup }: Auth) {
+const AuthForm = ({ promise, onLogin, onRegister, signup }: IAuth) => {
   const [login, setLogin] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -34,10 +40,6 @@ export default function AuthForm({ signup }: Auth) {
     type === "first"
       ? setShowPassword(!showPassword)
       : setShowRepeatPassword(!showRepeatPassword);
-  };
-
-  const handleMouseDownPassword = (event) => {
-    event.preventDefault();
   };
 
   const clearForm = () => {
@@ -120,10 +122,7 @@ export default function AuthForm({ signup }: Auth) {
             value={password}
             endAdornment={
               <InputAdornment position="end">
-                <IconButton
-                  onClick={() => handleClickShowPassword("first")}
-                  onMouseDown={handleMouseDownPassword}
-                >
+                <IconButton onClick={() => handleClickShowPassword("first")}>
                   {showPassword ? <Visibility /> : <VisibilityOff />}
                 </IconButton>
               </InputAdornment>
@@ -146,7 +145,6 @@ export default function AuthForm({ signup }: Auth) {
                   <InputAdornment position="end">
                     <IconButton
                       onClick={() => handleClickShowPassword("second")}
-                      onMouseDown={handleMouseDownPassword}
                     >
                       {showRepeatPassword ? <Visibility /> : <VisibilityOff />}
                     </IconButton>
@@ -169,7 +167,7 @@ export default function AuthForm({ signup }: Auth) {
             <Button
               variant="contained"
               color="primary"
-              onClick={() => signUp(email, login, password)}
+              onClick={() => onRegister(email, login, password)}
               disabled={
                 validateEmail(email) &&
                 validateLogin(login) &&
@@ -193,7 +191,8 @@ export default function AuthForm({ signup }: Auth) {
             <Button
               variant="contained"
               color="primary"
-              onClick={() => signIn(email, password)}
+              onClick={() => onLogin(email, password)}
+              disabled={email && password ? false : true}
             >
               Sign In
             </Button>
@@ -208,4 +207,9 @@ export default function AuthForm({ signup }: Auth) {
       </form>
     </>
   );
-}
+};
+
+export const CAuthForm = connect((state) => ({ promise: state.promise }), {
+  onLogin: actionFullLogin,
+  onRegister: actionFullRegister,
+})(AuthForm);

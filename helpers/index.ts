@@ -1,16 +1,19 @@
-export const userUrl = "http://localhost:3000/users";
+export const apiUrl = "http://localhost:3000/";
 
 export const jwtDecode = (token: string) => {
   try {
-    const arrToken = token.split(".");
-    const base64Token = atob(arrToken[1]);
+    const base64Token = atob(token);
     return JSON.parse(base64Token);
   } catch (e) {
     console.log("Error decode JWT: " + e);
   }
 };
 
-export const jwtCode = (object: { email: string; password: string }) => {
+export const jwtCode = (object: {
+  email: string;
+  login: string;
+  password: string;
+}) => {
   try {
     const token = btoa(JSON.stringify(object));
     return token;
