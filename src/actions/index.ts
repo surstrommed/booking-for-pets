@@ -1,21 +1,15 @@
+import { getState } from "../components/App";
 import {
   isUnregistered,
-  isAuthenticated,
-  usersRequest,
-} from "../../server/api/api";
-import { actionPromise } from "./types";
+  isExisted,
+  userLogin,
+  userRegister,
+  userUpdate,
+} from "../server/api/api";
+import { actionPromise } from "./thunks";
 
 export const actionLogin = (email: string, password: string) => {
-  if (isAuthenticated(email, password)) {
-    return actionPromise("signin", usersRequest({ email, password }));
-  } else {
-    const signInError = document.getElementById("signInError");
-    const authForm = <HTMLFormElement>document.getElementById("authForm");
-    if (signInError && authForm) {
-      signInError.style.display = "block";
-      authForm.reset();
-    }
-  }
+  return actionPromise("signin", userLogin({ email, password }));
 };
 
 export const actionRegister = (
@@ -24,16 +18,27 @@ export const actionRegister = (
   password: string
 ) => {
   if (isUnregistered(email, login)) {
-    return actionPromise(
-      "signup",
-      usersRequest({ email, login, password }, "POST")
-    );
+    return actionPromise("signup", userRegister({ email, login, password }));
   } else {
-    const signInError = document.getElementById("signInError");
-    const authForm = <HTMLFormElement>document.getElementById("authForm");
-    if (signInError && authForm) {
-      signInError.style.display = "block";
-      authForm.reset();
+    const signUpError = document.getElementById("signUpError");
+    const signUpForm = <HTMLFormElement>document.getElementById("signUpForm");
+    if (signUpError && signUpForm) {
+      signUpError.style.display = "block";
+      signUpForm.reset();
     }
   }
+};
+
+export const actionUpdate = (
+  id: number,
+  email: string,
+  login: string,
+  password: string
+) => {
+  const { auth } = getState();
+  const user = auth?.payload;
+  return actionPromise(
+    "userUpdate",
+    userUpdate({ ...user, id, email, login, password }, "PUT")
+  );
 };

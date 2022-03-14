@@ -15,12 +15,12 @@ import {
   validateEmail,
   validatePassword,
   validateLogin,
-} from "./../../helpers/index";
-import { actionFullLogin, actionFullRegister } from "./../actions/types";
+} from "../helpers/index";
+import { actionFullLogin, actionFullRegister } from "./../actions/thunks";
 import { connect } from "react-redux";
 
-type Login = (email: string, password: string) => object;
-type Register = (email: string, login: string, password: string) => object;
+type Login = (email: string, password: string) => void;
+type Register = (email: string, login: string, password: string) => void;
 interface IAuth {
   promise: object;
   onLogin: Login;

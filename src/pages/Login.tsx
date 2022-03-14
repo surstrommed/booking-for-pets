@@ -1,7 +1,7 @@
 import React from "react";
 import Typography from "@mui/material/Typography";
 import Box from "@mui/material/Box";
-import { CAuthForm } from "./../components/AuthForm";
+import { CSignIn } from "./../components/Signin";
 
 export default function Login() {
   return (
@@ -9,7 +9,8 @@ export default function Login() {
       <Typography variant="h5" gutterBottom component="div">
         Fill in the fields to login to your account:
       </Typography>
-      <CAuthForm />
+      <div id="signInError"></div>
+      <CSignIn />
     </Box>
   );
 }

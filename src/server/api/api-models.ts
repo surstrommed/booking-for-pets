@@ -6,5 +6,6 @@ export interface UserModel {
   email: string;
   login: string;
   password: string;
-  pictureUrl?: string | null;
+  createdAt: number;
+  pictureUrl: string | null;
 }

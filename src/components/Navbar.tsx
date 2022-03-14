@@ -9,7 +9,8 @@ import Container from "@mui/material/Container";
 import Button from "@mui/material/Button";
 import MenuItem from "@mui/material/MenuItem";
 import AuthButtons from "./AuthButtons";
-import { CProfile } from "./Profile";
+import { CProfileIcon } from "./ProfileIcon";
+import { Link } from "react-router-dom";
 
 const pages = ["Products", "Pricing", "Blog"];
 type ButtonEvent = React.MouseEvent<HTMLButtonElement>;
@@ -32,7 +33,9 @@ export default function Navbar() {
             component="div"
             sx={{ mr: 2, display: { xs: "none", md: "flex" } }}
           >
-            Booking for pets
+            <Link id="siteTitle" to="/">
+              Shaggy tail
+            </Link>
           </Typography>
           <Box sx={{ flexGrow: 1, display: { xs: "flex", md: "none" } }}>
             <IconButton
@@ -74,7 +77,9 @@ export default function Navbar() {
             component="div"
             sx={{ flexGrow: 1, display: { xs: "flex", md: "none" } }}
           >
-            Booking for pets
+            <Link id="siteTitle" to="/">
+              Shaggy tail
+            </Link>
           </Typography>
           <Box sx={{ flexGrow: 1, display: { xs: "none", md: "flex" } }}>
             {pages.map((page) => (
@@ -87,7 +92,7 @@ export default function Navbar() {
               </Button>
             ))}
           </Box>
-          {localStorage?.authToken ? <CProfile /> : <AuthButtons />}
+          {sessionStorage?.authToken ? <CProfileIcon /> : <AuthButtons />}
         </Toolbar>
       </Container>
     </AppBar>

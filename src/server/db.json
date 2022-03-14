@@ -1,0 +1,20 @@
+{
+  "users": [
+    {
+      "email": "crng@ukr.net",
+      "password": "$2a$10$etPzmKJRlQXD/0MSKJd5n.CBooxQuqXyOc1j4t5lR7EdNV2Hhlv8S",
+      "login": "admin",
+      "createdAt": 1647206008510,
+      "pictureUrl": null,
+      "id": 1
+    },
+    {
+      "email": "user1231@ukr.net",
+      "login": "user1231",
+      "createdAt": 1647238804177,
+      "pictureUrl": null,
+      "id": 2,
+      "password": "$2a$10$Vc6vl.gESjMYUXmRWnCRN.xT.z0qNXxYv8yZ/QLN/cihMkupAN6Ye"
+    }
+  ]
+}

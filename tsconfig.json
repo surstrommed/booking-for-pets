@@ -9,5 +9,5 @@
     "allowJs": true,
     "forceConsistentCasingInFileNames": true
   },
-  "include": ["**.ts", "server/server.ts"]
+  "include": ["**.ts", "./src/server/server.ts"]
 }

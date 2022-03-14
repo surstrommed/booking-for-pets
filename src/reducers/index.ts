@@ -1,4 +1,4 @@
-import { jwtDecode } from "../../helpers";
+import { jwtDecode } from "../helpers";
 import { history } from "./../components/App";
 
 export function promiseReducer(
@@ -16,15 +16,15 @@ export function promiseReducer(
 
 export function authReducer(state, { type, token }) {
   if (!state) {
-    if (localStorage.authToken) {
+    if (sessionStorage.authToken) {
       type = "AUTH_LOGIN";
-      token = localStorage.authToken;
+      token = sessionStorage.authToken;
     } else state = {};
   }
   if (type === "AUTH_LOGIN") {
     const payload = jwtDecode(token);
     if (!!token && typeof payload === "object") {
-      localStorage.authToken = token;
+      sessionStorage.authToken = token;
       return {
         ...state,
         token,
@@ -33,8 +33,20 @@ export function authReducer(state, { type, token }) {
     } else return state;
   }
   if (type === "AUTH_LOGOUT") {
-    localStorage.removeItem("authToken");
+    sessionStorage.removeItem("authToken");
+    history.go(0);
     return {};
   }
   return state;
 }
+
+export const sessionStoredReducer =
+  (reducer, sessionStorageName) => (state, action) => {
+    if (!state && sessionStorage[sessionStorageName]) {
+      return JSON.parse(sessionStorage[sessionStorageName]);
+    } else {
+      const newState = reducer(state, action);
+      sessionStorage.setItem(sessionStorageName, JSON.stringify(newState));
+      return newState;
+    }
+  };

@@ -4,8 +4,23 @@
       margin: 2vh;
     }
   }
+  .profilePage {
+    margin: 7% 0 0 0;
+    text-align: "center";
+  }
+  .profileForm {
+    text-align: center;
+    margin: 0 25%;
+    div {
+      margin: 1vh;
+    }
+  }
   .alertError {
     width: 50%;
     margin-left: 25%;
+  }
+  #siteTitle {
+    text-decoration: none;
+    color: black;
   }
 }
