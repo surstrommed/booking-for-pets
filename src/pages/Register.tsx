@@ -1,7 +1,7 @@
 import React from "react";
 import Typography from "@mui/material/Typography";
 import Box from "@mui/material/Box";
-import { CSignUp } from "./../components/Signup";
+import { CSignUp } from "./../components/Auth/Signup";
 
 export default function Register() {
   return (
@@ -9,7 +9,6 @@ export default function Register() {
       <Typography variant="h5" gutterBottom component="div">
         Fill in the fields to register an account:
       </Typography>
-      <div id="signUpError"></div>
       <CSignUp />
     </Box>
   );

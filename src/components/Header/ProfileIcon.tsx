@@ -7,18 +7,20 @@ import MenuItem from "@mui/material/MenuItem";
 import Typography from "@mui/material/Typography";
 import IconButton from "@mui/material/IconButton";
 import { connect } from "react-redux";
-import { actionAuthLogout } from "../actions/types";
-import { RootState, history } from "./App";
+import { actionAuthLogout } from "../../actions/types";
+import { RootState, history } from "../App";
+import { DriveEtaSharp } from "@mui/icons-material";
 
 type Logout = () => object;
 interface IProfile {
   auth: object;
   actionLogOut: Logout;
+  signed?: boolean;
 }
 
 type ButtonEvent = React.MouseEvent<HTMLButtonElement>;
 
-const ProfileIcon = ({ auth, actionLogOut }: IProfile) => {
+const ProfileIcon = ({ auth, actionLogOut, signed }: IProfile) => {
   const [anchorElUser, setAnchorElUser] = useState(null);
   const handleOpenUserMenu = (event: ButtonEvent) => {
     setAnchorElUser(event.currentTarget);
@@ -30,15 +32,13 @@ const ProfileIcon = ({ auth, actionLogOut }: IProfile) => {
 
   return (
     <Box sx={{ flexGrow: 0 }}>
-      <Tooltip title="Open settings">
+      <Tooltip title="Open profile">
         <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
-          {/* <Avatar alt={auth["payload"]["login"]} /> */}
           <Avatar
-            alt={auth["payload"]["login"]}
+            alt={auth?.["payload"]?.["login"] || "Profile"}
             src={
-              auth["payload"]["pictureUrl"]
-                ? auth["payload"]["pictureUrl"]
-                : "error.png"
+              auth?.["payload"]?.["pictureUrl"] ||
+              "https://upload.wikimedia.org/wikipedia/commons/9/99/Sample_User_Icon.png"
             }
           />
         </IconButton>
@@ -59,15 +59,29 @@ const ProfileIcon = ({ auth, actionLogOut }: IProfile) => {
         open={Boolean(anchorElUser)}
         onClose={handleCloseUserMenu}
       >
-        <MenuItem onClick={() => history.push("/profile")}>
-          <Typography textAlign="center">Profile</Typography>
-        </MenuItem>
-        <MenuItem onClick={() => history.push("/settings")}>
-          <Typography textAlign="center">Settings</Typography>
-        </MenuItem>
-        <MenuItem onClick={() => actionLogOut()}>
-          <Typography textAlign="center">Logout</Typography>
-        </MenuItem>
+        {signed ? (
+          <div>
+            <MenuItem onClick={() => history.push("/profile")}>
+              <Typography textAlign="center">Profile</Typography>
+            </MenuItem>
+            <MenuItem onClick={() => history.push("/settings")}>
+              <Typography textAlign="center">Settings</Typography>
+            </MenuItem>
+            <hr />
+            <MenuItem onClick={() => actionLogOut()}>
+              <Typography textAlign="center">Logout</Typography>
+            </MenuItem>
+          </div>
+        ) : (
+          <div>
+            <MenuItem onClick={() => history.push("/signin")}>
+              <Typography textAlign="center">Sign In</Typography>
+            </MenuItem>
+            <MenuItem onClick={() => history.push("/signup")}>
+              <Typography textAlign="center">Sign Up</Typography>
+            </MenuItem>
+          </div>
+        )}
       </Menu>
     </Box>
   );

@@ -3,6 +3,7 @@ import auth from "json-server-auth";
 const server = jsonServer.create();
 const router = jsonServer.router("./src/server/db.json");
 const middlewares = jsonServer.defaults();
+import { isSignupAuthenticated } from "./api/api";
 
 server.use(middlewares);
 
@@ -15,8 +16,14 @@ server.get("/echo", (req, res) => {
 server.use(jsonServer.bodyParser);
 server.use((req, res, next) => {
   if (req.method === "POST") {
-    req.body.createdAt = Date.now();
-    req.body.pictureUrl = null;
+    if (isSignupAuthenticated(req.body.login)) {
+      const status = 400;
+      const message = "This email or login already exists";
+      res.status(status).json(message);
+    } else {
+      req.body.createdAt = Date.now();
+      req.body.pictureUrl = null;
+    }
   }
   next();
 });

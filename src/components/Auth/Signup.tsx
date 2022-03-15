@@ -10,9 +10,11 @@ import {
 } from "@mui/material";
 import { Visibility, VisibilityOff } from "@material-ui/icons";
 import { Link } from "react-router-dom";
-import { actionFullRegister } from "./../actions/thunks";
+import { actionFullRegister } from "../../actions/thunks";
 import { connect } from "react-redux";
-import { RootState } from "./App";
+import { RootState } from "../App";
+import ModalWindow from "./../Auxiliary/ModalWindow";
+import { validatePassword, validateLogin } from "../../helpers";
 
 interface IRegister {
   promise: object;
@@ -27,20 +29,27 @@ interface RegisterFormValues {
 }
 
 const validationSchema = Yup.object().shape({
-  email: Yup.string().email().required("Enter a valid email"),
+  email: Yup.string()
+    .email("Enter a valid email")
+    .required("Email is required"),
   login: Yup.string()
-    .min(3, "Login must be at least 3 characters long")
-    .max(8, "Login must be maximum 8 characters long")
-    .required(),
+    .matches(
+      validateLogin,
+      "Login must be 3 to 8 characters long and must contain small letters and numbers"
+    )
+    .required("Login is required"),
   password: Yup.string()
-    .min(8, "Password should be of minimum 8 characters length")
-    .required(),
+    .matches(
+      validatePassword,
+      "Password must contain at least 8 characters, one uppercase, one number and one special case character"
+    )
+    .required("Password is required"),
   retryPassword: Yup.string()
     .oneOf([Yup.ref("password")], "Passwords do not match")
-    .required(),
+    .required("Retry password is required"),
 });
 
-const SignUp = ({ onRegister }: IRegister) => {
+const SignUp = ({ promise, onRegister }: IRegister) => {
   const [showPassword, setShowPassword] = useState(false);
   const [showRetryPassword, setShowRetryPassword] = useState(false);
   const initialValues: RegisterFormValues = {
@@ -57,7 +66,12 @@ const SignUp = ({ onRegister }: IRegister) => {
     },
   });
 
-  return (
+  return promise?.["signup"]?.["status"] === "REJECTED" ? (
+    <ModalWindow
+      title="Error"
+      body={promise?.["signup"]?.["error"]?.["message"]}
+    />
+  ) : (
     <div>
       <form className="authForm" id="signUpForm" onSubmit={formik.handleSubmit}>
         <TextField

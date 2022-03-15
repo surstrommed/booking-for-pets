@@ -3,7 +3,7 @@ import Register from "./Register";
 import Login from "./Login";
 import { Routes, Route } from "react-router-dom";
 import Page404 from "./Page404";
-import { CProfile } from "./Profile";
+import { Profile } from "./Profile";
 
 const Content = ({ children }) => <div className="Content">{children}</div>;
 
@@ -20,7 +20,7 @@ export default function Main() {
         <Route path="/" element={<Stub />} />
         <Route path="/signup" element={<Register />} />
         <Route path="/signin" element={<Login />} />
-        <Route path="/profile" element={<CProfile />} />
+        <Route path="/profile" element={<Profile />} />
         <Route path="*" element={<Page404 />} />
       </Routes>
     </Content>

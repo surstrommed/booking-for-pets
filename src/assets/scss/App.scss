@@ -6,11 +6,9 @@
   }
   .profilePage {
     margin: 7% 0 0 0;
-    text-align: "center";
   }
   .profileForm {
-    text-align: center;
-    margin: 0 25%;
+    margin-left: 5%;
     div {
       margin: 1vh;
     }
@@ -22,5 +20,22 @@
   #siteTitle {
     text-decoration: none;
     color: black;
+  }
+  #changeAvatar {
+    width: 30%;
+    margin-left: 5%;
+  }
+  .customDropzone {
+    background: white;
+    border-radius: 5px;
+    border: 2px dashed rgb(0, 135, 247);
+    border-image: none;
+    max-width: 500px;
+    margin-left: auto;
+    margin-right: auto;
+    padding: 1vh;
+  }
+  .redText {
+    color: "red";
   }
 }

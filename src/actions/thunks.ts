@@ -4,16 +4,27 @@ import {
   actionResolved,
   actionAuthLogin,
 } from "./types";
-import { actionLogin, actionRegister, actionUpdate } from "./index";
-import { jwtCode } from "./../helpers/index";
-import { history } from "./../components/App";
+import {
+  actionLogin,
+  actionRegister,
+  actionUpdate,
+  actionUploadPhoto,
+} from "./index";
+import { jwtCode, jwtDecode } from "../helpers/index";
+import { getState, history } from "../components/App";
+import { UserModel } from "../server/api/api-models";
+import { checkError } from "./../helpers/index";
 
 export const actionPromise = (name, promise) => async (dispatch) => {
   dispatch(actionPending(name));
   try {
     const data = await promise;
-    dispatch(actionResolved(name, data));
-    return data;
+    if (checkError(data)) {
+      throw new Error(data);
+    } else {
+      dispatch(actionResolved(name, data));
+      return data;
+    }
   } catch (error) {
     dispatch(actionRejected(name, error));
   }
@@ -22,11 +33,13 @@ export const actionPromise = (name, promise) => async (dispatch) => {
 export const actionFullLogin =
   (email: string, password: string) => async (dispatch) => {
     const loginUser = await dispatch(actionLogin(email, password));
-    const token = jwtCode(loginUser?.user);
-    sessionStorage.authToken = token;
-    if (sessionStorage.authToken) {
-      await dispatch(actionAuthLogin(token));
-      history.go(0);
+    if (loginUser) {
+      const token = jwtCode({ ...loginUser.user, password });
+      sessionStorage.authToken = token;
+      if (sessionStorage.authToken) {
+        await dispatch(actionAuthLogin(token));
+        history.go(0);
+      }
     }
   };
 
@@ -39,10 +52,41 @@ export const actionFullRegister =
   };
 
 export const actionFullUpdate =
-  (id: number, email: string, login: string, password: string) =>
+  ({ id, email, login, password, newPassword, pictureUrl }: UserModel) =>
   async (dispatch) => {
-    const updateUser = await dispatch(actionUpdate(id, email, login, password));
-    if (Object.keys(updateUser).length !== 0) {
-      await dispatch(actionFullLogin(email, password));
+    const findUser = await dispatch(actionLogin(email, password));
+    if (findUser) {
+      const updateUser = await dispatch(
+        actionUpdate({
+          id,
+          email,
+          login,
+          password: newPassword ? newPassword : password,
+          pictureUrl,
+        })
+      );
+      if (Object.keys(updateUser).length !== 0) {
+        await dispatch(actionFullLogin(email, newPassword || password));
+      }
+    }
+  };
+
+export const actionChangeAvatar = (image: File) => async (dispatch) => {
+  const avatar: string = await dispatch(actionUploadPhoto(image));
+  const { password } = jwtDecode(sessionStorage.authToken);
+  const { id, email }: { id: number; email: string } = getState().auth.payload;
+  if (avatar && id && email && password) {
+    await dispatch(
+      actionFullUpdate({ id, email, password, pictureUrl: avatar })
+    );
+  }
+};
+
+export const actionChangePassword =
+  (password: string, newPassword: string) => async (dispatch) => {
+    const { id, email }: { id: number; email: string } =
+      getState().auth.payload;
+    if (id && email) {
+      await dispatch(actionFullUpdate({ id, email, password, newPassword }));
     }
   };

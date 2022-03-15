@@ -1,7 +1,7 @@
 import React from "react";
 import "./../assets/scss/App.scss";
 import Main from "./../pages/Main";
-import Navbar from "./Navbar";
+import Navbar from "./Header/Header";
 import { createBrowserHistory } from "history";
 import { createStore, combineReducers, applyMiddleware } from "redux";
 import {
@@ -10,7 +10,9 @@ import {
   authReducer,
 } from "./../reducers/index";
 import thunk from "redux-thunk";
-import { BrowserRouter } from "./BrowserRouter";
+import { BrowserRouter } from "./Auxiliary/BrowserRouter";
+import { ThemeProvider } from "@mui/material";
+import { theme } from "./../assets/theme";
 
 export const history = createBrowserHistory();
 
@@ -29,10 +31,12 @@ store.subscribe(() => console.log(store.getState()));
 export default function App() {
   return (
     <BrowserRouter history={history}>
-      <div className="App">
-        <Navbar />
-        <Main />
-      </div>
+      <ThemeProvider theme={theme}>
+        <div className="App">
+          <Navbar />
+          <Main />
+        </div>
+      </ThemeProvider>
     </BrowserRouter>
   );
 }

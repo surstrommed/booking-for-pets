@@ -1,5 +1,12 @@
 import CryptoJS from "crypto-js";
 
+const apiErrors = [
+  "Cannot find user",
+  "Incorrect password",
+  "Email already exists",
+  "This email or login already exists",
+];
+
 export const apiUrl = "http://localhost:3000/";
 
 export const jwtDecode = (token: string) => {
@@ -38,16 +45,11 @@ export const jwtCode = (data: { email: string; login: string }) => {
   }
 };
 
-export function validateEmail(email: string) {
-  return /[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?/.test(
-    email.toLowerCase()
-  );
-}
+export const validatePassword =
+  /^.*(?=.{8,})((?=.*[!@#$%^&*()\-_=+{};:,<.>]){1})(?=.*\d)((?=.*[a-z]){1})((?=.*[A-Z]){1}).*$/;
 
-export function validatePassword(password: string) {
-  return /^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9]).{6,}/.test(password);
-}
+export const validateLogin = /^[a-z0-9]{3,8}$/;
 
-export function validateLogin(login: string) {
-  return /^[a-z0-9_-]{3,8}$/.test(login);
+export function checkError(checkString: string) {
+  return apiErrors.includes(checkString);
 }
