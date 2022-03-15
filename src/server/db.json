@@ -23,6 +23,14 @@
       "createdAt": 1647351949978,
       "pictureUrl": null,
       "id": 3
+    },
+    {
+      "email": "user@ukr.net",
+      "login": "user1",
+      "createdAt": 1647362882575,
+      "pictureUrl": "https://i.ibb.co/PDn1DkL/Sample-User-Icon.png",
+      "id": 4,
+      "password": "$2a$10$mLmlt7uAQifvBtxFWR0Kiu0TA7dCuH3bdJDchLxrdQTe0q4eRcJcu"
     }
   ]
 }

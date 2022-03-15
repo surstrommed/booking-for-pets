@@ -1,9 +1,9 @@
 import React from "react";
-import Register from "./Register";
-import Login from "./Login";
 import { Routes, Route } from "react-router-dom";
 import Page404 from "./Page404";
 import { Profile } from "./Profile";
+import Login from "./Login";
+import Register from "./Register";
 
 const Content = ({ children }) => <div className="Content">{children}</div>;
 
