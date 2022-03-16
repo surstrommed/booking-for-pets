@@ -10,7 +10,8 @@ import {
   IconButton,
   TextField,
 } from "@mui/material";
-import { Visibility, VisibilityOff } from "@material-ui/icons";
+import VisibilityIcon from "@mui/icons-material/Visibility";
+import VisibilityOffIcon from "@mui/icons-material/VisibilityOff";
 import { actionChangePassword } from "./../../actions/thunks";
 import ModalWindow from "./../Auxiliary/ModalWindow";
 
@@ -75,7 +76,7 @@ const ChangePassword = ({ promise, changePassword }) => {
                   onClick={() => setShowPassword(!showPassword)}
                   onMouseDown={() => setShowPassword(!showPassword)}
                 >
-                  {showPassword ? <Visibility /> : <VisibilityOff />}
+                  {showPassword ? <VisibilityIcon /> : <VisibilityOffIcon />}
                 </IconButton>
               </InputAdornment>
             ),
@@ -103,7 +104,11 @@ const ChangePassword = ({ promise, changePassword }) => {
                   onClick={() => setShowRetryPassword(!showRetryPassword)}
                   onMouseDown={() => setShowRetryPassword(!showRetryPassword)}
                 >
-                  {showRetryPassword ? <Visibility /> : <VisibilityOff />}
+                  {showRetryPassword ? (
+                    <VisibilityIcon />
+                  ) : (
+                    <VisibilityOffIcon />
+                  )}
                 </IconButton>
               </InputAdornment>
             ),
@@ -129,7 +134,7 @@ const ChangePassword = ({ promise, changePassword }) => {
                   onClick={() => setShowNewPassword(!showNewPassword)}
                   onMouseDown={() => setShowNewPassword(!showNewPassword)}
                 >
-                  {showNewPassword ? <Visibility /> : <VisibilityOff />}
+                  {showNewPassword ? <VisibilityIcon /> : <VisibilityOffIcon />}
                 </IconButton>
               </InputAdornment>
             ),

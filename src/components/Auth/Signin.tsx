@@ -8,7 +8,8 @@ import {
   IconButton,
   TextField,
 } from "@mui/material";
-import { Visibility, VisibilityOff } from "@material-ui/icons";
+import VisibilityIcon from "@mui/icons-material/Visibility";
+import VisibilityOffIcon from "@mui/icons-material/VisibilityOff";
 import { Link } from "react-router-dom";
 import { connect } from "react-redux";
 import { RootState } from "../App";
@@ -78,7 +79,7 @@ const SignIn = ({ promise, onLogin }: ILogin) => {
                   onClick={() => setShowPassword(!showPassword)}
                   onMouseDown={() => setShowPassword(!showPassword)}
                 >
-                  {showPassword ? <Visibility /> : <VisibilityOff />}
+                  {showPassword ? <VisibilityIcon /> : <VisibilityOffIcon />}
                 </IconButton>
               </InputAdornment>
             ),
