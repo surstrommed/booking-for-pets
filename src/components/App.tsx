@@ -8,6 +8,7 @@ import {
   sessionStoredReducer,
   promiseReducer,
   authReducer,
+  routeReducer,
 } from "./../reducers/index";
 import thunk from "redux-thunk";
 import { BrowserRouter } from "./Auxiliary/BrowserRouter";
@@ -17,15 +18,15 @@ import { theme } from "./../assets/theme";
 export const history = createBrowserHistory();
 
 const rootReducer = combineReducers({
-  promise: promiseReducer,
+  promise: sessionStoredReducer(promiseReducer, "promise"),
   auth: sessionStoredReducer(authReducer, "auth"),
+  route: sessionStoredReducer(routeReducer, "route"),
 });
 
 export type RootState = ReturnType<typeof rootReducer>;
 
 export const store = createStore(rootReducer, applyMiddleware(thunk));
 export const getState = store.getState;
-console.log(store.getState());
 store.subscribe(() => console.log(store.getState()));
 
 export default function App() {

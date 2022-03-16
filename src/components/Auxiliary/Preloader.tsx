@@ -5,7 +5,7 @@ import ModalWindow from "./ModalWindow";
 
 const Loader = () => {
   return (
-    <Box sx={{ width: "50%", marginLeft: "25%", marginTop: "25%" }}>
+    <Box sx={{ width: "50%", marginLeft: "25%", marginTop: "10%" }}>
       <LinearProgress color="secondary" />
     </Box>
   );

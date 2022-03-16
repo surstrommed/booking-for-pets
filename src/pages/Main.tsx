@@ -4,8 +4,7 @@ import Page404 from "./Page404";
 import { Profile } from "./Profile";
 import Login from "./Login";
 import Register from "./Register";
-
-const Content = ({ children }) => <div className="Content">{children}</div>;
+import { PrivateRoute } from "./../components/Auxiliary/PrivateRoute";
 
 function Stub() {
   return (
@@ -15,14 +14,19 @@ function Stub() {
 
 export default function Main() {
   return (
-    <Content>
-      <Routes>
-        <Route path="/" element={<Stub />} />
-        <Route path="/signup" element={<Register />} />
-        <Route path="/signin" element={<Login />} />
-        <Route path="/profile" element={<Profile />} />
-        <Route path="*" element={<Page404 />} />
-      </Routes>
-    </Content>
+    <Routes>
+      <Route path="/" element={<Stub />} />
+      <Route path="/signup" element={<Register />} />
+      <Route path="/signin" element={<Login />} />
+      <Route
+        path="/profile"
+        element={
+          <PrivateRoute>
+            <Profile />
+          </PrivateRoute>
+        }
+      />
+      <Route path="*" element={<Page404 />} />
+    </Routes>
   );
 }
