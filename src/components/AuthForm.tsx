@@ -9,7 +9,8 @@ import {
   InputAdornment,
   IconButton,
 } from "@mui/material";
-import { Visibility, VisibilityOff } from "@material-ui/icons";
+import VisibilityIcon from "@mui/icons-material/Visibility";
+import VisibilityOffIcon from "@mui/icons-material/VisibilityOff";
 import { Link } from "react-router-dom";
 import {
   validateEmail,
@@ -123,7 +124,7 @@ const AuthForm = ({ promise, onLogin, onRegister, signup }: IAuth) => {
             endAdornment={
               <InputAdornment position="end">
                 <IconButton onClick={() => handleClickShowPassword("first")}>
-                  {showPassword ? <Visibility /> : <VisibilityOff />}
+                  {showPassword ? <VisibilityIcon /> : <VisibilityOffIcon />}
                 </IconButton>
               </InputAdornment>
             }
@@ -146,7 +147,11 @@ const AuthForm = ({ promise, onLogin, onRegister, signup }: IAuth) => {
                     <IconButton
                       onClick={() => handleClickShowPassword("second")}
                     >
-                      {showRepeatPassword ? <Visibility /> : <VisibilityOff />}
+                      {showRepeatPassword ? (
+                        <VisibilityIcon />
+                      ) : (
+                        <VisibilityOffIcon />
+                      )}
                     </IconButton>
                   </InputAdornment>
                 }
