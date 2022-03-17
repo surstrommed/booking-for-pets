@@ -1,14 +1,13 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import "./../assets/scss/App.scss";
 import Main from "./../pages/Main";
-import Navbar from "./Header/Header";
+import HeaderBar from "./Header/HeaderBar";
 import { createBrowserHistory } from "history";
 import { createStore, combineReducers, applyMiddleware } from "redux";
 import {
   sessionStoredReducer,
   promiseReducer,
   authReducer,
-  routeReducer,
 } from "./../reducers/index";
 import thunk from "redux-thunk";
 import { BrowserRouter } from "./Auxiliary/BrowserRouter";
@@ -18,9 +17,8 @@ import { theme } from "./../assets/theme";
 export const history = createBrowserHistory();
 
 const rootReducer = combineReducers({
-  promise: sessionStoredReducer(promiseReducer, "promise"),
+  promise: promiseReducer,
   auth: sessionStoredReducer(authReducer, "auth"),
-  route: sessionStoredReducer(routeReducer, "route"),
 });
 
 export type RootState = ReturnType<typeof rootReducer>;
@@ -34,7 +32,9 @@ export default function App() {
     <BrowserRouter history={history}>
       <ThemeProvider theme={theme}>
         <div className="App">
-          <Navbar />
+          <div className="Header">
+            <HeaderBar />
+          </div>
           <Main />
         </div>
       </ThemeProvider>

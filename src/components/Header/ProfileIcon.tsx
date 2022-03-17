@@ -6,10 +6,15 @@ import Menu from "@mui/material/Menu";
 import MenuItem from "@mui/material/MenuItem";
 import Typography from "@mui/material/Typography";
 import IconButton from "@mui/material/IconButton";
+import AccountCircleIcon from "@mui/icons-material/AccountCircle";
+import PersonIcon from "@mui/icons-material/Person";
+import MenuIcon from "@mui/icons-material/Menu";
+import Button from "@mui/material/Button";
+import Badge from "@mui/material/Badge";
 import { connect } from "react-redux";
 import { actionAuthLogout } from "../../actions/types";
 import { RootState, history } from "../App";
-import { DriveEtaSharp } from "@mui/icons-material";
+import { theme } from "./../../assets/theme";
 
 type Logout = () => object;
 interface IProfile {
@@ -20,7 +25,7 @@ interface IProfile {
 
 type ButtonEvent = React.MouseEvent<HTMLButtonElement>;
 
-const ProfileIcon = ({ auth, actionLogOut, signed }: IProfile) => {
+const ProfileIcon = ({ auth, actionLogOut }: IProfile) => {
   const [anchorElUser, setAnchorElUser] = useState(null);
   const handleOpenUserMenu = (event: ButtonEvent) => {
     setAnchorElUser(event.currentTarget);
@@ -32,15 +37,43 @@ const ProfileIcon = ({ auth, actionLogOut, signed }: IProfile) => {
 
   return (
     <Box sx={{ flexGrow: 0 }}>
+      <Button
+        style={{
+          borderRadius: 25,
+          marginRight: 10,
+        }}
+      >
+        For owners
+      </Button>
       <Tooltip title="Open profile">
         <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
-          <Avatar
-            alt={auth?.["payload"]?.["login"] || "Profile"}
-            src={
-              auth?.["payload"]?.["pictureUrl"] ||
-              "https://upload.wikimedia.org/wikipedia/commons/9/99/Sample_User_Icon.png"
-            }
-          />
+          <Badge badgeContent={17} color="error">
+            <Button
+              style={{
+                color: "grey",
+                backgroundColor: theme.palette.primary.light,
+                borderRadius: 25,
+                border: "1px solid grey",
+                height: 40,
+              }}
+            >
+              <MenuIcon style={{ fontSize: "20px" }} />
+              {auth?.["token"] ? (
+                auth?.["payload"]?.["pictureUrl"] ? (
+                  <Avatar
+                    src={auth?.["payload"]?.["pictureUrl"]}
+                    style={{ marginLeft: "2vh", width: "24px" }}
+                  />
+                ) : (
+                  <PersonIcon style={{ marginLeft: "1vh", fontSize: "32px" }} />
+                )
+              ) : (
+                <AccountCircleIcon
+                  style={{ marginLeft: "1vh", fontSize: "32px" }}
+                />
+              )}
+            </Button>
+          </Badge>
         </IconButton>
       </Tooltip>
       <Menu
@@ -59,13 +92,16 @@ const ProfileIcon = ({ auth, actionLogOut, signed }: IProfile) => {
         open={Boolean(anchorElUser)}
         onClose={handleCloseUserMenu}
       >
-        {signed ? (
+        {sessionStorage.authToken ? (
           <div>
+            <MenuItem onClick={() => history.push("/inbox")}>
+              <Typography sx={{ fontWeight: "bold" }} textAlign="center">
+                Notifications
+              </Typography>
+            </MenuItem>
+            <hr />
             <MenuItem onClick={() => history.push("/profile")}>
               <Typography textAlign="center">Profile</Typography>
-            </MenuItem>
-            <MenuItem onClick={() => history.push("/settings")}>
-              <Typography textAlign="center">Settings</Typography>
             </MenuItem>
             <hr />
             <MenuItem onClick={() => actionLogOut()}>

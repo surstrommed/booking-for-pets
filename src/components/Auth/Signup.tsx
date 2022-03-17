@@ -14,11 +14,10 @@ import { Link } from "react-router-dom";
 import { actionFullRegister } from "../../actions/thunks";
 import { connect } from "react-redux";
 import { RootState } from "../App";
-import ModalWindow from "./../Auxiliary/ModalWindow";
 import { validatePassword, validateLogin } from "../../helpers";
 
 interface IRegister {
-  promise: object;
+  promise?: object;
   onRegister: (email: string, login: string, password: string) => void;
 }
 
@@ -50,7 +49,7 @@ const validationSchema = Yup.object().shape({
     .required("Retry password is required"),
 });
 
-const SignUp = ({ promise, onRegister }: IRegister) => {
+const SignUp = ({ onRegister }: IRegister) => {
   const [showPassword, setShowPassword] = useState(false);
   const [showRetryPassword, setShowRetryPassword] = useState(false);
   const initialValues: RegisterFormValues = {
@@ -67,12 +66,7 @@ const SignUp = ({ promise, onRegister }: IRegister) => {
     },
   });
 
-  return promise?.["signup"]?.["status"] === "REJECTED" ? (
-    <ModalWindow
-      title="Error"
-      body={promise?.["signup"]?.["error"]?.["message"]}
-    />
-  ) : (
+  return (
     <div>
       <form className="authForm" id="signUpForm" onSubmit={formik.handleSubmit}>
         <TextField

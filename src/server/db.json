@@ -18,11 +18,11 @@
     },
     {
       "email": "asdasd@ukr.net",
-      "password": "$2a$10$NVKO8wxju14O3mp0XwO2L.yP5KFmOnvqZ29uLgDglfL5L8NK03p.S",
       "login": "asdasda",
       "createdAt": 1647351949978,
-      "pictureUrl": null,
-      "id": 3
+      "pictureUrl": "https://i.ibb.co/Drqmh80/557d644f-12f3-49e1-bb66-23c16400540d.png",
+      "id": 3,
+      "password": "$2a$10$f67ffMHE7TxpbFw0RsoXT.L7iHaWaXX5Ru8T4YaH.6FrQJnSuXiVy"
     },
     {
       "email": "user@ukr.net",

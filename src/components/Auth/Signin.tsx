@@ -13,11 +13,10 @@ import VisibilityOffIcon from "@mui/icons-material/VisibilityOff";
 import { Link } from "react-router-dom";
 import { connect } from "react-redux";
 import { RootState } from "../App";
-import ModalWindow from "../Auxiliary/ModalWindow";
 import { actionFullLogin } from "../../actions/thunks";
 
 interface ILogin {
-  promise: object;
+  promise?: object;
   onLogin: (email: string, password: string) => void;
 }
 
@@ -33,7 +32,7 @@ const validationSchema = Yup.object().shape({
   password: Yup.string().required("Password is required"),
 });
 
-const SignIn = ({ promise, onLogin }: ILogin) => {
+const SignIn = ({ onLogin }: ILogin) => {
   const [showPassword, setShowPassword] = useState(false);
   const initialValues: LoginFormValues = { email: "", password: "" };
   const formik = useFormik({
@@ -44,12 +43,7 @@ const SignIn = ({ promise, onLogin }: ILogin) => {
     },
   });
 
-  return promise?.["signin"]?.["status"] === "REJECTED" ? (
-    <ModalWindow
-      title="Error"
-      body={promise?.["signin"]?.["error"]?.["message"]}
-    />
-  ) : (
+  return (
     <div>
       <form className="authForm" onSubmit={formik.handleSubmit}>
         <TextField
