@@ -7,7 +7,11 @@ import Register from "./Register";
 import { PrivateRoute } from "./../components/Auxiliary/PrivateRoute";
 
 function MainPage() {
-  return <div>This is stub</div>;
+  return (
+    <div className="Main">
+      <div className="Top"></div>
+    </div>
+  );
 }
 
 export default function Main() {

@@ -37,14 +37,6 @@ const ProfileIcon = ({ auth, actionLogOut }: IProfile) => {
 
   return (
     <Box sx={{ flexGrow: 0 }}>
-      <Button
-        style={{
-          borderRadius: 25,
-          marginRight: 10,
-        }}
-      >
-        For owners
-      </Button>
       <Tooltip title="Open profile">
         <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
           <Badge badgeContent={17} color="error">

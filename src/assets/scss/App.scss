@@ -1,5 +1,47 @@
 .App {
-  height: 1000px;
+  height: 3000px;
+  .Header {
+    .SearchBar {
+      div {
+        padding-right: 20px;
+        padding-left: 20px;
+      }
+    }
+    .BigHeader {
+      background-color: black;
+      height: 30vh;
+      button {
+        color: white;
+      }
+      a {
+        color: white;
+        text-decoration: none;
+      }
+    }
+    .SmallHeader {
+      background-color: white;
+      button {
+        color: black;
+      }
+      a {
+        color: black;
+        text-decoration: none;
+      }
+      .Logo {
+        color: rgb(236, 130, 148);
+      }
+    }
+  }
+  .Main {
+    .Top {
+      height: 100%;
+      background-color: black;
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+    }
+  }
   .authForm {
     div {
       margin: 2vh;
@@ -18,9 +60,6 @@
     width: 50%;
     margin-left: 25%;
   }
-  #siteTitle {
-    text-decoration: none;
-  }
   #changeAvatar {
     width: 30%;
     margin-left: 5%;
@@ -34,8 +73,5 @@
     margin-left: auto;
     margin-right: auto;
     padding: 1vh;
-  }
-  .redText {
-    color: "red";
   }
 }

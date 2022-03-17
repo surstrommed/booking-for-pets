@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import AppBar from "@mui/material/AppBar";
 import Box from "@mui/material/Box";
 import Toolbar from "@mui/material/Toolbar";
@@ -13,9 +13,13 @@ import PetsIcon from "@mui/icons-material/Pets";
 import useScrollTrigger from "@mui/material/useScrollTrigger";
 import { CProfileIcon } from "./ProfileIcon";
 import { Link } from "react-router-dom";
+import { useLocation } from "react-router-dom";
+import SearchBar from "./SearchBar";
+import SearchIcon from "@mui/icons-material/Search";
 
 const pages = ["Products", "Pricing", "Blog"];
 type ButtonEvent = React.MouseEvent<HTMLButtonElement>;
+let scrollHeader = false;
 
 interface Props {
   window?: () => Window;
@@ -23,6 +27,7 @@ interface Props {
 }
 
 function ElevationScroll(props: Props) {
+  const location = useLocation().pathname;
   const { children, window } = props;
   const trigger = useScrollTrigger({
     disableHysteresis: true,
@@ -30,25 +35,46 @@ function ElevationScroll(props: Props) {
     target: window ? window() : undefined,
   });
 
-  return React.cloneElement(children, {
-    elevation: trigger ? 2 : 0,
-    style: {
-      backgroundColor: trigger ? "#fff" : "#000",
-      color: trigger ? "#fff" : "#fff",
-    },
+  useEffect(() => {
+    const headerBar = document.getElementsByClassName("Header");
+    const searchBar = document.getElementsByClassName("SearchBar");
+    if (
+      searchBar.length !== 0 &&
+      headerBar[0].children[0].classList.contains("SmallHeader")
+    ) {
+      searchBar[0].style.display = "none";
+      scrollHeader = true;
+    } else {
+      searchBar[0].style.display = "block";
+      scrollHeader = false;
+    }
   });
+
+  return location === "/"
+    ? React.cloneElement(children, {
+        elevation: trigger ? 4 : 0,
+        className: trigger ? "SmallHeader" : "BigHeader",
+      })
+    : React.cloneElement(children, {
+        elevation: trigger ? 4 : 0,
+        className: "SmallHeader",
+      });
 }
 
 export default function HeaderBar(props: Props) {
   const [anchorElNav, setAnchorElNav] = useState(null);
+  const [activeSearch, setActiveSearch] = useState(true);
+  const [buttonHover, setButtonHover] = useState(false);
+
   const handleOpenNavMenu = (event: ButtonEvent) => {
     setAnchorElNav(event.currentTarget);
   };
   const handleCloseNavMenu = () => {
     setAnchorElNav(null);
   };
+
   return (
-    <>
+    <div className="Header">
       <ElevationScroll {...props}>
         <AppBar>
           <Container maxWidth="xl">
@@ -62,7 +88,7 @@ export default function HeaderBar(props: Props) {
                   display: { xs: "none", md: "flex" },
                 }}
               >
-                <Link id="siteTitle" to="/">
+                <Link className="Logo" to="/">
                   <PetsIcon />
                   Shaggy tail
                 </Link>
@@ -111,31 +137,73 @@ export default function HeaderBar(props: Props) {
                   display: { xs: "flex", md: "none" },
                 }}
               >
-                <Link id="siteTitle" to="/">
+                <Link className="Logo" to="/">
                   <PetsIcon />
                   Shaggy tail
                 </Link>
               </Typography>
-              <Box sx={{ flexGrow: 1, display: { xs: "none", md: "flex" } }}>
-                {pages.map((page) => (
+              <Box
+                sx={{
+                  flexGrow: 1,
+                  display: { xs: "none", md: "flex", marginLeft: "35%" },
+                }}
+              >
+                {scrollHeader ? (
                   <Button
-                    key={page}
-                    onClick={handleCloseNavMenu}
-                    sx={{
-                      my: 2,
-                      display: "block",
-                    }}
+                    style={{ zIndex: 1000 }}
+                    variant="contained"
+                    endIcon={<SearchIcon />}
                   >
-                    {page}
+                    Start your search
                   </Button>
-                ))}
+                ) : (
+                  <div>
+                    <Button
+                      onClick={() => {
+                        setActiveSearch(true);
+                      }}
+                      onMouseOver={() => setButtonHover(true)}
+                      onMouseLeave={() => setButtonHover(false)}
+                    >
+                      Search
+                    </Button>
+                    <hr
+                      style={{
+                        margin: 0,
+                        display: activeSearch || buttonHover ? "block" : "none",
+                        width: activeSearch
+                          ? "30%"
+                          : buttonHover
+                          ? "10%"
+                          : null,
+                        marginLeft: activeSearch ? "30%" : "45%",
+                      }}
+                    />
+                  </div>
+                )}
               </Box>
+              <Box
+                sx={{
+                  position: "absolute",
+                  display: { xs: "none", md: "flex" },
+                }}
+              >
+                {activeSearch ? <SearchBar /> : null}
+              </Box>
+              <Button
+                style={{
+                  borderRadius: 25,
+                  marginRight: 10,
+                }}
+              >
+                <Link to="/owners">For owners</Link>
+              </Button>
               <CProfileIcon />
             </Toolbar>
           </Container>
         </AppBar>
       </ElevationScroll>
       <Toolbar />
-    </>
+    </div>
   );
 }

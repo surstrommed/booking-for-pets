@@ -32,9 +32,7 @@ export default function App() {
     <BrowserRouter history={history}>
       <ThemeProvider theme={theme}>
         <div className="App">
-          <div className="Header">
-            <HeaderBar />
-          </div>
+          <HeaderBar />
           <Main />
         </div>
       </ThemeProvider>
