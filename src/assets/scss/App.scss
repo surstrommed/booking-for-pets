@@ -1,5 +1,4 @@
 .App {
-  height: 3000px;
   .Header {
     .SearchBar {
       div {
@@ -30,6 +29,20 @@
       .Logo {
         color: rgb(236, 130, 148);
       }
+      .SearchField {
+        right: 10vh;
+        border-radius: 20px;
+        width: 40vh;
+        justify-content: space-between;
+        text-decoration: none;
+        font-weight: normal;
+        #SearchIcon {
+          color: rgb(236, 130, 148);
+        }
+      }
+      &.WhiteBigHeader {
+        height: 30vh;
+      }
     }
   }
   .Main {
@@ -40,15 +53,15 @@
       top: 0;
       left: 0;
       right: 0;
+      .MainImageBoard {
+        display: block;
+        margin-top: 20%;
+        text-align: center;
+        img {
+          border-radius: 30px;
+        }
+      }
     }
-  }
-  .authForm {
-    div {
-      margin: 2vh;
-    }
-  }
-  .profilePage {
-    margin: 7% 0 0 0;
   }
   .profileForm {
     margin-left: 5%;

@@ -10,7 +10,7 @@ export const Profile = connect((state: RootState) => ({
   promise: state.promise,
 }))(({ promise }) => {
   return (
-    <div className="profilePage">
+    <div>
       <Preloader
         promiseName={"userUpdate"}
         promiseState={promise}

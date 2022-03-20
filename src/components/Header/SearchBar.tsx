@@ -1,13 +1,17 @@
 import React from "react";
-import Button from "@mui/material/Button";
 import ButtonGroup from "@mui/material/ButtonGroup";
 import Box from "@mui/material/Box";
 import DesktopDatePicker from "@mui/lab/DesktopDatePicker";
 import LocalizationProvider from "@mui/lab/LocalizationProvider";
 import AdapterDateFns from "@mui/lab/AdapterDateFns";
 import TextField from "@mui/material/TextField";
+import Autocomplete from "@mui/material/Autocomplete";
+import Button from "@mui/material/Button";
+import SearchIcon from "@mui/icons-material/Search";
+import Divider from "@mui/material/Divider";
+import { searchBar } from "./headerStyles";
 
-export default function SearchBar() {
+export default function SearchBar({ styles }) {
   const [value, setValue] = React.useState<Date | null>(new Date());
 
   const handleChange = (newValue: Date | null) => {
@@ -15,60 +19,75 @@ export default function SearchBar() {
   };
 
   return (
-    <Box
-      className="SearchBar"
-      sx={{
-        display: "flex",
-        border: "1px solid white",
-        borderRadius: 20,
-        backgroundColor: "#fff",
-        marginTop: 20,
-        marginLeft: 30,
-        "& > *": {
-          color: "#000",
-          width: 800,
-          alignItems: "center",
-          justifyContent: "center",
-          padding: 2,
-        },
-      }}
-    >
-      <ButtonGroup variant="text" aria-label="text button group">
-        <TextField
-          label="Standard warning"
-          variant="standard"
-          color="secondary"
-          placeholder="Enter city"
-          focused
-        />
-        <LocalizationProvider dateAdapter={AdapterDateFns}>
-          <DesktopDatePicker
-            label="Date desktop"
-            inputFormat="MM/dd/yyyy"
-            value={value}
-            onChange={handleChange}
-            renderInput={(params) => <TextField {...params} />}
+    <div style={styles}>
+      <ButtonGroup
+        variant="text"
+        aria-label="Search fields"
+        sx={searchBar.buttonGroup}
+      >
+        <Box>
+          <Autocomplete
+            sx={searchBar.location}
+            id="free-solo-demo"
+            freeSolo
+            options={["Test1", "Test2"]}
+            renderInput={(params) => (
+              <TextField
+                {...params}
+                label="Location"
+                placeholder="Where are you looking for a hotel?"
+              />
+            )}
           />
-        </LocalizationProvider>
-        <LocalizationProvider dateAdapter={AdapterDateFns}>
-          <DesktopDatePicker
-            label="Date desktop"
-            inputFormat="MM/dd/yyyy"
-            value={value}
-            onChange={handleChange}
-            renderInput={(params) => <TextField {...params} />}
+        </Box>
+        <Divider orientation="vertical" flexItem sx={searchBar.divider} />
+        <Box>
+          <LocalizationProvider dateAdapter={AdapterDateFns}>
+            <DesktopDatePicker
+              label="Arrival"
+              inputFormat="MM/dd/yyyy"
+              value={value}
+              onChange={handleChange}
+              renderInput={(params) => <TextField {...params} />}
+            />
+          </LocalizationProvider>
+        </Box>
+        <Divider orientation="vertical" flexItem sx={searchBar.divider} />
+        <Box>
+          <LocalizationProvider dateAdapter={AdapterDateFns}>
+            <DesktopDatePicker
+              label="Departure"
+              inputFormat="MM/dd/yyyy"
+              value={value}
+              onChange={handleChange}
+              renderInput={(params) => <TextField {...params} />}
+            />
+          </LocalizationProvider>
+        </Box>
+        <Divider orientation="vertical" flexItem sx={searchBar.divider} />
+        <Box>
+          <TextField
+            id="standard-number"
+            label="Number of animals"
+            type="number"
+            color="secondary"
+            sx={searchBar.numberField}
+            InputLabelProps={{
+              shrink: true,
+            }}
+            InputProps={{
+              inputProps: {
+                max: 10,
+                min: 1,
+              },
+            }}
+            variant="standard"
           />
-        </LocalizationProvider>
-        <TextField
-          id="standard-number"
-          label="Number"
-          type="number"
-          InputLabelProps={{
-            shrink: true,
-          }}
-          variant="standard"
-        />
+        </Box>
+        <Button variant="contained" sx={searchBar.searchButton}>
+          <SearchIcon />
+        </Button>
       </ButtonGroup>
-    </Box>
+    </div>
   );
 }

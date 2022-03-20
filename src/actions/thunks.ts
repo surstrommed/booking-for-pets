@@ -3,6 +3,8 @@ import {
   actionRejected,
   actionResolved,
   actionAuthLogin,
+  actionSmallHeader,
+  actionBigHeader,
 } from "./types";
 import {
   actionLogin,

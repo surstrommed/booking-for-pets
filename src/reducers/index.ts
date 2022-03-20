@@ -51,3 +51,38 @@ export const sessionStoredReducer =
       return newState;
     }
   };
+
+export function headerReducer(state, { type }) {
+  if (!state) {
+    state = {
+      smallHeader: false,
+      bigHeader: true,
+      expandSmallHeader: false,
+    };
+  }
+  if (type === "SMALL") {
+    return {
+      ...state,
+      smallHeader: true,
+      bigHeader: false,
+      expandSmallHeader: false,
+    };
+  }
+  if (type === "BIG") {
+    return {
+      ...state,
+      smallHeader: false,
+      bigHeader: true,
+      expandSmallHeader: false,
+    };
+  }
+  if (type === "EXPAND") {
+    return {
+      ...state,
+      smallHeader: false,
+      bigHeader: false,
+      expandSmallHeader: true,
+    };
+  }
+  return state;
+}

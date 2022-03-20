@@ -1,5 +1,4 @@
 import React from "react";
-import Typography from "@mui/material/Typography";
 import Box from "@mui/material/Box";
 import { CSignIn } from "./../components/Auth/Signin";
 import { Preloader } from "./../components/Auxiliary/Preloader";
@@ -10,14 +9,12 @@ const Login = connect((state: RootState) => ({
   promise: state.promise,
 }))(({ promise }) => {
   return (
-    <Box style={{ marginTop: "10%", textAlign: "center" }}>
-      <Typography variant="h5" gutterBottom component="div">
-        Fill in the fields to login to your account:
-      </Typography>
+    <Box>
       <Preloader
         promiseName={"signin"}
         promiseState={promise}
         sub={<CSignIn />}
+        modal={false}
       />
     </Box>
   );

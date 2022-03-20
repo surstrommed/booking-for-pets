@@ -9,7 +9,14 @@ import { PrivateRoute } from "./../components/Auxiliary/PrivateRoute";
 function MainPage() {
   return (
     <div className="Main">
-      <div className="Top"></div>
+      <div className="Top">
+        <div className="MainImageBoard">
+          <img
+            src="https://i.ibb.co/qyX9783/febvuibvbi3v.jpg"
+            alt="Main image board"
+          />
+        </div>
+      </div>
     </div>
   );
 }

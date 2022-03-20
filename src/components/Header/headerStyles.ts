@@ -1,0 +1,86 @@
+import { theme } from "./../../assets/theme";
+
+export const headerBar = {
+  typography: {
+    mr: 2,
+    display: { xs: "none", md: "flex" },
+  },
+  account: { flexGrow: 1, display: { xs: "flex", md: "none" } },
+  menuXs: {
+    display: { xs: "block", md: "none" },
+  },
+  logoXs: {
+    flexGrow: 1,
+    display: { xs: "flex", md: "none" },
+  },
+  searchBox: {
+    flexGrow: 1,
+    display: { xs: "none", md: "flex", marginLeft: "35%" },
+  },
+  searchLine: {
+    margin: 0,
+    width: "30%",
+    marginLeft: "30%",
+  },
+  searchFields: {
+    marginTop: "15%",
+    left: "9%",
+    justifyContent: "center",
+    alignItems: "center",
+    position: "absolute",
+    display: {
+      xs: "none",
+      md: "block",
+      lg: "block",
+    },
+  },
+  ownerButton: {
+    borderRadius: 25,
+    marginRight: 3,
+  },
+};
+
+export const searchBar = {
+  buttonGroup: {
+    backgroundColor: "#fff",
+    borderRadius: 10,
+    padding: "1vh 0",
+  },
+  location: {
+    borderRadius: 10,
+    width: "40vh",
+    backgroundColor: "#fff",
+  },
+  divider: { margin: "0 2vh" },
+  numberField: { width: "20vh" },
+  searchButton: {
+    borderRadius: 10,
+    backgroundColor: "rgb(236, 130, 148);",
+    height: "8vh",
+    margin: "0 2vh",
+  },
+};
+
+export const profileIconStyles = {
+  main: {
+    color: "grey",
+    backgroundColor: theme.palette.primary.light,
+    borderRadius: 25,
+    border: "1px solid grey",
+    height: 40,
+  },
+  iconSize: {
+    fontSize: "20px",
+  },
+  avatarSize: {
+    marginLeft: "2vh",
+    width: "24px",
+    height: "32px",
+  },
+  personSize: { marginLeft: "1vh", fontSize: "32px" },
+  accountCircleSize: {
+    marginLeft: "1vh",
+    fontSize: "32px",
+  },
+  fontWeight: { fontWeight: "bold" },
+};

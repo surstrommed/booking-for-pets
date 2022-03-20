@@ -7,6 +7,7 @@ import {
   InputAdornment,
   IconButton,
   TextField,
+  Box,
 } from "@mui/material";
 import VisibilityIcon from "@mui/icons-material/Visibility";
 import VisibilityOffIcon from "@mui/icons-material/VisibilityOff";
@@ -15,10 +16,13 @@ import { actionFullRegister } from "../../actions/thunks";
 import { connect } from "react-redux";
 import { RootState } from "../App";
 import { validatePassword, validateLogin } from "../../helpers";
-
+import { validationError } from "./../../helpers/index";
+import { CustomTextField } from "./../Auxiliary/CustomTextField";
+import { authFormStyles, authModalStyles } from "./authStyles";
 interface IRegister {
   promise?: object;
   onRegister: (email: string, login: string, password: string) => void;
+  modal?: boolean;
 }
 
 interface RegisterFormValues {
@@ -30,26 +34,30 @@ interface RegisterFormValues {
 
 const validationSchema = Yup.object().shape({
   email: Yup.string()
-    .email("Enter a valid email")
-    .required("Email is required"),
+    .email(validationError("Enter a valid email"))
+    .required(validationError("Email is required")),
   login: Yup.string()
     .matches(
       validateLogin,
-      "Login must be 3 to 8 characters long and must contain small letters and numbers"
+      validationError(
+        "Login must be 3 to 8 characters long and must contain small letters and numbers"
+      )
     )
-    .required("Login is required"),
+    .required(validationError("Login is required")),
   password: Yup.string()
     .matches(
       validatePassword,
-      "Password must contain at least 8 characters, one uppercase, one number and one special case character"
+      validationError(
+        "Password must contain at least 8 characters, one uppercase, one number and one special case character"
+      )
     )
-    .required("Password is required"),
+    .required(validationError("Password is required")),
   retryPassword: Yup.string()
-    .oneOf([Yup.ref("password")], "Passwords do not match")
-    .required("Retry password is required"),
+    .oneOf([Yup.ref("password")], validationError("Passwords do not match"))
+    .required(validationError("Retry password is required")),
 });
 
-const SignUp = ({ onRegister }: IRegister) => {
+const SignUp = ({ onRegister, modal }: IRegister) => {
   const [showPassword, setShowPassword] = useState(false);
   const [showRetryPassword, setShowRetryPassword] = useState(false);
   const initialValues: RegisterFormValues = {
@@ -67,94 +75,139 @@ const SignUp = ({ onRegister }: IRegister) => {
   });
 
   return (
-    <div>
-      <form className="authForm" id="signUpForm" onSubmit={formik.handleSubmit}>
-        <TextField
-          id="email"
-          name="email"
-          label="Email*"
-          value={formik.values.email}
-          onChange={formik.handleChange}
-          error={formik.touched.email && Boolean(formik.errors.email)}
-          helperText={formik.touched.email && formik.errors.email}
-        />
-        <br />
-        <TextField
-          id="login"
-          name="login"
-          label="Login*"
-          value={formik.values.login}
-          onChange={formik.handleChange}
-          error={formik.touched.login && Boolean(formik.errors.login)}
-          helperText={formik.touched.login && formik.errors.login}
-        />
-        <br />
-        <TextField
-          id="password"
-          name="password"
-          label="Password*"
-          type={showPassword ? "text" : "password"}
-          value={formik.values.password}
-          onChange={formik.handleChange}
-          error={formik.touched.password && Boolean(formik.errors.password)}
-          helperText={formik.touched.password && formik.errors.password}
-          InputProps={{
-            endAdornment: (
-              <InputAdornment position="end">
-                <IconButton
-                  aria-label="toggle password visibility"
-                  onClick={() => setShowPassword(!showPassword)}
-                  onMouseDown={() => setShowPassword(!showPassword)}
-                >
-                  {showPassword ? <VisibilityIcon /> : <VisibilityOffIcon />}
-                </IconButton>
-              </InputAdornment>
-            ),
-          }}
-        />
-        <br />
-        <TextField
-          id="retryPassword"
-          name="retryPassword"
-          label="Retry password*"
-          type={showRetryPassword ? "text" : "password"}
-          value={formik.values.retryPassword}
-          onChange={formik.handleChange}
-          error={
-            formik.touched.retryPassword && Boolean(formik.errors.retryPassword)
-          }
-          helperText={
-            formik.touched.retryPassword && formik.errors.retryPassword
-          }
-          InputProps={{
-            endAdornment: (
-              <InputAdornment position="end">
-                <IconButton
-                  aria-label="toggle retry password visibility"
-                  onClick={() => setShowRetryPassword(!showRetryPassword)}
-                  onMouseDown={() => setShowRetryPassword(!showRetryPassword)}
-                >
-                  {showRetryPassword ? (
-                    <VisibilityIcon />
-                  ) : (
-                    <VisibilityOffIcon />
-                  )}
-                </IconButton>
-              </InputAdornment>
-            ),
-          }}
-        />
-        <br />
-        <Button type="submit" variant="contained" color="primary">
-          Sign Up
-        </Button>
-        <Typography variant="subtitle1" gutterBottom component="div">
-          Already have an account?{" "}
-          <Button component={Link} to="/signin" color="secondary">
-            Sign In
-          </Button>
-        </Typography>
-      </form>
+    <div style={modal ? authModalStyles.main : authFormStyles.main}>
+      <div>
+        {modal || (
+          <>
+            <Typography
+              variant="h5"
+              gutterBottom
+              component="div"
+              sx={authFormStyles.centerText}
+            >
+              Sign up
+            </Typography>
+            <hr />
+          </>
+        )}
+        <form onSubmit={formik.handleSubmit}>
+          <Box sx={authFormStyles.inputsBox}>
+            <CustomTextField
+              id="email"
+              name="email"
+              label="Email"
+              value={formik.values.email}
+              onChange={formik.handleChange}
+              error={formik.touched.email && Boolean(formik.errors.email)}
+              helperText={formik.touched.email && formik.errors.email}
+              variant="filled"
+              fullWidth
+            />
+            <br />
+            <CustomTextField
+              id="login"
+              name="login"
+              label="Login"
+              value={formik.values.login}
+              onChange={formik.handleChange}
+              error={formik.touched.login && Boolean(formik.errors.login)}
+              helperText={formik.touched.login && formik.errors.login}
+              variant="filled"
+              fullWidth
+            />
+            <br />
+            <CustomTextField
+              id="password"
+              name="password"
+              label="Password"
+              type={showPassword ? "text" : "password"}
+              value={formik.values.password}
+              onChange={formik.handleChange}
+              error={formik.touched.password && Boolean(formik.errors.password)}
+              helperText={formik.touched.password && formik.errors.password}
+              variant="filled"
+              fullWidth
+              InputProps={{
+                endAdornment: (
+                  <InputAdornment position="end">
+                    <IconButton
+                      aria-label="toggle password visibility"
+                      onClick={() => setShowPassword(!showPassword)}
+                      onMouseDown={() => setShowPassword(!showPassword)}
+                    >
+                      {showPassword ? (
+                        <VisibilityIcon />
+                      ) : (
+                        <VisibilityOffIcon />
+                      )}
+                    </IconButton>
+                  </InputAdornment>
+                ),
+              }}
+            />
+            <br />
+            <CustomTextField
+              id="retryPassword"
+              name="retryPassword"
+              label="Retry password"
+              type={showRetryPassword ? "text" : "password"}
+              value={formik.values.retryPassword}
+              onChange={formik.handleChange}
+              error={
+                formik.touched.retryPassword &&
+                Boolean(formik.errors.retryPassword)
+              }
+              helperText={
+                formik.touched.retryPassword && formik.errors.retryPassword
+              }
+              variant="filled"
+              fullWidth
+              InputProps={{
+                endAdornment: (
+                  <InputAdornment position="end">
+                    <IconButton
+                      aria-label="toggle retry password visibility"
+                      onClick={() => setShowRetryPassword(!showRetryPassword)}
+                      onMouseDown={() =>
+                        setShowRetryPassword(!showRetryPassword)
+                      }
+                    >
+                      {showRetryPassword ? (
+                        <VisibilityIcon />
+                      ) : (
+                        <VisibilityOffIcon />
+                      )}
+                    </IconButton>
+                  </InputAdornment>
+                ),
+              }}
+            />
+            <br />
+            <Button
+              sx={authFormStyles.signButton}
+              type="submit"
+              variant="contained"
+              color="secondary"
+              fullWidth
+            >
+              Sign Up
+            </Button>
+            {modal || (
+              <Typography
+                variant="subtitle1"
+                gutterBottom
+                component="div"
+                sx={authFormStyles.centerText}
+              >
+                Already have an account?{" "}
+                <Button component={Link} to="/signin" color="secondary">
+                  Sign In
+                </Button>
+              </Typography>
+            )}
+          </Box>
+        </form>
+      </div>
     </div>
   );
 };

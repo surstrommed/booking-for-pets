@@ -6,7 +6,7 @@ import {
   Typography,
   InputAdornment,
   IconButton,
-  TextField,
+  Box,
 } from "@mui/material";
 import VisibilityIcon from "@mui/icons-material/Visibility";
 import VisibilityOffIcon from "@mui/icons-material/VisibilityOff";
@@ -14,10 +14,14 @@ import { Link } from "react-router-dom";
 import { connect } from "react-redux";
 import { RootState } from "../App";
 import { actionFullLogin } from "../../actions/thunks";
-
+import { validationError } from "./../../helpers/index";
+import { CustomTextField } from "./../Auxiliary/CustomTextField";
+import { authFormStyles, authModalStyles } from "./authStyles";
+import { history } from "./../App";
 interface ILogin {
   promise?: object;
   onLogin: (email: string, password: string) => void;
+  modal?: boolean;
 }
 
 interface LoginFormValues {
@@ -27,12 +31,12 @@ interface LoginFormValues {
 
 const validationSchema = Yup.object().shape({
   email: Yup.string()
-    .email("Enter a valid email")
-    .required("Email is required"),
-  password: Yup.string().required("Password is required"),
+    .email(validationError("Enter a valid email"))
+    .required(validationError("Email is required")),
+  password: Yup.string().required(validationError("Password is required")),
 });
 
-const SignIn = ({ onLogin }: ILogin) => {
+const SignIn = ({ onLogin, modal }: ILogin) => {
   const [showPassword, setShowPassword] = useState(false);
   const initialValues: LoginFormValues = { email: "", password: "" };
   const formik = useFormik({
@@ -44,52 +48,92 @@ const SignIn = ({ onLogin }: ILogin) => {
   });
 
   return (
-    <div>
-      <form className="authForm" onSubmit={formik.handleSubmit}>
-        <TextField
-          id="email"
-          name="email"
-          label="Email*"
-          value={formik.values.email}
-          onChange={formik.handleChange}
-          error={formik.touched.email && Boolean(formik.errors.email)}
-          helperText={formik.touched.email && formik.errors.email}
-        />
-        <br />
-        <TextField
-          id="password"
-          name="password"
-          label="Password*"
-          type={showPassword ? "text" : "password"}
-          value={formik.values.password}
-          onChange={formik.handleChange}
-          error={formik.touched.password && Boolean(formik.errors.password)}
-          helperText={formik.touched.password && formik.errors.password}
-          InputProps={{
-            endAdornment: (
-              <InputAdornment position="end">
-                <IconButton
-                  aria-label="toggle password visibility"
-                  onClick={() => setShowPassword(!showPassword)}
-                  onMouseDown={() => setShowPassword(!showPassword)}
-                >
-                  {showPassword ? <VisibilityIcon /> : <VisibilityOffIcon />}
-                </IconButton>
-              </InputAdornment>
-            ),
-          }}
-        />
-        <br />
-        <Button type="submit" variant="contained" color="primary">
-          Sign In
-        </Button>
-        <Typography variant="subtitle1" gutterBottom component="div">
-          Don&apos;t have an account yet?{" "}
-          <Button component={Link} to="/signup" color="secondary">
-            Sign Up
-          </Button>
-        </Typography>
-      </form>
+    <div style={modal ? authModalStyles.main : authFormStyles.main}>
+      <div>
+        {modal || (
+          <>
+            <Typography
+              variant="h5"
+              gutterBottom
+              component="div"
+              sx={authFormStyles.centerText}
+            >
+              Sign in
+            </Typography>
+            <hr />
+          </>
+        )}
+        <form onSubmit={formik.handleSubmit}>
+          <Box sx={authFormStyles.inputsBox}>
+            <CustomTextField
+              id="email"
+              name="email"
+              label="Email"
+              value={formik.values.email}
+              onChange={formik.handleChange}
+              error={formik.touched.email && Boolean(formik.errors.email)}
+              helperText={formik.touched.email && formik.errors.email}
+              variant="filled"
+              fullWidth
+            />
+            <br />
+            <CustomTextField
+              id="password"
+              name="password"
+              label="Password"
+              type={showPassword ? "text" : "password"}
+              value={formik.values.password}
+              onChange={formik.handleChange}
+              error={formik.touched.password && Boolean(formik.errors.password)}
+              helperText={formik.touched.password && formik.errors.password}
+              fullWidth
+              variant="filled"
+              InputProps={{
+                endAdornment: (
+                  <InputAdornment position="end">
+                    <IconButton
+                      aria-label="toggle password visibility"
+                      onClick={() => setShowPassword(!showPassword)}
+                      onMouseDown={() => setShowPassword(!showPassword)}
+                    >
+                      {showPassword ? (
+                        <VisibilityIcon />
+                      ) : (
+                        <VisibilityOffIcon />
+                      )}
+                    </IconButton>
+                  </InputAdornment>
+                ),
+              }}
+            />
+            <br />
+            <Button
+              sx={
+                modal ? authModalStyles.signButton : authFormStyles.signButton
+              }
+              type="submit"
+              variant="contained"
+              color="secondary"
+              fullWidth
+            >
+              Sign In
+            </Button>
+            {modal || (
+              <Typography
+                variant="subtitle1"
+                gutterBottom
+                component="div"
+                sx={authFormStyles.centerText}
+              >
+                Don&apos;t have an account yet?{" "}
+                <Button component={Link} to="/signup" color="secondary">
+                  Sign Up
+                </Button>
+              </Typography>
+            )}
+          </Box>
+        </form>
+      </div>
     </div>
   );
 };
