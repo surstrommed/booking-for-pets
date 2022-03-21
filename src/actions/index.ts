@@ -4,6 +4,7 @@ import {
   userRegister,
   userUpdate,
   uploadImage,
+  getHotels,
 } from "../server/api/api";
 import { actionPromise } from "./thunks";
 import { UserModel } from "../server/api/api-models";
@@ -46,4 +47,8 @@ export const actionUpdate = ({
 
 export const actionUploadPhoto = (image: File) => {
   return actionPromise("uploadAvatar", uploadImage(image));
+};
+
+export const actionGetHotels = () => {
+  return actionPromise("getHotels", getHotels());
 };

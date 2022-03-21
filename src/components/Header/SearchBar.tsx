@@ -10,6 +10,7 @@ import Button from "@mui/material/Button";
 import SearchIcon from "@mui/icons-material/Search";
 import Divider from "@mui/material/Divider";
 import { searchBar } from "./headerStyles";
+import { AsyncAutocomplete } from "./../Auxiliary/AsyncAutocomplete";
 
 export default function SearchBar({ styles }) {
   const [value, setValue] = React.useState<Date | null>(new Date());
@@ -26,19 +27,7 @@ export default function SearchBar({ styles }) {
         sx={searchBar.buttonGroup}
       >
         <Box>
-          <Autocomplete
-            sx={searchBar.location}
-            id="free-solo-demo"
-            freeSolo
-            options={["Test1", "Test2"]}
-            renderInput={(params) => (
-              <TextField
-                {...params}
-                label="Location"
-                placeholder="Where are you looking for a hotel?"
-              />
-            )}
-          />
+          <AsyncAutocomplete />
         </Box>
         <Divider orientation="vertical" flexItem sx={searchBar.divider} />
         <Box>

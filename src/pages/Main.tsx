@@ -5,6 +5,7 @@ import { Profile } from "./Profile";
 import Login from "./Login";
 import Register from "./Register";
 import { PrivateRoute } from "./../components/Auxiliary/PrivateRoute";
+import { CHotels } from "./Hotels";
 
 function MainPage() {
   return (
@@ -49,6 +50,7 @@ export default function Main() {
           </PrivateRoute>
         }
       />
+      <Route path="/hotels" element={<CHotels />} />
       <Route path="*" element={<Page404 />} />
     </Routes>
   );

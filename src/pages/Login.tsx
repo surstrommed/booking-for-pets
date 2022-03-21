@@ -14,7 +14,6 @@ const Login = connect((state: RootState) => ({
         promiseName={"signin"}
         promiseState={promise}
         sub={<CSignIn />}
-        modal={false}
       />
     </Box>
   );

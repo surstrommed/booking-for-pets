@@ -32,5 +32,53 @@
       "id": 4,
       "password": "$2a$10$mLmlt7uAQifvBtxFWR0Kiu0TA7dCuH3bdJDchLxrdQTe0q4eRcJcu"
     }
+  ],
+  "hotels": [
+    {
+      "id": 1,
+      "name": "True friend",
+      "location": "Kiev, Ukraine",
+      "address": "Sofievskaya street, 31",
+      "description": "Test",
+      "photos": [
+        "https://barberpet.com.ua/wp-content/uploads/2020/03/hotel-dog1.jpg",
+        "https://inde.io/i/galleries/35880/xl_c62a4bbae51d09d758c6241f9d0ed99e.jpg",
+        "https://talant.shop/static/items/2019/December/5de924e88c52ab7d0ef8a6a7-medium.jpg"
+      ],
+      "price": "15",
+      "owner": "Andriy Yarovy",
+      "reviews": [
+        {
+          "id": 1,
+          "rating": 5,
+          "text": "Test review",
+          "createdAt": 1647362882575,
+          "owner": "Sergey Udyansky"
+        }
+      ]
+    },
+    {
+      "id": 2,
+      "name": "Chotyrokhlapyy druh",
+      "location": "Kharkiv, Ukraine",
+      "address": "Sumskaya street, 40",
+      "description": "Test",
+      "photos": [
+        "https://inde.io/i/galleries/35880/xl_c62a4bbae51d09d758c6241f9d0ed99e.jpg",
+        "https://barberpet.com.ua/wp-content/uploads/2020/03/hotel-dog1.jpg",
+        "https://talant.shop/static/items/2019/December/5de924e88c52ab7d0ef8a6a7-medium.jpg"
+      ],
+      "price": "10",
+      "owner": "Andriy Yarovy",
+      "reviews": [
+        {
+          "id": 1,
+          "rating": 5,
+          "text": "Test review",
+          "createdAt": 1647362882575,
+          "owner": "Sergey Udyansky"
+        }
+      ]
+    }
   ]
 }

@@ -16,7 +16,6 @@ export default function ModalWindow({ title, body }: IModal) {
   const [open, setOpen] = useState(true);
   const handleClose = () => {
     setOpen(false);
-    history.go(0);
   };
 
   return (

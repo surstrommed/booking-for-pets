@@ -62,3 +62,13 @@ export const validationError = (text: string) => (
     {text}
   </span>
 );
+
+export function uniqueArray(arr) {
+  const result = [];
+  for (const str of arr) {
+    if (!result.includes(str)) {
+      result.push(str);
+    }
+  }
+  return result;
+}
