@@ -31,16 +31,17 @@ export const actionUpdate = ({
   const user = auth?.payload;
   const newUserData = { id, email, login, password, pictureUrl };
   const arrayUserData = Object.entries(newUserData);
-  const filteredUserData = arrayUserData.filter(
+  const filteredUserDataArray = arrayUserData.filter(
     ([key, value]) => typeof value !== "undefined"
   );
-  const filteredObj = {};
-  for (let i = 0; i < filteredUserData.length; i++) {
-    filteredObj[filteredUserData[i][0]] = filteredUserData[i][1];
+  const filteredUserDataObj = {};
+  for (let i = 0; i < filteredUserDataArray.length; i++) {
+    filteredUserDataObj[filteredUserDataArray[i][0]] =
+      filteredUserDataArray[i][1];
   }
   return actionPromise(
     "userUpdate",
-    userUpdate({ ...user, ...filteredObj }, "PUT")
+    userUpdate({ ...user, ...filteredUserDataObj }, "PUT")
   );
 };
 
