@@ -44,6 +44,8 @@ const SignIn = ({ promise, onLogin }: ILogin) => {
     },
   });
 
+  const { handleSubmit, handleChange, values, touched, errors } = formik;
+
   return promise?.["signin"]?.["status"] === "REJECTED" ? (
     <ModalWindow
       title="Error"
@@ -51,15 +53,15 @@ const SignIn = ({ promise, onLogin }: ILogin) => {
     />
   ) : (
     <div>
-      <form className="authForm" onSubmit={formik.handleSubmit}>
+      <form className="authForm" onSubmit={handleSubmit}>
         <TextField
           id="email"
           name="email"
           label="Email*"
-          value={formik.values.email}
-          onChange={formik.handleChange}
-          error={formik.touched.email && Boolean(formik.errors.email)}
-          helperText={formik.touched.email && formik.errors.email}
+          value={values.email}
+          onChange={handleChange}
+          error={touched.email && Boolean(errors.email)}
+          helperText={touched.email && errors.email}
         />
         <br />
         <TextField
@@ -67,10 +69,10 @@ const SignIn = ({ promise, onLogin }: ILogin) => {
           name="password"
           label="Password*"
           type={showPassword ? "text" : "password"}
-          value={formik.values.password}
-          onChange={formik.handleChange}
-          error={formik.touched.password && Boolean(formik.errors.password)}
-          helperText={formik.touched.password && formik.errors.password}
+          value={values.password}
+          onChange={handleChange}
+          error={touched.password && Boolean(errors.password)}
+          helperText={touched.password && errors.password}
           InputProps={{
             endAdornment: (
               <InputAdornment position="end">

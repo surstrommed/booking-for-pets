@@ -67,6 +67,8 @@ const SignUp = ({ promise, onRegister }: IRegister) => {
     },
   });
 
+  const { handleSubmit, handleChange, values, touched, errors } = formik;
+
   return promise?.["signup"]?.["status"] === "REJECTED" ? (
     <ModalWindow
       title="Error"
@@ -74,25 +76,25 @@ const SignUp = ({ promise, onRegister }: IRegister) => {
     />
   ) : (
     <div>
-      <form className="authForm" id="signUpForm" onSubmit={formik.handleSubmit}>
+      <form className="authForm" id="signUpForm" onSubmit={handleSubmit}>
         <TextField
           id="email"
           name="email"
           label="Email*"
-          value={formik.values.email}
-          onChange={formik.handleChange}
-          error={formik.touched.email && Boolean(formik.errors.email)}
-          helperText={formik.touched.email && formik.errors.email}
+          value={values.email}
+          onChange={handleChange}
+          error={touched.email && Boolean(errors.email)}
+          helperText={touched.email && errors.email}
         />
         <br />
         <TextField
           id="login"
           name="login"
           label="Login*"
-          value={formik.values.login}
-          onChange={formik.handleChange}
-          error={formik.touched.login && Boolean(formik.errors.login)}
-          helperText={formik.touched.login && formik.errors.login}
+          value={values.login}
+          onChange={handleChange}
+          error={touched.login && Boolean(errors.login)}
+          helperText={touched.login && errors.login}
         />
         <br />
         <TextField
@@ -100,10 +102,10 @@ const SignUp = ({ promise, onRegister }: IRegister) => {
           name="password"
           label="Password*"
           type={showPassword ? "text" : "password"}
-          value={formik.values.password}
-          onChange={formik.handleChange}
-          error={formik.touched.password && Boolean(formik.errors.password)}
-          helperText={formik.touched.password && formik.errors.password}
+          value={values.password}
+          onChange={handleChange}
+          error={touched.password && Boolean(errors.password)}
+          helperText={touched.password && errors.password}
           InputProps={{
             endAdornment: (
               <InputAdornment position="end">
@@ -124,14 +126,10 @@ const SignUp = ({ promise, onRegister }: IRegister) => {
           name="retryPassword"
           label="Retry password*"
           type={showRetryPassword ? "text" : "password"}
-          value={formik.values.retryPassword}
-          onChange={formik.handleChange}
-          error={
-            formik.touched.retryPassword && Boolean(formik.errors.retryPassword)
-          }
-          helperText={
-            formik.touched.retryPassword && formik.errors.retryPassword
-          }
+          value={values.retryPassword}
+          onChange={handleChange}
+          error={touched.retryPassword && Boolean(errors.retryPassword)}
+          helperText={touched.retryPassword && errors.retryPassword}
           InputProps={{
             endAdornment: (
               <InputAdornment position="end">

@@ -1,7 +1,7 @@
 import React from "react";
 import "./../assets/scss/App.scss";
 import Main from "./../pages/Main";
-import Navbar from "./Header/Header";
+import Header from "./Header/Header";
 import { createBrowserHistory } from "history";
 import { createStore, combineReducers, applyMiddleware } from "redux";
 import {
@@ -34,7 +34,7 @@ export default function App() {
     <BrowserRouter history={history}>
       <ThemeProvider theme={theme}>
         <div className="App">
-          <Navbar />
+          <Header />
           <Main />
         </div>
       </ThemeProvider>
