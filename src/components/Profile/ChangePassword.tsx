@@ -47,6 +47,8 @@ const ChangePassword = ({ promise, changePassword }) => {
     },
   });
 
+  const { handleSubmit, handleChange, values, touched, errors } = formik;
+
   return promise?.["signin"]?.["status"] === "REJECTED" ? (
     <ModalWindow
       title="Error"
@@ -58,16 +60,16 @@ const ChangePassword = ({ promise, changePassword }) => {
         Your password:
       </Typography>
       <hr />
-      <form className="profileForm" onSubmit={formik.handleSubmit}>
+      <form className="profileForm" onSubmit={handleSubmit}>
         <TextField
           id="password"
           name="password"
           label="Enter current password"
           type={showPassword ? "text" : "password"}
-          value={formik.values.password}
-          onChange={formik.handleChange}
-          error={formik.touched.password && Boolean(formik.errors.password)}
-          helperText={formik.touched.password && formik.errors.password}
+          value={values.password}
+          onChange={handleChange}
+          error={touched.password && Boolean(errors.password)}
+          helperText={touched.password && errors.password}
           InputProps={{
             endAdornment: (
               <InputAdornment position="end">
@@ -88,14 +90,10 @@ const ChangePassword = ({ promise, changePassword }) => {
           name="retryPassword"
           label="Confirm current password"
           type={showRetryPassword ? "text" : "password"}
-          value={formik.values.retryPassword}
-          onChange={formik.handleChange}
-          error={
-            formik.touched.retryPassword && Boolean(formik.errors.retryPassword)
-          }
-          helperText={
-            formik.touched.retryPassword && formik.errors.retryPassword
-          }
+          value={values.retryPassword}
+          onChange={handleChange}
+          error={touched.retryPassword && Boolean(errors.retryPassword)}
+          helperText={touched.retryPassword && errors.retryPassword}
           InputProps={{
             endAdornment: (
               <InputAdornment position="end">
@@ -120,12 +118,10 @@ const ChangePassword = ({ promise, changePassword }) => {
           name="newPassword"
           label="Enter new password"
           type={showNewPassword ? "text" : "password"}
-          value={formik.values.newPassword}
-          onChange={formik.handleChange}
-          error={
-            formik.touched.newPassword && Boolean(formik.errors.newPassword)
-          }
-          helperText={formik.touched.newPassword && formik.errors.newPassword}
+          value={values.newPassword}
+          onChange={handleChange}
+          error={touched.newPassword && Boolean(errors.newPassword)}
+          helperText={touched.newPassword && errors.newPassword}
           InputProps={{
             endAdornment: (
               <InputAdornment position="end">
@@ -147,10 +143,10 @@ const ChangePassword = ({ promise, changePassword }) => {
           color="primary"
           style={{ left: 10 }}
           disabled={
-            !formik.values.password ||
-            !formik.values.retryPassword ||
-            !formik.values.newPassword ||
-            formik.values.password === formik.values.newPassword
+            !values.password ||
+            !values.retryPassword ||
+            !values.newPassword ||
+            values.password === values.newPassword
           }
         >
           Save

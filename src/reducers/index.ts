@@ -51,3 +51,10 @@ export const sessionStoredReducer =
       return newState;
     }
   };
+
+export function routeReducer(state = {}, { type, match }) {
+  if (type === "ROUTE") {
+    return match;
+  }
+  return state;
+}
