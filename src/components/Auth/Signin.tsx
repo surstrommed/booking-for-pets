@@ -47,6 +47,8 @@ const SignIn = ({ onLogin, modal }: ILogin) => {
     },
   });
 
+  const { handleSubmit, handleChange, values, touched, errors } = formik;
+
   return (
     <div style={modal ? authModalStyles.main : authFormStyles.main}>
       <div>
@@ -63,16 +65,16 @@ const SignIn = ({ onLogin, modal }: ILogin) => {
             <hr />
           </>
         )}
-        <form onSubmit={formik.handleSubmit}>
+        <form onSubmit={handleSubmit}>
           <Box sx={authFormStyles.inputsBox}>
             <CustomTextField
               id="email"
               name="email"
               label="Email"
-              value={formik.values.email}
-              onChange={formik.handleChange}
-              error={formik.touched.email && Boolean(formik.errors.email)}
-              helperText={formik.touched.email && formik.errors.email}
+              value={values.email}
+              onChange={handleChange}
+              error={touched.email && Boolean(errors.email)}
+              helperText={touched.email && errors.email}
               variant="filled"
               fullWidth
             />
@@ -82,10 +84,10 @@ const SignIn = ({ onLogin, modal }: ILogin) => {
               name="password"
               label="Password"
               type={showPassword ? "text" : "password"}
-              value={formik.values.password}
-              onChange={formik.handleChange}
-              error={formik.touched.password && Boolean(formik.errors.password)}
-              helperText={formik.touched.password && formik.errors.password}
+              value={values.password}
+              onChange={handleChange}
+              error={touched.password && Boolean(errors.password)}
+              helperText={touched.password && errors.password}
               fullWidth
               variant="filled"
               InputProps={{

@@ -29,18 +29,19 @@ export const actionUpdate = ({
 }: UserModel) => {
   const { auth } = getState();
   const user = auth?.payload;
-  const newData = { id, email, login, password, pictureUrl };
-  const asArray = Object.entries(newData);
-  const filterNewData = asArray.filter(
+  const newUserData = { id, email, login, password, pictureUrl };
+  const arrayUserData = Object.entries(newUserData);
+  const filteredUserDataArray = arrayUserData.filter(
     ([key, value]) => typeof value !== "undefined"
   );
-  const filteredObj = {};
-  for (let i = 0; i < filterNewData.length; i++) {
-    filteredObj[filterNewData[i][0]] = filterNewData[i][1];
+  const filteredUserDataObj = {};
+  for (let i = 0; i < filteredUserDataArray.length; i++) {
+    filteredUserDataObj[filteredUserDataArray[i][0]] =
+      filteredUserDataArray[i][1];
   }
   return actionPromise(
     "userUpdate",
-    userUpdate({ ...user, ...filteredObj }, "PUT")
+    userUpdate({ ...user, ...filteredUserDataObj }, "PUT")
   );
 };
 
