@@ -74,6 +74,8 @@ const SignUp = ({ onRegister, modal }: IRegister) => {
     },
   });
 
+  const { handleSubmit, handleChange, values, touched, errors } = formik;
+
   return (
     <div style={modal ? authModalStyles.main : authFormStyles.main}>
       <div>
@@ -90,16 +92,16 @@ const SignUp = ({ onRegister, modal }: IRegister) => {
             <hr />
           </>
         )}
-        <form onSubmit={formik.handleSubmit}>
+        <form onSubmit={handleSubmit}>
           <Box sx={authFormStyles.inputsBox}>
             <CustomTextField
               id="email"
               name="email"
               label="Email"
-              value={formik.values.email}
-              onChange={formik.handleChange}
-              error={formik.touched.email && Boolean(formik.errors.email)}
-              helperText={formik.touched.email && formik.errors.email}
+              value={values.email}
+              onChange={handleChange}
+              error={touched.email && Boolean(errors.email)}
+              helperText={touched.email && errors.email}
               variant="filled"
               fullWidth
             />
@@ -108,10 +110,10 @@ const SignUp = ({ onRegister, modal }: IRegister) => {
               id="login"
               name="login"
               label="Login"
-              value={formik.values.login}
-              onChange={formik.handleChange}
-              error={formik.touched.login && Boolean(formik.errors.login)}
-              helperText={formik.touched.login && formik.errors.login}
+              value={values.login}
+              onChange={handleChange}
+              error={touched.login && Boolean(errors.login)}
+              helperText={touched.login && errors.login}
               variant="filled"
               fullWidth
             />
@@ -121,10 +123,10 @@ const SignUp = ({ onRegister, modal }: IRegister) => {
               name="password"
               label="Password"
               type={showPassword ? "text" : "password"}
-              value={formik.values.password}
-              onChange={formik.handleChange}
-              error={formik.touched.password && Boolean(formik.errors.password)}
-              helperText={formik.touched.password && formik.errors.password}
+              value={values.password}
+              onChange={handleChange}
+              error={touched.password && Boolean(errors.password)}
+              helperText={touched.password && errors.password}
               variant="filled"
               fullWidth
               InputProps={{
@@ -151,15 +153,10 @@ const SignUp = ({ onRegister, modal }: IRegister) => {
               name="retryPassword"
               label="Retry password"
               type={showRetryPassword ? "text" : "password"}
-              value={formik.values.retryPassword}
-              onChange={formik.handleChange}
-              error={
-                formik.touched.retryPassword &&
-                Boolean(formik.errors.retryPassword)
-              }
-              helperText={
-                formik.touched.retryPassword && formik.errors.retryPassword
-              }
+              value={values.retryPassword}
+              onChange={handleChange}
+              error={touched.retryPassword && Boolean(errors.retryPassword)}
+              helperText={touched.retryPassword && errors.retryPassword}
               variant="filled"
               fullWidth
               InputProps={{
