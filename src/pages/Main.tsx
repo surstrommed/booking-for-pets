@@ -6,6 +6,7 @@ import Login from "./Login";
 import Register from "./Register";
 import { PrivateRoute } from "./../components/Auxiliary/PrivateRoute";
 import { CHotels } from "./Hotels";
+import { CHotelPage } from "./../components/Hotels/HotelPage";
 
 function MainPage() {
   return (
@@ -50,7 +51,11 @@ export default function Main() {
           </PrivateRoute>
         }
       />
-      <Route path="/hotels" element={<CHotels />} />
+      <Route
+        path="/hotels/:location/:arrival/:departure/:number"
+        element={<CHotels />}
+      />
+      <Route path="/hotels/hotel/:hotelId" element={<CHotelPage />} />
       <Route path="*" element={<Page404 />} />
     </Routes>
   );

@@ -192,7 +192,7 @@ export default function HeaderBar(props: Props) {
                     styles={
                       bigHeader
                         ? { border: "1px solid black" }
-                        : { border: "1px solid grey", borderRadius: "35px" }
+                        : { borderRadius: "35px" }
                     }
                   />
                 ) : null}

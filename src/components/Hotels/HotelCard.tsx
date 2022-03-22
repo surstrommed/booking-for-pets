@@ -8,7 +8,7 @@ import { Link } from "react-router-dom";
 
 export const HotelCard = ({ index, id, image, title, description, price }) => {
   return (
-    <Link to={`/hotels/${id}`}>
+    <Link to={`/hotels/hotel/${id}`}>
       <Card sx={{ width: 245, height: 300 }}>
         <CardActionArea>
           <CardMedia

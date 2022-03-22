@@ -14,6 +14,7 @@ import thunk from "redux-thunk";
 import { BrowserRouter } from "./Auxiliary/BrowserRouter";
 import { ThemeProvider } from "@mui/material";
 import { theme } from "./../assets/theme";
+import { actionGetHotels } from "./../actions/index";
 
 export const history = createBrowserHistory();
 
@@ -29,6 +30,8 @@ export const store = createStore(rootReducer, applyMiddleware(thunk));
 export const getState = store.getState;
 console.log(store.getState());
 store.subscribe(() => console.log(store.getState()));
+
+store.dispatch(actionGetHotels());
 
 export default function App() {
   return (

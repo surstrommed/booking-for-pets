@@ -1,6 +1,7 @@
-import React from "react";
+import React, { useMemo } from "react";
 import CryptoJS from "crypto-js";
 import ErrorIcon from "@mui/icons-material/Error";
+import { useLocation } from "react-router-dom";
 
 const apiErrors = [
   "Cannot find user",
@@ -71,4 +72,14 @@ export function uniqueArray(arr) {
     }
   }
   return result;
+}
+
+export function spaceAfterComma(str) {
+  const strArray = str.split("");
+  for (let i = 0; i < strArray.length - 1; i++) {
+    if (strArray[i] === "," && strArray[i + 1]) {
+      strArray.splice(i + 1, 0, " ");
+    }
+  }
+  return strArray.join("");
 }

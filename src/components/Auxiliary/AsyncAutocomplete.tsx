@@ -5,7 +5,7 @@ import CircularProgress from "@mui/material/CircularProgress";
 import { getHotels } from "./../../server/api/api";
 import { uniqueArray } from "../../helpers";
 
-export const AsyncAutocomplete = () => {
+export const AsyncAutocomplete = ({ updateLocation }) => {
   const [open, setOpen] = useState(false);
   const [options, setOptions] = useState([]);
   const loading = open && options.length === 0;
@@ -40,6 +40,7 @@ export const AsyncAutocomplete = () => {
       id="asynchronous-demo"
       sx={{ width: 300 }}
       open={open}
+      onSelect={updateLocation}
       onOpen={() => {
         setOpen(true);
       }}
@@ -59,7 +60,11 @@ export const AsyncAutocomplete = () => {
             endAdornment: (
               <React.Fragment>
                 {loading ? (
-                  <CircularProgress color="inherit" size={20} />
+                  <CircularProgress
+                    color="inherit"
+                    size={20}
+                    sx={{ marginRight: 2 }}
+                  />
                 ) : null}
                 {params.InputProps.endAdornment}
               </React.Fragment>
