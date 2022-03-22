@@ -1,21 +1,15 @@
+import { getState } from "../components/App";
 import {
-  isUnregistered,
-  isAuthenticated,
-  usersRequest,
-} from "../../server/api/api";
-import { actionPromise } from "./types";
+  userLogin,
+  userRegister,
+  userUpdate,
+  uploadImage,
+} from "../server/api/api";
+import { actionPromise } from "./thunks";
+import { UserModel } from "../server/api/api-models";
 
 export const actionLogin = (email: string, password: string) => {
-  if (isAuthenticated(email, password)) {
-    return actionPromise("signin", usersRequest({ email, password }));
-  } else {
-    const signInError = document.getElementById("signInError");
-    const authForm = <HTMLFormElement>document.getElementById("authForm");
-    if (signInError && authForm) {
-      signInError.style.display = "block";
-      authForm.reset();
-    }
-  }
+  return actionPromise("signin", userLogin({ email, password }));
 };
 
 export const actionRegister = (
@@ -23,17 +17,33 @@ export const actionRegister = (
   login: string,
   password: string
 ) => {
-  if (isUnregistered(email, login)) {
-    return actionPromise(
-      "signup",
-      usersRequest({ email, login, password }, "POST")
-    );
-  } else {
-    const signInError = document.getElementById("signInError");
-    const authForm = <HTMLFormElement>document.getElementById("authForm");
-    if (signInError && authForm) {
-      signInError.style.display = "block";
-      authForm.reset();
-    }
+  return actionPromise("signup", userRegister({ email, login, password }));
+};
+
+export const actionUpdate = ({
+  id,
+  email,
+  login,
+  password,
+  pictureUrl,
+}: UserModel) => {
+  const { auth } = getState();
+  const user = auth?.payload;
+  const newData = { id, email, login, password, pictureUrl };
+  const asArray = Object.entries(newData);
+  const filterNewData = asArray.filter(
+    ([key, value]) => typeof value !== "undefined"
+  );
+  const filteredObj = {};
+  for (let i = 0; i < filterNewData.length; i++) {
+    filteredObj[filterNewData[i][0]] = filterNewData[i][1];
   }
+  return actionPromise(
+    "userUpdate",
+    userUpdate({ ...user, ...filteredObj }, "PUT")
+  );
+};
+
+export const actionUploadPhoto = (image: File) => {
+  return actionPromise("uploadAvatar", uploadImage(image));
 };

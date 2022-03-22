@@ -1,46 +1,42 @@
 import React from "react";
 import "./../assets/scss/App.scss";
 import Main from "./../pages/Main";
-import Navbar from "./Navbar";
+import Navbar from "./Header/Header";
 import { createBrowserHistory } from "history";
 import { createStore, combineReducers, applyMiddleware } from "redux";
-import createSagaMiddleware from "redux-saga";
-import { promiseReducer, authReducer } from "./../reducers/index";
-import * as sagaActions from "../actions/sagas";
-import { all } from "redux-saga/effects";
-import { BrowserRouter } from "./BrowserRouter";
+import {
+  sessionStoredReducer,
+  promiseReducer,
+  authReducer,
+} from "./../reducers/index";
+import thunk from "redux-thunk";
+import { BrowserRouter } from "./Auxiliary/BrowserRouter";
+import { ThemeProvider } from "@mui/material";
+import { theme } from "./../assets/theme";
 
 export const history = createBrowserHistory();
 
-const sagaMiddleware = createSagaMiddleware();
+const rootReducer = combineReducers({
+  promise: promiseReducer,
+  auth: sessionStoredReducer(authReducer, "auth"),
+});
 
-export const store = createStore(
-  combineReducers({
-    promise: promiseReducer,
-    auth: authReducer,
-  }),
-  applyMiddleware(sagaMiddleware)
-);
+export type RootState = ReturnType<typeof rootReducer>;
 
-function* rootSaga() {
-  yield all([
-    sagaActions.promiseWatcher(),
-    sagaActions.loginWatcher(),
-    sagaActions.registerWatcher(),
-  ]);
-}
-
-sagaMiddleware.run(rootSaga);
-
+export const store = createStore(rootReducer, applyMiddleware(thunk));
+export const getState = store.getState;
+console.log(store.getState());
 store.subscribe(() => console.log(store.getState()));
 
 export default function App() {
   return (
     <BrowserRouter history={history}>
-      <div className="App">
-        <Navbar />
-        <Main />
-      </div>
+      <ThemeProvider theme={theme}>
+        <div className="App">
+          <Navbar />
+          <Main />
+        </div>
+      </ThemeProvider>
     </BrowserRouter>
   );
 }

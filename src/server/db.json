@@ -1,0 +1,28 @@
+{
+  "users": [
+    {
+      "email": "crng@ukr.net",
+      "login": "admin",
+      "createdAt": 1647206008510,
+      "pictureUrl": "https://i.ibb.co/r4ZdxgS/557d644f-12f3-49e1-bb66-23c16400540d.png",
+      "id": 1,
+      "password": "$2a$10$nW6d0.VtckwIVnZ.zZTVducrM7crRKav4gmdJnh9efeE9LpYNSX2G"
+    },
+    {
+      "email": "user1231@ukr.net",
+      "login": "user1231",
+      "createdAt": 1647238804177,
+      "pictureUrl": null,
+      "id": 2,
+      "password": "$2a$10$Vc6vl.gESjMYUXmRWnCRN.xT.z0qNXxYv8yZ/QLN/cihMkupAN6Ye"
+    },
+    {
+      "email": "asdasd@ukr.net",
+      "password": "$2a$10$NVKO8wxju14O3mp0XwO2L.yP5KFmOnvqZ29uLgDglfL5L8NK03p.S",
+      "login": "asdasda",
+      "createdAt": 1647351949978,
+      "pictureUrl": null,
+      "id": 3
+    }
+  ]
+}

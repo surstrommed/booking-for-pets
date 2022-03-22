@@ -8,13 +8,16 @@ import Menu from "@mui/material/Menu";
 import Container from "@mui/material/Container";
 import Button from "@mui/material/Button";
 import MenuItem from "@mui/material/MenuItem";
-import AuthButtons from "./AuthButtons";
-import { CProfile } from "./Profile";
+import MenuIcon from "@mui/icons-material/Menu";
+import PetsIcon from "@mui/icons-material/Pets";
+import { CProfileIcon } from "./ProfileIcon";
+import { Link } from "react-router-dom";
+import { theme } from "../../assets/theme";
 
 const pages = ["Products", "Pricing", "Blog"];
 type ButtonEvent = React.MouseEvent<HTMLButtonElement>;
 
-export default function Navbar() {
+export default function Header() {
   const [anchorElNav, setAnchorElNav] = useState(null);
   const handleOpenNavMenu = (event: ButtonEvent) => {
     setAnchorElNav(event.currentTarget);
@@ -23,16 +26,25 @@ export default function Navbar() {
     setAnchorElNav(null);
   };
   return (
-    <AppBar position="fixed">
+    <AppBar position="fixed" color="primary">
       <Container maxWidth="xl">
         <Toolbar disableGutters>
           <Typography
             variant="h6"
             noWrap
             component="div"
-            sx={{ mr: 2, display: { xs: "none", md: "flex" } }}
+            sx={{
+              mr: 2,
+              display: { xs: "none", md: "flex" },
+            }}
           >
-            Booking for pets
+            <Link
+              id="siteTitle"
+              to="/"
+              style={{ color: theme.palette.secondary.main }}
+            >
+              Shaggy tail <PetsIcon />
+            </Link>
           </Typography>
           <Box sx={{ flexGrow: 1, display: { xs: "flex", md: "none" } }}>
             <IconButton
@@ -41,8 +53,10 @@ export default function Navbar() {
               aria-controls="menu-appbar"
               aria-haspopup="true"
               onClick={handleOpenNavMenu}
-              color="inherit"
-            ></IconButton>
+              style={{ color: theme.palette.secondary.main }}
+            >
+              <MenuIcon />
+            </IconButton>
             <Menu
               id="menu-appbar"
               anchorEl={anchorElNav}
@@ -72,22 +86,39 @@ export default function Navbar() {
             variant="h6"
             noWrap
             component="div"
-            sx={{ flexGrow: 1, display: { xs: "flex", md: "none" } }}
+            sx={{
+              flexGrow: 1,
+              display: { xs: "flex", md: "none" },
+            }}
           >
-            Booking for pets
+            <Link
+              id="siteTitle"
+              to="/"
+              style={{ color: theme.palette.secondary.main }}
+            >
+              Shaggy tail <PetsIcon />
+            </Link>
           </Typography>
           <Box sx={{ flexGrow: 1, display: { xs: "none", md: "flex" } }}>
             {pages.map((page) => (
               <Button
                 key={page}
                 onClick={handleCloseNavMenu}
-                sx={{ my: 2, color: "white", display: "block" }}
+                sx={{
+                  my: 2,
+                  color: theme.palette.secondary.main,
+                  display: "block",
+                }}
               >
                 {page}
               </Button>
             ))}
           </Box>
-          {localStorage?.authToken ? <CProfile /> : <AuthButtons />}
+          {sessionStorage?.authToken ? (
+            <CProfileIcon signed />
+          ) : (
+            <CProfileIcon />
+          )}
         </Toolbar>
       </Container>
     </AppBar>
