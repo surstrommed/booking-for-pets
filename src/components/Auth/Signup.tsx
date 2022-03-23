@@ -7,6 +7,7 @@ import {
   InputAdornment,
   IconButton,
   TextField,
+  Box,
 } from "@mui/material";
 import VisibilityIcon from "@mui/icons-material/Visibility";
 import VisibilityOffIcon from "@mui/icons-material/VisibilityOff";
@@ -14,12 +15,14 @@ import { Link } from "react-router-dom";
 import { actionFullRegister } from "../../actions/thunks";
 import { connect } from "react-redux";
 import { RootState } from "../App";
-import ModalWindow from "./../Auxiliary/ModalWindow";
 import { validatePassword, validateLogin } from "../../helpers";
-
+import { validationError } from "./../../helpers/index";
+import { CustomTextField } from "./../Auxiliary/CustomTextField";
+import { authFormStyles, authModalStyles } from "./authStyles";
 interface IRegister {
-  promise: object;
+  promise?: object;
   onRegister: (email: string, login: string, password: string) => void;
+  modal?: boolean;
 }
 
 interface RegisterFormValues {
@@ -31,26 +34,30 @@ interface RegisterFormValues {
 
 const validationSchema = Yup.object().shape({
   email: Yup.string()
-    .email("Enter a valid email")
-    .required("Email is required"),
+    .email(validationError("Enter a valid email"))
+    .required(validationError("Email is required")),
   login: Yup.string()
     .matches(
       validateLogin,
-      "Login must be 3 to 8 characters long and must contain small letters and numbers"
+      validationError(
+        "Login must be 3 to 8 characters long and must contain small letters and numbers"
+      )
     )
-    .required("Login is required"),
+    .required(validationError("Login is required")),
   password: Yup.string()
     .matches(
       validatePassword,
-      "Password must contain at least 8 characters, one uppercase, one number and one special case character"
+      validationError(
+        "Password must contain at least 8 characters, one uppercase, one number and one special case character"
+      )
     )
-    .required("Password is required"),
+    .required(validationError("Password is required")),
   retryPassword: Yup.string()
-    .oneOf([Yup.ref("password")], "Passwords do not match")
-    .required("Retry password is required"),
+    .oneOf([Yup.ref("password")], validationError("Passwords do not match"))
+    .required(validationError("Retry password is required")),
 });
 
-const SignUp = ({ promise, onRegister }: IRegister) => {
+const SignUp = ({ onRegister, modal }: IRegister) => {
   const [showPassword, setShowPassword] = useState(false);
   const [showRetryPassword, setShowRetryPassword] = useState(false);
   const initialValues: RegisterFormValues = {
@@ -69,96 +76,135 @@ const SignUp = ({ promise, onRegister }: IRegister) => {
 
   const { handleSubmit, handleChange, values, touched, errors } = formik;
 
-  return promise?.["signup"]?.["status"] === "REJECTED" ? (
-    <ModalWindow
-      title="Error"
-      body={promise?.["signup"]?.["error"]?.["message"]}
-    />
-  ) : (
-    <div>
-      <form className="authForm" id="signUpForm" onSubmit={handleSubmit}>
-        <TextField
-          id="email"
-          name="email"
-          label="Email*"
-          value={values.email}
-          onChange={handleChange}
-          error={touched.email && Boolean(errors.email)}
-          helperText={touched.email && errors.email}
-        />
-        <br />
-        <TextField
-          id="login"
-          name="login"
-          label="Login*"
-          value={values.login}
-          onChange={handleChange}
-          error={touched.login && Boolean(errors.login)}
-          helperText={touched.login && errors.login}
-        />
-        <br />
-        <TextField
-          id="password"
-          name="password"
-          label="Password*"
-          type={showPassword ? "text" : "password"}
-          value={values.password}
-          onChange={handleChange}
-          error={touched.password && Boolean(errors.password)}
-          helperText={touched.password && errors.password}
-          InputProps={{
-            endAdornment: (
-              <InputAdornment position="end">
-                <IconButton
-                  aria-label="toggle password visibility"
-                  onClick={() => setShowPassword(!showPassword)}
-                  onMouseDown={() => setShowPassword(!showPassword)}
-                >
-                  {showPassword ? <VisibilityIcon /> : <VisibilityOffIcon />}
-                </IconButton>
-              </InputAdornment>
-            ),
-          }}
-        />
-        <br />
-        <TextField
-          id="retryPassword"
-          name="retryPassword"
-          label="Retry password*"
-          type={showRetryPassword ? "text" : "password"}
-          value={values.retryPassword}
-          onChange={handleChange}
-          error={touched.retryPassword && Boolean(errors.retryPassword)}
-          helperText={touched.retryPassword && errors.retryPassword}
-          InputProps={{
-            endAdornment: (
-              <InputAdornment position="end">
-                <IconButton
-                  aria-label="toggle retry password visibility"
-                  onClick={() => setShowRetryPassword(!showRetryPassword)}
-                  onMouseDown={() => setShowRetryPassword(!showRetryPassword)}
-                >
-                  {showRetryPassword ? (
-                    <VisibilityIcon />
-                  ) : (
-                    <VisibilityOffIcon />
-                  )}
-                </IconButton>
-              </InputAdornment>
-            ),
-          }}
-        />
-        <br />
-        <Button type="submit" variant="contained" color="primary">
-          Sign Up
-        </Button>
-        <Typography variant="subtitle1" gutterBottom component="div">
-          Already have an account?{" "}
-          <Button component={Link} to="/signin" color="secondary">
-            Sign In
-          </Button>
-        </Typography>
-      </form>
+  return (
+    <div style={modal ? authModalStyles.main : authFormStyles.main}>
+      <div>
+        {modal || (
+          <>
+            <Typography
+              variant="h5"
+              gutterBottom
+              component="div"
+              sx={authFormStyles.centerText}
+            >
+              Sign up
+            </Typography>
+            <hr />
+          </>
+        )}
+        <form onSubmit={handleSubmit}>
+          <Box sx={authFormStyles.inputsBox}>
+            <CustomTextField
+              id="email"
+              name="email"
+              label="Email"
+              value={values.email}
+              onChange={handleChange}
+              error={touched.email && Boolean(errors.email)}
+              helperText={touched.email && errors.email}
+              variant="filled"
+              fullWidth
+            />
+            <br />
+            <CustomTextField
+              id="login"
+              name="login"
+              label="Login"
+              value={values.login}
+              onChange={handleChange}
+              error={touched.login && Boolean(errors.login)}
+              helperText={touched.login && errors.login}
+              variant="filled"
+              fullWidth
+            />
+            <br />
+            <CustomTextField
+              id="password"
+              name="password"
+              label="Password"
+              type={showPassword ? "text" : "password"}
+              value={values.password}
+              onChange={handleChange}
+              error={touched.password && Boolean(errors.password)}
+              helperText={touched.password && errors.password}
+              variant="filled"
+              fullWidth
+              InputProps={{
+                endAdornment: (
+                  <InputAdornment position="end">
+                    <IconButton
+                      aria-label="toggle password visibility"
+                      onClick={() => setShowPassword(!showPassword)}
+                      onMouseDown={() => setShowPassword(!showPassword)}
+                    >
+                      {showPassword ? (
+                        <VisibilityIcon />
+                      ) : (
+                        <VisibilityOffIcon />
+                      )}
+                    </IconButton>
+                  </InputAdornment>
+                ),
+              }}
+            />
+            <br />
+            <CustomTextField
+              id="retryPassword"
+              name="retryPassword"
+              label="Retry password"
+              type={showRetryPassword ? "text" : "password"}
+              value={values.retryPassword}
+              onChange={handleChange}
+              error={touched.retryPassword && Boolean(errors.retryPassword)}
+              helperText={touched.retryPassword && errors.retryPassword}
+              variant="filled"
+              fullWidth
+              InputProps={{
+                endAdornment: (
+                  <InputAdornment position="end">
+                    <IconButton
+                      aria-label="toggle retry password visibility"
+                      onClick={() => setShowRetryPassword(!showRetryPassword)}
+                      onMouseDown={() =>
+                        setShowRetryPassword(!showRetryPassword)
+                      }
+                    >
+                      {showRetryPassword ? (
+                        <VisibilityIcon />
+                      ) : (
+                        <VisibilityOffIcon />
+                      )}
+                    </IconButton>
+                  </InputAdornment>
+                ),
+              }}
+            />
+            <br />
+            <Button
+              sx={authFormStyles.signButton}
+              type="submit"
+              variant="contained"
+              color="secondary"
+              fullWidth
+            >
+              Sign Up
+            </Button>
+            {modal || (
+              <Typography
+                variant="subtitle1"
+                gutterBottom
+                component="div"
+                sx={authFormStyles.centerText}
+              >
+                Already have an account?{" "}
+                <Button component={Link} to="/signin" color="secondary">
+                  Sign In
+                </Button>
+              </Typography>
+            )}
+          </Box>
+        </form>
+      </div>
     </div>
   );
 };

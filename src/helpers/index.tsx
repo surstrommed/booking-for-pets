@@ -1,4 +1,6 @@
+import React from "react";
 import CryptoJS from "crypto-js";
+import ErrorIcon from "@mui/icons-material/Error";
 
 const apiErrors = [
   "Cannot find user",
@@ -53,3 +55,10 @@ export const validateLogin = /^[a-z0-9]{3,8}$/;
 export function checkError(checkString: string) {
   return apiErrors.includes(checkString);
 }
+
+export const validationError = (text: string) => (
+  <span style={{ display: "flex", textAlign: "center" }}>
+    <ErrorIcon />
+    {text}
+  </span>
+);

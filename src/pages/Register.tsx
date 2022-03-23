@@ -10,10 +10,7 @@ const Register = connect((state: RootState) => ({
   promise: state.promise,
 }))(({ promise }) => {
   return (
-    <Box style={{ marginTop: "10%", textAlign: "center" }}>
-      <Typography variant="h5" gutterBottom component="div">
-        Fill in the fields to register an account:
-      </Typography>
+    <Box>
       <Preloader
         promiseName={"signup"}
         promiseState={promise}

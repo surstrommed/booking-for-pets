@@ -1,7 +1,7 @@
 import { JsonModel, UserModel } from "./api-models";
-import { apiUrl } from "./../../helpers/index";
 import axios from "axios";
 import jsonData from "../db.json";
+import { apiUrl } from "../../helpers/index";
 
 const myFetch =
   (url: string) =>

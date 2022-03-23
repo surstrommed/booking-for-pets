@@ -3,6 +3,7 @@ import { connect } from "react-redux";
 import { RootState } from "../App";
 import { Box, Typography } from "@mui/material";
 import { CDropzone } from "./../Auxiliary/Dropzone";
+import { changeProfileStyles } from "./profileStyles";
 
 const ChangeAvatar = ({ auth }) => {
   return (
@@ -14,12 +15,7 @@ const ChangeAvatar = ({ auth }) => {
       <div id="changeAvatar">
         <Box
           component="img"
-          sx={{
-            height: 233,
-            width: 350,
-            maxHeight: { xs: 200, md: 167 },
-            maxWidth: { xs: 317, md: 250 },
-          }}
+          sx={changeProfileStyles.avatarImage}
           alt="Avatar image"
           src={
             auth?.["payload"]?.["pictureUrl"] ||

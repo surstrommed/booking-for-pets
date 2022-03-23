@@ -21,3 +21,9 @@ export const actionRejected = (name, error) => ({
 export const actionAuthLogin = (token) => ({ type: "AUTH_LOGIN", token });
 
 export const actionAuthLogout = () => ({ type: "AUTH_LOGOUT" });
+
+export const actionSmallHeader = () => ({ type: "SMALL" });
+
+export const actionBigHeader = () => ({ type: "BIG" });
+
+export const actionExpandSmallHeader = () => ({ type: "EXPAND" });

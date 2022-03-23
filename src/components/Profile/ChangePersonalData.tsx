@@ -13,7 +13,7 @@ import {
 import VisibilityIcon from "@mui/icons-material/Visibility";
 import VisibilityOffIcon from "@mui/icons-material/VisibilityOff";
 import { actionFullUpdate } from "../../actions/thunks";
-import ModalWindow from "./../Auxiliary/ModalWindow";
+import { changeProfileStyles } from "./profileStyles";
 
 const validationSchema = Yup.object().shape({
   email: Yup.string().email("Enter a valid email"),
@@ -55,12 +55,7 @@ const ChangePersonalData = ({ auth, promise, onUpdate }) => {
 
   const { handleSubmit, handleChange, values, touched, errors } = formik;
 
-  return promise?.["signin"]?.["status"] === "REJECTED" ? (
-    <ModalWindow
-      title="Error"
-      body={promise?.["signin"]?.["error"]?.["message"]}
-    />
-  ) : (
+  return (
     <div>
       <Typography variant="h4" gutterBottom component="div">
         Your personal data:
@@ -122,7 +117,7 @@ const ChangePersonalData = ({ auth, promise, onUpdate }) => {
           type="submit"
           variant="contained"
           color="primary"
-          style={{ left: 10 }}
+          style={changeProfileStyles.saveButton}
           disabled={
             initialValues.email === values.email &&
             initialValues.login === values.login
