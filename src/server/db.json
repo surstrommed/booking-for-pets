@@ -3,14 +3,18 @@
     {
       "email": "crng@ukr.net",
       "login": "admin",
+      "firstName": "Anton",
+      "lastName": "Zadorozhnyi",
       "createdAt": 1647206008510,
-      "pictureUrl": "https://i.ibb.co/r4ZdxgS/557d644f-12f3-49e1-bb66-23c16400540d.png",
+      "pictureUrl": "https://i.ibb.co/JtkCt7k/557d644f-12f3-49e1-bb66-23c16400540d.png",
       "id": 1,
-      "password": "$2a$10$nW6d0.VtckwIVnZ.zZTVducrM7crRKav4gmdJnh9efeE9LpYNSX2G"
+      "password": "$2a$10$t/CR7K7DOk30haiiD6.p0uAb.nybfvtoRhOZ3G52IekjZOEgMT5y."
     },
     {
       "email": "user1231@ukr.net",
       "login": "user1231",
+      "firstName": "Sergii",
+      "lastName": "Udyansky",
       "createdAt": 1647238804177,
       "pictureUrl": null,
       "id": 2,
@@ -19,18 +23,12 @@
     {
       "email": "asdasd@ukr.net",
       "login": "asdasda",
+      "firstName": "Andriy",
+      "lastName": "Yarovy",
       "createdAt": 1647351949978,
       "pictureUrl": "https://i.ibb.co/Drqmh80/557d644f-12f3-49e1-bb66-23c16400540d.png",
       "id": 3,
       "password": "$2a$10$f67ffMHE7TxpbFw0RsoXT.L7iHaWaXX5Ru8T4YaH.6FrQJnSuXiVy"
-    },
-    {
-      "email": "user@ukr.net",
-      "login": "user1",
-      "createdAt": 1647362882575,
-      "pictureUrl": "https://i.ibb.co/PDn1DkL/Sample-User-Icon.png",
-      "id": 4,
-      "password": "$2a$10$mLmlt7uAQifvBtxFWR0Kiu0TA7dCuH3bdJDchLxrdQTe0q4eRcJcu"
     }
   ],
   "hotels": [
@@ -39,24 +37,57 @@
       "name": "True friend",
       "location": "Kiev, Ukraine",
       "address": "Sofievskaya street, 31",
-      "description": "Test",
+      "description": "Sociis natoque penatibus et magnis dis parturient montes nascetur ridiculus mus mauris vitae ultricies leo integer malesuada nunc vel risus commodo viverra maecenas accumsan lacus vel facilisis volutpat est velit egestas dui id ornare arcu odio ut sem nulla pharetra diam sit amet nisl suscipit adipiscing bibendum est ultricies integer quis auctor elit sed vulputate mi sit amet mauris commodo quis imperdiet massa tincidunt nunc pulvinar sapien et ligula ullamcorper malesuada proin libero nunc consequat interdum varius sit amet mattis vulputate enim nulla aliquet porttitor lacus luctus accumsan tortor posuere ac ut consequat semper viverra nam libero justo laoreet sit",
       "photos": [
         "https://barberpet.com.ua/wp-content/uploads/2020/03/hotel-dog1.jpg",
-        "https://inde.io/i/galleries/35880/xl_c62a4bbae51d09d758c6241f9d0ed99e.jpg",
-        "https://talant.shop/static/items/2019/December/5de924e88c52ab7d0ef8a6a7-medium.jpg"
+        "https://expresstour.com.ua/upload/image/acutel_4.jpg",
+        "https://talant.shop/static/items/2019/December/5de924e88c52ab7d0ef8a6a7-medium.jpg",
+        "https://besplatka.ua/aws/746x-/49/71/74/19/veterinarnyi-centr-zveropolis---gostinica-dlya-kotov-i-photo-7a4d.jpg",
+        "https://dogcathotel.com/Media/dogcathotel/Hotel/IMG_6402%20(5).jpg"
       ],
       "hotelRooms": 40,
       "freeRooms": 40,
       "dates": {},
       "price": "15",
-      "owner": "Andriy Yarovy",
+      "owner": {
+        "id": 3,
+        "email": "asdasd@ukr.net",
+        "login": "asdasda",
+        "firstName": "Andriy",
+        "lastName": "Yarovy",
+        "createdAt": 1647351949978,
+        "pictureUrl": "https://i.ibb.co/Drqmh80/557d644f-12f3-49e1-bb66-23c16400540d.png"
+      },
       "reviews": [
         {
           "id": 1,
           "rating": 5,
-          "text": "Test review",
+          "text": "Sociis natoque penatibus et magnis dis parturient montes nascetur ridiculus mus mauris vitae ultricies",
           "createdAt": 1647362882575,
-          "owner": "Sergey Udyansky"
+          "owner": {
+            "id": 2,
+            "email": "user1231@ukr.net",
+            "login": "user1231",
+            "firstName": "Sergii",
+            "lastName": "Udyansky",
+            "createdAt": 1647238804177,
+            "pictureUrl": null
+          }
+        },
+        {
+          "id": 2,
+          "rating": 5,
+          "text": "Ultricies sociis natoque penatibus et magnis dis parturient montes nascetur ridiculus mus mauris vitae",
+          "createdAt": 1647362882575,
+          "owner": {
+            "id": 2,
+            "email": "user1231@ukr.net",
+            "login": "user1231",
+            "firstName": "Sergii",
+            "lastName": "Udyansky",
+            "createdAt": 1647238804177,
+            "pictureUrl": null
+          }
         }
       ]
     },
@@ -65,24 +96,42 @@
       "name": "Chotyrokhlapyy druh",
       "location": "Kharkiv, Ukraine",
       "address": "Sumskaya street, 40",
-      "description": "Test",
+      "description": "Sociis natoque penatibus et magnis dis parturient montes nascetur ridiculus mus mauris vitae ultricies leo integer malesuada nunc vel risus commodo viverra maecenas accumsan lacus vel facilisis volutpat est velit egestas dui id ornare arcu odio ut sem nulla pharetra diam sit amet nisl suscipit adipiscing bibendum est ultricies integer quis auctor elit sed vulputate mi sit amet mauris commodo quis imperdiet massa tincidunt nunc pulvinar sapien et ligula ullamcorper malesuada proin libero nunc consequat interdum varius sit amet mattis vulputate enim nulla aliquet porttitor lacus luctus accumsan tortor posuere ac ut consequat semper viverra nam libero justo laoreet sit",
       "photos": [
-        "https://inde.io/i/galleries/35880/xl_c62a4bbae51d09d758c6241f9d0ed99e.jpg",
+        "https://expresstour.com.ua/upload/image/acutel_4.jpg",
         "https://barberpet.com.ua/wp-content/uploads/2020/03/hotel-dog1.jpg",
-        "https://talant.shop/static/items/2019/December/5de924e88c52ab7d0ef8a6a7-medium.jpg"
+        "https://talant.shop/static/items/2019/December/5de924e88c52ab7d0ef8a6a7-medium.jpg",
+        "https://besplatka.ua/aws/746x-/49/71/74/19/veterinarnyi-centr-zveropolis---gostinica-dlya-kotov-i-photo-7a4d.jpg",
+        "https://dogcathotel.com/Media/dogcathotel/Hotel/IMG_6402%20(5).jpg"
       ],
       "hotelRooms": 30,
       "freeRooms": 30,
       "dates": {},
       "price": "10",
-      "owner": "Andriy Yarovy",
+      "owner": {
+        "id": 3,
+        "email": "asdasd@ukr.net",
+        "login": "asdasda",
+        "firstName": "Andriy",
+        "lastName": "Yarovy",
+        "createdAt": 1647351949978,
+        "pictureUrl": "https://i.ibb.co/Drqmh80/557d644f-12f3-49e1-bb66-23c16400540d.png"
+      },
       "reviews": [
         {
-          "id": 1,
+          "id": 3,
           "rating": 5,
-          "text": "Test review",
+          "text": "Vitae ultricies sociis natoque penatibus et magnis dis parturient montes nascetur ridiculus mus mauris",
           "createdAt": 1647362882575,
-          "owner": "Sergey Udyansky"
+          "owner": {
+            "id": 2,
+            "email": "user1231@ukr.net",
+            "login": "user1231",
+            "firstName": "Sergii",
+            "lastName": "Udyansky",
+            "createdAt": 1647238804177,
+            "pictureUrl": null
+          }
         }
       ]
     }

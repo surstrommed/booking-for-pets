@@ -1,10 +1,10 @@
 import React from "react";
 import { connect } from "react-redux";
 import { RootState } from "../App";
-import { HotelCard } from "./HotelCard";
+import { CHotelCard } from "./HotelCard";
 import { useParams } from "react-router-dom";
-import { spaceAfterComma } from "./../../helpers/index";
 import { Typography } from "@mui/material";
+import { spaceAfterComma } from "./../../helpers/index";
 
 const HotelsList = ({ promise }) => {
   const params = useParams();
@@ -16,8 +16,6 @@ const HotelsList = ({ promise }) => {
     ? spaceAfterComma(params.departure)
     : "";
   const numberParameter = params?.number ? spaceAfterComma(params.number) : "";
-
-  console.log(params);
 
   const hotels = locationParameter
     ? promise?.getHotels?.payload.filter(
@@ -35,7 +33,7 @@ const HotelsList = ({ promise }) => {
       </Typography>
       <div className="HotelsList">
         {(hotels || []).map((hotel, index) => (
-          <HotelCard
+          <CHotelCard
             key={index}
             index
             id={hotel.id}

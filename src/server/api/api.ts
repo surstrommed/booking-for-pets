@@ -2,6 +2,7 @@ import { JsonModel, UserModel } from "./api-models";
 import axios from "axios";
 import jsonData from "../db.json";
 import { apiUrl } from "../../helpers/index";
+import { getState } from "../../components/App";
 
 const myFetch =
   (url: string) =>
@@ -39,6 +40,10 @@ const imageFetch = (url: string) => async (file: File) => {
   return obj?.["data"]?.["data"]?.["image"]?.["url"];
 };
 
+export const uploadImage = imageFetch(
+  "https://api.imgbb.com/1/upload?key=478a8e5dc3d296b8693734b3983d5902"
+);
+
 export const userRegister = myFetch(apiUrl + "register");
 
 export const userLogin = myFetch(apiUrl + "login");
@@ -46,10 +51,6 @@ export const userLogin = myFetch(apiUrl + "login");
 export const userUpdate = myFetch(apiUrl + "users");
 
 export const getHotels = myFetch(apiUrl + "hotels");
-
-export const uploadImage = imageFetch(
-  "https://api.imgbb.com/1/upload?key=478a8e5dc3d296b8693734b3983d5902"
-);
 
 const db: JsonModel = JSON.parse(JSON.stringify(jsonData));
 

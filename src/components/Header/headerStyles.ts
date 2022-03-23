@@ -34,9 +34,9 @@ export const headerBar = {
       lg: "block",
     },
   },
-  ownerButton: {
+  headerButtons: {
     borderRadius: 25,
-    marginRight: 3,
+    marginRight: 1,
   },
 };
 

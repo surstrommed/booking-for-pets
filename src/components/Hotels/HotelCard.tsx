@@ -5,11 +5,26 @@ import CardMedia from "@mui/material/CardMedia";
 import Typography from "@mui/material/Typography";
 import { CardActionArea } from "@mui/material";
 import { Link } from "react-router-dom";
+import { RootState } from "../App";
+import { connect } from "react-redux";
+import { actionFullHotelUpdate } from "./../../actions/thunks";
+import { truncText } from "../../helpers/index";
 
-export const HotelCard = ({ index, id, image, title, description, price }) => {
+const HotelCard = ({
+  index,
+  id,
+  image,
+  title,
+  description,
+  price,
+  hotelUpdate,
+}) => {
   return (
     <Link to={`/hotels/hotel/${id}`}>
-      <Card sx={{ width: 245, height: 300 }}>
+      <Card
+        sx={{ width: 245, height: 300 }}
+        onClick={() => hotelUpdate({ id })}
+      >
         <CardActionArea>
           <CardMedia
             component="img"
@@ -22,7 +37,7 @@ export const HotelCard = ({ index, id, image, title, description, price }) => {
               {title}
             </Typography>
             <Typography variant="body2" color="text.secondary">
-              {description}
+              {truncText(description)}
               <br />
               {price}
             </Typography>
@@ -32,3 +47,12 @@ export const HotelCard = ({ index, id, image, title, description, price }) => {
     </Link>
   );
 };
+
+export const CHotelCard = connect(
+  (state: RootState) => ({
+    promise: state.promise,
+  }),
+  {
+    hotelUpdate: actionFullHotelUpdate,
+  }
+)(HotelCard);

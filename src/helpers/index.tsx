@@ -12,6 +12,27 @@ const apiErrors = [
 
 export const apiUrl = "http://localhost:3000/";
 
+export const noAvatar =
+  "https://upload.wikimedia.org/wikipedia/commons/9/99/Sample_User_Icon.png";
+
+export const stringMonth = (monthNumber) => {
+  const stringMonthsArray = [
+    "January",
+    "February",
+    "March",
+    "April",
+    "May",
+    "June",
+    "July",
+    "August",
+    "September",
+    "October",
+    "November",
+    "December",
+  ];
+  return stringMonthsArray[monthNumber];
+};
+
 export const jwtDecode = (token: string) => {
   try {
     const arrToken = token.split(".");
@@ -82,4 +103,12 @@ export function spaceAfterComma(str) {
     }
   }
   return strArray.join("");
+}
+
+export function truncText(str) {
+  if (str.length > 40) {
+    return str.slice(0, 40) + "...";
+  } else {
+    return str;
+  }
 }

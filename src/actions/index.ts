@@ -7,7 +7,7 @@ import {
   getHotels,
 } from "../server/api/api";
 import { actionPromise } from "./thunks";
-import { UserModel } from "../server/api/api-models";
+import { UserModel, HotelModel } from "../server/api/api-models";
 
 export const actionLogin = (email: string, password: string) => {
   return actionPromise("signin", userLogin({ email, password }));
@@ -21,7 +21,7 @@ export const actionRegister = (
   return actionPromise("signup", userRegister({ email, login, password }));
 };
 
-export const actionUpdate = ({
+export const actionUserUpdate = ({
   id,
   email,
   login,
@@ -52,4 +52,49 @@ export const actionUploadPhoto = (image: File) => {
 
 export const actionGetHotels = () => {
   return actionPromise("getHotels", getHotels());
+};
+
+export const actionHotelUpdate = ({
+  id,
+  name,
+  location,
+  address,
+  description,
+  photos,
+  hotelRooms,
+  freeRooms,
+  dates,
+  price,
+  owner,
+  reviews,
+}: HotelModel) => {
+  const { payload: allHotels } = getState().promise.getHotels;
+  const searchedHotel = allHotels.find((hotel) => hotel.id === id);
+  const newHotelData = {
+    id,
+    name,
+    location,
+    address,
+    description,
+    photos,
+    hotelRooms,
+    freeRooms,
+    dates,
+    price,
+    owner,
+    reviews,
+  };
+  const arrayHotelData = Object.entries(newHotelData);
+  const filteredHotelDataArray = arrayHotelData.filter(
+    ([key, value]) => typeof value !== "undefined"
+  );
+  const filteredHotelDataObj = {};
+  for (let i = 0; i < filteredHotelDataArray.length; i++) {
+    filteredHotelDataObj[filteredHotelDataArray[i][0]] =
+      filteredHotelDataArray[i][1];
+  }
+  return actionPromise(
+    "hotelUpdate",
+    getHotels({ ...searchedHotel, ...filteredHotelDataObj }, "PUT")
+  );
 };

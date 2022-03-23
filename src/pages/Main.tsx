@@ -7,6 +7,9 @@ import Register from "./Register";
 import { PrivateRoute } from "./../components/Auxiliary/PrivateRoute";
 import { CHotels } from "./Hotels";
 import { CHotelPage } from "./../components/Hotels/HotelPage";
+import { Preloader } from "./../components/Auxiliary/Preloader";
+import { connect } from "react-redux";
+import { RootState } from "../components/App";
 
 function MainPage() {
   return (
@@ -23,7 +26,7 @@ function MainPage() {
   );
 }
 
-export default function Main() {
+const Main = ({ promise }) => {
   return (
     <Routes>
       <Route path="/" element={<MainPage />} />
@@ -55,8 +58,21 @@ export default function Main() {
         path="/hotels/:location/:arrival/:departure/:number"
         element={<CHotels />}
       />
-      <Route path="/hotels/hotel/:hotelId" element={<CHotelPage />} />
+      <Route
+        path="/hotels/hotel/:hotelId"
+        element={
+          <Preloader
+            promiseName={"hotelUpdate"}
+            promiseState={promise}
+            sub={<CHotelPage />}
+          />
+        }
+      />
       <Route path="*" element={<Page404 />} />
     </Routes>
   );
-}
+};
+
+export const CMain = connect((state: RootState) => ({
+  promise: state.promise,
+}))(Main);

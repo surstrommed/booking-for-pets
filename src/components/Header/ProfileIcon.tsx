@@ -120,6 +120,14 @@ const ProfileIcon = ({ auth, promise, actionLogOut }: IProfile) => {
                   Notifications
                 </Typography>
               </MenuItem>
+              <MenuItem onClick={() => history.push("/wishlist")}>
+                <Typography
+                  sx={profileIconStyles.fontWeight}
+                  textAlign="center"
+                >
+                  Wishlist
+                </Typography>
+              </MenuItem>
               <hr />
               <MenuItem onClick={() => history.push("/profile")}>
                 <Typography textAlign="center">Profile</Typography>

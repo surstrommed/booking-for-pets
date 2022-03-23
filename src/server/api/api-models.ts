@@ -10,3 +10,18 @@ export interface UserModel {
   createdAt?: number;
   pictureUrl?: string | null;
 }
+
+export interface HotelModel {
+  id: number;
+  name?: string;
+  location?: string;
+  address?: string;
+  description?: string;
+  photos?: string[];
+  hotelRooms?: number;
+  freeRooms?: number;
+  dates?: object;
+  price?: string;
+  owner?: object;
+  reviews?: object[];
+}

@@ -10,6 +10,7 @@ import Button from "@mui/material/Button";
 import MenuItem from "@mui/material/MenuItem";
 import MenuIcon from "@mui/icons-material/Menu";
 import PetsIcon from "@mui/icons-material/Pets";
+import LanguageOutlinedIcon from "@mui/icons-material/LanguageOutlined";
 import useScrollTrigger from "@mui/material/useScrollTrigger";
 import { CProfileIcon } from "./ProfileIcon";
 import { Link } from "react-router-dom";
@@ -197,10 +198,17 @@ export default function HeaderBar(props: Props) {
                   />
                 ) : null}
               </Box>
-              <Button sx={headerBar.ownerButton}>
+
+              <Button sx={headerBar.headerButtons}>
                 <Link to="/owners" onClick={() => window.scrollTo(0, 0)}>
                   For owners
                 </Link>
+              </Button>
+              <Button
+                sx={headerBar.headerButtons}
+                onClick={() => window.scrollTo(0, 0)}
+              >
+                <LanguageOutlinedIcon />
               </Button>
               <CProfileIcon />
             </Toolbar>
