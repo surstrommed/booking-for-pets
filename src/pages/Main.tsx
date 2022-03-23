@@ -6,18 +6,41 @@ import Login from "./Login";
 import Register from "./Register";
 import { PrivateRoute } from "./../components/Auxiliary/PrivateRoute";
 
-function Stub() {
+function MainPage() {
   return (
-    <div style={{ textAlign: "center", marginTop: "10%" }}>This is stub</div>
+    <div className="Main">
+      <div className="Top">
+        <div className="MainImageBoard">
+          <img
+            src="https://i.ibb.co/qyX9783/febvuibvbi3v.jpg"
+            alt="Main image board"
+          />
+        </div>
+      </div>
+    </div>
   );
 }
 
 export default function Main() {
   return (
     <Routes>
-      <Route path="/" element={<Stub />} />
-      <Route path="/signup" element={<Register />} />
-      <Route path="/signin" element={<Login />} />
+      <Route path="/" element={<MainPage />} />
+      <Route
+        path="/signup"
+        element={
+          <PrivateRoute>
+            <Register />
+          </PrivateRoute>
+        }
+      />
+      <Route
+        path="/signin"
+        element={
+          <PrivateRoute>
+            <Login />
+          </PrivateRoute>
+        }
+      />
       <Route
         path="/profile"
         element={
