@@ -69,6 +69,8 @@ export const jwtCode = (data: { email: string; login: string }) => {
   }
 };
 
+export const validateEmail = /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/i;
+
 export const validatePassword =
   /^.*(?=.{8,})((?=.*[!@#$%^&*()\-_=+{};:,<.>]){1})(?=.*\d)((?=.*[a-z]){1})((?=.*[A-Z]){1}).*$/;
 

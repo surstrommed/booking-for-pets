@@ -47,7 +47,7 @@
       ],
       "hotelRooms": 40,
       "freeRooms": 40,
-      "dates": {},
+      "dates": [[1648241614000, 1648497214000]],
       "price": "15",
       "owner": {
         "id": 3,
@@ -106,7 +106,7 @@
       ],
       "hotelRooms": 30,
       "freeRooms": 30,
-      "dates": {},
+      "dates": [],
       "price": "10",
       "owner": {
         "id": 3,

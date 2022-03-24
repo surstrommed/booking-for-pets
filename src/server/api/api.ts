@@ -2,7 +2,6 @@ import { JsonModel, UserModel } from "./api-models";
 import axios from "axios";
 import jsonData from "../db.json";
 import { apiUrl } from "../../helpers/index";
-import { getState } from "../../components/App";
 
 const myFetch =
   (url: string) =>

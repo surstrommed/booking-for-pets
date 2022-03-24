@@ -24,6 +24,7 @@ import {
   actionExpandSmallHeader,
 } from "./../../actions/types";
 import { headerBar } from "./headerStyles";
+import SlideDialogWindow from "../Auxiliary/SlideDialogWindow";
 
 const pages = ["Products", "Pricing", "Blog"];
 type ButtonEvent = React.MouseEvent<HTMLButtonElement>;
@@ -70,6 +71,7 @@ const ElevationScroll = (props: Props) => {
 
 export default function HeaderBar(props: Props) {
   const [anchorElNav, setAnchorElNav] = useState(null);
+  const [openDialog, setOpenDialog] = useState(false);
   const smallHeader = useSelector((state) => state.header.smallHeader);
   const bigHeader = useSelector((state) => state.header.bigHeader);
   const expandSmallHeader = useSelector(
@@ -99,10 +101,19 @@ export default function HeaderBar(props: Props) {
     }
   });
 
+  const updateOpenDialogStatus = (value) => {
+    setOpenDialog(value);
+  };
+
   return (
     <div className="Header">
       <ElevationScroll {...props}>
         <AppBar>
+          {openDialog ? (
+            <SlideDialogWindow
+              updateOpenDialogStatus={updateOpenDialogStatus}
+            />
+          ) : null}
           <Container maxWidth="xl">
             <Toolbar disableGutters>
               <Typography
@@ -198,7 +209,6 @@ export default function HeaderBar(props: Props) {
                   />
                 ) : null}
               </Box>
-
               <Button sx={headerBar.headerButtons}>
                 <Link to="/owners" onClick={() => window.scrollTo(0, 0)}>
                   For owners
@@ -206,7 +216,7 @@ export default function HeaderBar(props: Props) {
               </Button>
               <Button
                 sx={headerBar.headerButtons}
-                onClick={() => window.scrollTo(0, 0)}
+                onClick={() => setOpenDialog(true)}
               >
                 <LanguageOutlinedIcon />
               </Button>
