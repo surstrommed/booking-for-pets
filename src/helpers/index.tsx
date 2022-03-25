@@ -1,7 +1,6 @@
-import React, { useMemo } from "react";
+import React from "react";
 import CryptoJS from "crypto-js";
 import ErrorIcon from "@mui/icons-material/Error";
-import { useLocation } from "react-router-dom";
 
 const apiErrors = [
   "Cannot find user",
@@ -113,4 +112,8 @@ export function truncText(str) {
   } else {
     return str;
   }
+}
+
+export function formatDate(date) {
+  return `${date.getFullYear()}-${date.getMonth()}-${date.getDate()}`;
 }

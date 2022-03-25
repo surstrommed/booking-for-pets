@@ -19,7 +19,7 @@ export interface HotelModel {
   description?: string;
   photos?: string[];
   hotelRooms?: number;
-  freeRooms?: number;
+  freeRooms?: object;
   dates?: number[][];
   price?: string;
   owner?: object;

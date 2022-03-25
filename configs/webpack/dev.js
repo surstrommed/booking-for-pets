@@ -8,6 +8,9 @@ module.exports = merge(commonConfig, {
     "webpack-dev-server/client?http://localhost:8080",
     "./index.tsx",
   ],
+  output: {
+    publicPath: "/",
+  },
   devServer: {
     hot: "only",
     historyApiFallback: true,
