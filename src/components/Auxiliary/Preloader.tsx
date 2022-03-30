@@ -16,7 +16,7 @@ const Loader = () => {
 interface IPreloader {
   promiseName: string;
   promiseState: object;
-  sub: React.ReactElement;
+  sub: React.ReactElement | string | number;
   modal?: boolean;
 }
 

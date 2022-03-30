@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import { connect } from "react-redux";
 import { RootState } from "../App";
 import ImageList from "@mui/material/ImageList";
@@ -25,7 +25,8 @@ import * as Yup from "yup";
 import { CustomTextField } from "./../Auxiliary/CustomTextField";
 import Alert from "@mui/material/Alert";
 import { actionFullHotelUpdate } from "./../../actions/thunks";
-import ModalWindow from "../Auxiliary/ModalWindow";
+import IosShareOutlinedIcon from "@mui/icons-material/IosShareOutlined";
+import FullWindowGallery from "./FullWindowGallery";
 
 function srcset(image: string, size: number, rows = 1, cols = 1) {
   return {
@@ -37,81 +38,65 @@ function srcset(image: string, size: number, rows = 1, cols = 1) {
 }
 
 interface HotelPageFormValues {
-  dateArrival: Date;
-  dateDeparture: Date;
+  dateArrival: Date | null;
+  dateDeparture: Date | null;
   numberAnimals: number;
 }
 
-const HotelPage = ({ promise, auth, onBooking }) => {
+const HotelPage = ({ promise, auth, currencyList, onBooking }) => {
   const { payload: currentHotel } = promise.hotelUpdate;
+  const [openDialog, setOpenDialog] = useState(false);
   const maxAnimals = 10;
+  const currencySiteList = currencyList?.currency;
+  const currencyExchangeList = currencyList?.exchangeList;
+  const currentCurrency = (currencySiteList || []).find(
+    (currency) => auth?.payload?.currency === currency?.id
+  ) || { name: "USD", sign: "$" };
+
   const initialValues: HotelPageFormValues = {
-    dateArrival: new Date(new Date().getTime() + 24 * 60 * 60 * 1000),
-    dateDeparture: new Date(new Date().getTime() + 48 * 60 * 60 * 1000),
+    dateArrival: null,
+    dateDeparture: null,
     numberAnimals: 1,
   };
+
   const validationSchema = Yup.object().shape({
     dateArrival: Yup.date().required(),
     dateDeparture: Yup.date().required(),
     numberAnimals: Yup.number().required(),
   });
 
-  const disableDates = [];
+  const disableUserDates = {};
+  const disableUsersDates = [];
 
   const formik = useFormik({
     initialValues: initialValues,
     validationSchema: validationSchema,
-    onSubmit: (values, { setSubmitting }) => {
-      let allAnimals = 0;
+    onSubmit: (values) => {
       if (Object.keys(currentHotel.freeRooms).length !== 0) {
         const bookedDates = Object.keys(currentHotel.freeRooms);
         for (const date of bookedDates) {
+          let totalAnimals = 0;
           for (
             let i = 0;
             i < currentHotel.freeRooms[date].usersId.length;
             i++
           ) {
-            for (
-              let j = 0;
-              j < currentHotel.freeRooms[date].usersAnimalsCount.length;
-              j++
-            ) {
-              if (auth.payload.id === currentHotel.freeRooms[date].usersId[i]) {
-                allAnimals += currentHotel.freeRooms[date].usersAnimalsCount[j];
-              }
+            if (auth.payload.id === currentHotel.freeRooms[date].usersId[i]) {
+              totalAnimals += currentHotel.freeRooms[date].usersAnimalsCount[i];
             }
           }
           if (
             currentHotel.freeRooms[date].availableSeats -
-              values.numberAnimals >=
+              values.numberAnimals <=
             0
           ) {
-            if (allAnimals + values.numberAnimals > maxAnimals) {
-              setSubmitting(false);
-              <ModalWindow
-                title={"Error: Limit is exceeded"}
-                body={`You cannot book more than 10 places on the date ${stringMonth(
-                  new Date(+date).getMonth()
-                )} ${new Date(+date).getDate()}, ${new Date(
-                  +date
-                ).getFullYear()}`}
-              />;
-            }
-            if (allAnimals + values.numberAnimals === maxAnimals) {
-              disableDates.push(+date);
-            }
-          } else {
-            setSubmitting(false);
-            <ModalWindow
-              title={"Error: Not enough seats"}
-              body={`You cannot book more seats than available. ${
-                currentHotel.freeRooms[date].availableSeats
-              } places left ${stringMonth(
-                new Date(+date).getMonth()
-              )} ${new Date(+date).getDate()}, ${new Date(
-                +date
-              ).getFullYear()}`}
-            />;
+            disableUsersDates.push(+date);
+          }
+          if (totalAnimals + values.numberAnimals >= maxAnimals) {
+            disableUserDates[auth.payload.id] = [
+              ...(currentHotel.disableUserDates[auth.payload.id] || []),
+              +date,
+            ];
           }
         }
       }
@@ -154,20 +139,44 @@ const HotelPage = ({ promise, auth, onBooking }) => {
         };
       }
 
-      onBooking({
-        id: currentHotel.id,
-        dates: [...currentHotel.dates, userDates],
-        freeRooms: { ...currentHotel.freeRooms, ...vacantRooms },
-      });
+      if (disableUsersDates.length > 0) {
+        onBooking({
+          id: currentHotel.id,
+          disableUsersDates: [
+            ...currentHotel.disableUsersDates,
+            disableUsersDates,
+          ],
+        });
+      } else if (Object.keys(disableUserDates).length > 0) {
+        onBooking({
+          id: currentHotel.id,
+          disableUserDates: {
+            ...(currentHotel.disableUserDates || {}),
+            ...disableUserDates,
+          },
+        });
+      } else {
+        onBooking({
+          id: currentHotel.id,
+          dates: [...currentHotel.dates, userDates],
+          freeRooms: { ...currentHotel.freeRooms, ...vacantRooms },
+        });
+      }
     },
   });
 
   const disableBookingDates = (date) => {
     const formattedDate = Date.parse(formatDate(date));
-    return disableDates.includes(formattedDate);
+    return (
+      currentHotel?.disableUsersDates?.includes(formattedDate) ||
+      (auth?.payload?.id &&
+        currentHotel?.disableUserDates?.[`${auth.payload.id}`]?.includes(
+          formattedDate
+        ))
+    );
   };
 
-  const { handleSubmit, errors, values, handleChange } = formik;
+  const { handleSubmit, errors, values, handleChange, dirty } = formik;
 
   useEffect(() => {
     if (values?.dateArrival && values?.dateDeparture) {
@@ -194,7 +203,7 @@ const HotelPage = ({ promise, auth, onBooking }) => {
     errors.numberAnimals = "Number of animals is required";
   }
 
-  const hotelPhotos = currentHotel.photos.map((photo, index) => ({
+  const hotelPhotos = (currentHotel?.photos || []).map((photo, index) => ({
     img: photo,
     title: `Photo ${index + 1}`,
     rows: index === 0 ? 2 : null,
@@ -203,8 +212,24 @@ const HotelPage = ({ promise, auth, onBooking }) => {
 
   const cutHotelPhotos = hotelPhotos.slice(0, 5);
 
+  const fullHotelPhotos = (currentHotel?.photos || []).map((photo, index) => ({
+    img: photo,
+    title: `Photo${index + 1}`,
+    featured: index % 3 === 0 ? true : false,
+  }));
+
+  const updateOpenDialogStatus = (value) => {
+    setOpenDialog(value);
+  };
+
   return (
     <div style={hotelPageStyles.main}>
+      {openDialog ? (
+        <FullWindowGallery
+          updateOpenDialogStatus={updateOpenDialogStatus}
+          gallery={fullHotelPhotos}
+        />
+      ) : null}
       <div>
         <Typography variant="h3" gutterBottom component="div">
           {currentHotel.name}
@@ -221,7 +246,12 @@ const HotelPage = ({ promise, auth, onBooking }) => {
             </Link>{" "}
             · {currentHotel.location}
           </div>
-          <div>
+          <div style={hotelPageStyles.alignCenter}>
+            <Link to="/share" style={hotelPageStyles.link}>
+              <span style={hotelPageStyles.alignCenter}>
+                <IosShareOutlinedIcon /> Share
+              </span>
+            </Link>
             <Link to="/save" style={hotelPageStyles.link}>
               <span style={hotelPageStyles.alignCenter}>
                 <GradeOutlinedIcon /> Save
@@ -255,6 +285,7 @@ const HotelPage = ({ promise, auth, onBooking }) => {
                     bottom: 5,
                     left: 50,
                   }}
+                  onClick={() => setOpenDialog(true)}
                 >
                   Show more
                 </Button>
@@ -297,8 +328,16 @@ const HotelPage = ({ promise, auth, onBooking }) => {
                   sx={hotelPageStyles.blockInfo}
                 >
                   <div>
-                    {currentHotel.price * (values?.numberAnimals || 1)}{" "}
-                    <sup>{currentHotel.price}/day</sup>
+                    {currentCurrency?.sign}
+                    {currentCurrency?.name === "USD"
+                      ? currentHotel.price
+                      : currentHotel.price *
+                        currencyExchangeList[currentCurrency.name].toFixed(1) *
+                        (values?.numberAnimals || 1)}{" "}
+                    <sup>
+                      {currentCurrency?.sign}
+                      {currentHotel.price}/day
+                    </sup>
                   </div>
                   <div>
                     <Typography variant="overline" display="block" gutterBottom>
@@ -342,6 +381,7 @@ const HotelPage = ({ promise, auth, onBooking }) => {
                       label="Departure"
                       inputFormat="dd/MM/yyyy"
                       value={values.dateDeparture}
+                      shouldDisableDate={disableBookingDates}
                       onChange={(value) => {
                         formik.setFieldValue("dateDeparture", value);
                       }}
@@ -385,7 +425,9 @@ const HotelPage = ({ promise, auth, onBooking }) => {
                   color="secondary"
                   variant="contained"
                   fullWidth
-                  disabled={!auth?.token}
+                  disabled={
+                    !auth?.token || !dirty || Object.keys(errors).length > 0
+                  }
                 >
                   {auth?.token ? "Book" : "Login to book"}
                 </Button>
@@ -456,6 +498,7 @@ export const CHotelPage = connect(
   (state: RootState) => ({
     promise: state.promise,
     auth: state.auth,
+    currencyList: state.currencyList,
   }),
   {
     onBooking: actionFullHotelUpdate,

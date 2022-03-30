@@ -19,6 +19,7 @@ export const hotelPageStyles = {
   },
   link: {
     textDecoration: "underline",
+    marginLeft: "3vh",
   },
   gallery: {
     borderRadius: "5vh",
@@ -40,5 +41,25 @@ export const hotelPageStyles = {
   stickyBlock: {
     position: "sticky",
     maxWidth: 400,
+  },
+};
+
+export const fullWindowStyles = {
+  link: {
+    textDecoration: "underline",
+    marginLeft: "3vh",
+  },
+  alignCenter: {
+    display: "flex",
+    justifyContent: "center",
+  },
+  space: { ml: 2, flex: 1 },
+  relativePosition: { position: "relative" },
+  imageList: {
+    width: "50%",
+    height: "100%",
+    margin: "0 auto",
+    padding: "2vh 0",
+    transform: "translateZ(0)",
   },
 };

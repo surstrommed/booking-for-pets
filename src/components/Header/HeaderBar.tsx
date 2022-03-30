@@ -24,7 +24,11 @@ import {
   actionExpandSmallHeader,
 } from "./../../actions/types";
 import { headerBar } from "./headerStyles";
-import SlideDialogWindow from "../Auxiliary/SlideDialogWindow";
+import SlideDialogCurrency from "./SlideDialogCurrency";
+import ModalWindow from "./../Auxiliary/ModalWindow";
+import { Preloader } from "./../Auxiliary/Preloader";
+import { CSignIn } from "./../Auth/Signin";
+import { CSignUp } from "./../Auth/Signup";
 
 const pages = ["Products", "Pricing", "Blog"];
 type ButtonEvent = React.MouseEvent<HTMLButtonElement>;
@@ -72,11 +76,15 @@ const ElevationScroll = (props: Props) => {
 export default function HeaderBar(props: Props) {
   const [anchorElNav, setAnchorElNav] = useState(null);
   const [openDialog, setOpenDialog] = useState(false);
+  const [openSignInModal, setOpenSignInModal] = useState(false);
+  const [openSignUpModal, setOpenSignUpModal] = useState(false);
   const smallHeader = useSelector((state) => state.header.smallHeader);
   const bigHeader = useSelector((state) => state.header.bigHeader);
   const expandSmallHeader = useSelector(
     (state) => state.header.expandSmallHeader
   );
+  const currentUser = useSelector((state) => state?.auth?.payload);
+  const promise = useSelector((state) => state?.promise);
   const location = useLocation().pathname;
   const dispatch = useDispatch();
 
@@ -105,15 +113,65 @@ export default function HeaderBar(props: Props) {
     setOpenDialog(value);
   };
 
+  const updateSignInModal = (value) => {
+    setOpenSignInModal(value);
+  };
+
+  const updateSignUpModal = (value) => {
+    setOpenSignUpModal(value);
+  };
+
   return (
     <div className="Header">
       <ElevationScroll {...props}>
         <AppBar>
           {openDialog ? (
-            <SlideDialogWindow
+            <SlideDialogCurrency
               updateOpenDialogStatus={updateOpenDialogStatus}
             />
           ) : null}
+          {openSignInModal && (
+            <ModalWindow
+              title={"Sign in"}
+              body={
+                <Preloader
+                  promiseName={"signin"}
+                  promiseState={promise}
+                  sub={
+                    <CSignIn
+                      modal
+                      signInOpenState={updateSignInModal}
+                      signUpOpenState={updateSignUpModal}
+                    />
+                  }
+                  modal
+                />
+              }
+              type={"signin"}
+              signInOpenState={updateSignInModal}
+            />
+          )}
+          {openSignUpModal && (
+            <ModalWindow
+              title={"Sign up"}
+              body={
+                <Preloader
+                  promiseName={"signup"}
+                  promiseState={promise}
+                  sub={
+                    <CSignUp
+                      modal
+                      signInOpenState={updateSignInModal}
+                      signUpOpenState={updateSignUpModal}
+                    />
+                  }
+                  modal
+                />
+              }
+              type={"signup"}
+              signUpOpenState={updateSignUpModal}
+            />
+          )}
           <Container maxWidth="xl">
             <Toolbar disableGutters>
               <Typography
@@ -216,7 +274,9 @@ export default function HeaderBar(props: Props) {
               </Button>
               <Button
                 sx={headerBar.headerButtons}
-                onClick={() => setOpenDialog(true)}
+                onClick={() =>
+                  currentUser ? setOpenDialog(true) : setOpenSignInModal(true)
+                }
               >
                 <LanguageOutlinedIcon />
               </Button>

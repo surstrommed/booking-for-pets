@@ -7,8 +7,9 @@
       "lastName": "Zadorozhnyi",
       "createdAt": 1647206008510,
       "pictureUrl": "https://i.ibb.co/JtkCt7k/557d644f-12f3-49e1-bb66-23c16400540d.png",
+      "currency": 2,
       "id": 1,
-      "password": "$2a$10$t/CR7K7DOk30haiiD6.p0uAb.nybfvtoRhOZ3G52IekjZOEgMT5y."
+      "password": "$2a$10$JMsir1c7cfpouhPw1sC8Nuj2BvI3XPy5V1JTr2VnFLe1YkgGgB.oW"
     },
     {
       "email": "user1231@ukr.net",
@@ -17,6 +18,7 @@
       "lastName": "Udyansky",
       "createdAt": 1647238804177,
       "pictureUrl": null,
+      "currency": 1,
       "id": 2,
       "password": "$2a$10$Vc6vl.gESjMYUXmRWnCRN.xT.z0qNXxYv8yZ/QLN/cihMkupAN6Ye"
     },
@@ -25,6 +27,7 @@
       "login": "asdasda",
       "firstName": "Andriy",
       "lastName": "Yarovy",
+      "currency": 1,
       "createdAt": 1647351949978,
       "pictureUrl": "https://i.ibb.co/Drqmh80/557d644f-12f3-49e1-bb66-23c16400540d.png",
       "id": 3,
@@ -43,107 +46,47 @@
         "https://expresstour.com.ua/upload/image/acutel_4.jpg",
         "https://talant.shop/static/items/2019/December/5de924e88c52ab7d0ef8a6a7-medium.jpg",
         "https://besplatka.ua/aws/746x-/49/71/74/19/veterinarnyi-centr-zveropolis---gostinica-dlya-kotov-i-photo-7a4d.jpg",
-        "https://dogcathotel.com/Media/dogcathotel/Hotel/IMG_6402%20(5).jpg"
+        "https://dogcathotel.com/Media/dogcathotel/Hotel/IMG_6402%20(5).jpg",
+        "https://barberpet.com.ua/wp-content/uploads/2020/03/hotel-dog1.jpg",
+        "https://expresstour.com.ua/upload/image/acutel_4.jpg",
+        "https://talant.shop/static/items/2019/December/5de924e88c52ab7d0ef8a6a7-medium.jpg",
+        "https://besplatka.ua/aws/746x-/49/71/74/19/veterinarnyi-centr-zveropolis---gostinica-dlya-kotov-i-photo-7a4d.jpg"
       ],
       "hotelRooms": 40,
       "freeRooms": {
-        "1645826400000": {
-          "availableSeats": -2,
+        "1648587600000": {
+          "availableSeats": 30,
           "usersId": [
-            1,
-            1,
-            1,
-            1,
-            1,
-            1,
-            1,
             1
           ],
           "usersAnimalsCount": [
-            2,
-            1,
-            1,
-            7,
-            1,
-            10,
-            10,
             10
           ]
         },
-        "1645912800000": {
-          "availableSeats": -2,
+        "1648674000000": {
+          "availableSeats": 30,
           "usersId": [
-            1,
-            1,
-            1,
-            1,
-            1,
-            1,
-            1,
             1
           ],
           "usersAnimalsCount": [
-            2,
-            1,
-            1,
-            7,
-            1,
-            10,
-            10,
             10
           ]
         }
       },
       "dates": [
         [
-          1645826400000,
-          1645912800000,
-          2,
-          1
-        ],
-        [
-          1645826400000,
-          1645912800000,
-          1,
-          1
-        ],
-        [
-          1645826400000,
-          1645912800000,
-          1,
-          1
-        ],
-        [
-          1645826400000,
-          1645912800000,
-          7,
-          1
-        ],
-        [
-          1645826400000,
-          1645912800000,
-          1,
-          1
-        ],
-        [
-          1645826400000,
-          1645912800000,
-          10,
-          1
-        ],
-        [
-          1645826400000,
-          1645912800000,
-          10,
-          1
-        ],
-        [
-          1645826400000,
-          1645912800000,
+          1648587600000,
+          1648674000000,
           10,
           1
         ]
       ],
+      "disableUserDates": {
+        "1": [
+          1648674000000
+        ]
+      },
+      "disableUsersDates": [],
       "price": "15",
       "owner": {
         "id": 3,
@@ -198,11 +141,17 @@
         "https://barberpet.com.ua/wp-content/uploads/2020/03/hotel-dog1.jpg",
         "https://talant.shop/static/items/2019/December/5de924e88c52ab7d0ef8a6a7-medium.jpg",
         "https://besplatka.ua/aws/746x-/49/71/74/19/veterinarnyi-centr-zveropolis---gostinica-dlya-kotov-i-photo-7a4d.jpg",
-        "https://dogcathotel.com/Media/dogcathotel/Hotel/IMG_6402%20(5).jpg"
+        "https://dogcathotel.com/Media/dogcathotel/Hotel/IMG_6402%20(5).jpg",
+        "https://expresstour.com.ua/upload/image/acutel_4.jpg",
+        "https://barberpet.com.ua/wp-content/uploads/2020/03/hotel-dog1.jpg",
+        "https://talant.shop/static/items/2019/December/5de924e88c52ab7d0ef8a6a7-medium.jpg",
+        "https://besplatka.ua/aws/746x-/49/71/74/19/veterinarnyi-centr-zveropolis---gostinica-dlya-kotov-i-photo-7a4d.jpg"
       ],
       "hotelRooms": 30,
-      "freeRooms": 30,
+      "freeRooms": {},
       "dates": [],
+      "disableUserDates": {},
+      "disableUsersDates": [],
       "price": "10",
       "owner": {
         "id": 3,
@@ -230,6 +179,23 @@
           }
         }
       ]
+    }
+  ],
+  "currency": [
+    {
+      "id": 1,
+      "name": "USD",
+      "sign": "$"
+    },
+    {
+      "id": 2,
+      "name": "EUR",
+      "sign": "€"
+    },
+    {
+      "id": 3,
+      "name": "UAH",
+      "sign": "₴"
     }
   ]
 }

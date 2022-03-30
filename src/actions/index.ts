@@ -5,6 +5,8 @@ import {
   userUpdate,
   uploadImage,
   getHotels,
+  getCurrency,
+  getExchangeRates,
 } from "../server/api/api";
 import { actionPromise } from "./thunks";
 import { UserModel, HotelModel } from "../server/api/api-models";
@@ -25,12 +27,24 @@ export const actionUserUpdate = ({
   id,
   email,
   login,
+  firstName,
+  lastName,
   password,
   pictureUrl,
+  currency,
 }: UserModel) => {
   const { auth } = getState();
   const user = auth?.payload;
-  const newUserData = { id, email, login, password, pictureUrl };
+  const newUserData = {
+    id,
+    email,
+    login,
+    password,
+    pictureUrl,
+    firstName,
+    lastName,
+    currency,
+  };
   const arrayUserData = Object.entries(newUserData);
   const filteredUserDataArray = arrayUserData.filter(
     ([key, value]) => typeof value !== "undefined"
@@ -64,6 +78,8 @@ export const actionHotelUpdate = ({
   hotelRooms,
   freeRooms,
   dates,
+  disableUserDates,
+  disableUsersDates,
   price,
   owner,
   reviews,
@@ -80,12 +96,14 @@ export const actionHotelUpdate = ({
     hotelRooms,
     freeRooms,
     dates,
+    disableUserDates,
+    disableUsersDates,
     price,
     owner,
     reviews,
   };
   const arrayHotelData = Object.entries(newHotelData);
-  const filteredHotelDataArray = arrayHotelData.filter(
+  const filteredHotelDataArray = arrayHotelData?.filter(
     ([key, value]) => typeof value !== "undefined"
   );
   const filteredHotelDataObj = {};
@@ -97,4 +115,12 @@ export const actionHotelUpdate = ({
     "hotelUpdate",
     getHotels({ ...searchedHotel, ...filteredHotelDataObj }, "PUT")
   );
+};
+
+export const actionGetCurrency = () => {
+  return actionPromise("getCurrency", getCurrency());
+};
+
+export const actionGetCurrencyExchange = () => {
+  return actionPromise("exchangeRates", getExchangeRates());
 };

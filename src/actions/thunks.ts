@@ -3,6 +3,8 @@ import {
   actionRejected,
   actionResolved,
   actionAuthLogin,
+  actionGetExchangeList,
+  actionGetCurrencyList,
 } from "./types";
 import {
   actionLogin,
@@ -10,6 +12,8 @@ import {
   actionUserUpdate,
   actionUploadPhoto,
   actionHotelUpdate,
+  actionGetCurrencyExchange,
+  actionGetCurrency,
 } from "./index";
 import { jwtCode, jwtDecode } from "../helpers/index";
 import { getState, history } from "../components/App";
@@ -52,8 +56,32 @@ export const actionFullRegister =
     }
   };
 
+export const actionFullGetCurrencyExchange = () => async (dispatch) => {
+  const currencyExchangeList = await dispatch(actionGetCurrencyExchange());
+  if (Object.keys(currencyExchangeList).length > 0) {
+    await dispatch(actionGetExchangeList(currencyExchangeList));
+  }
+};
+
+export const actionFullGetCurrencyList = () => async (dispatch) => {
+  const currencyList = await dispatch(actionGetCurrency());
+  if (Object.keys(currencyList).length > 0) {
+    await dispatch(actionGetCurrencyList(currencyList));
+  }
+};
+
 export const actionFullUserUpdate =
-  ({ id, email, login, password, newPassword, pictureUrl }: UserModel) =>
+  ({
+    id,
+    email,
+    login,
+    firstName,
+    lastName,
+    password,
+    newPassword,
+    pictureUrl,
+    currency,
+  }: UserModel) =>
   async (dispatch) => {
     const findUser = await dispatch(actionLogin(email, password));
     if (findUser) {
@@ -62,8 +90,11 @@ export const actionFullUserUpdate =
           id,
           email,
           login,
+          firstName,
+          lastName,
           password: newPassword ? newPassword : password,
           pictureUrl,
+          currency,
         })
       );
       if (Object.keys(updateUser).length !== 0) {
@@ -94,6 +125,18 @@ export const actionChangePassword =
     }
   };
 
+export const actionChooseCurrency =
+  (currencyId: number) => async (dispatch) => {
+    const { password } = jwtDecode(sessionStorage.authToken);
+    const { id, email }: { id: number; email: string } =
+      getState().auth.payload;
+    if (id && email && password) {
+      await dispatch(
+        actionFullUserUpdate({ id, email, password, currency: currencyId })
+      );
+    }
+  };
+
 export const actionFullHotelUpdate =
   ({
     id,
@@ -105,6 +148,8 @@ export const actionFullHotelUpdate =
     hotelRooms,
     freeRooms,
     dates,
+    disableUserDates,
+    disableUsersDates,
     price,
     owner,
     reviews,
@@ -112,7 +157,7 @@ export const actionFullHotelUpdate =
   async (dispatch) => {
     const { payload: allHotels } = getState().promise.getHotels;
     if (allHotels && Object.keys(allHotels).length !== 0) {
-      const updateHotel = await dispatch(
+      await dispatch(
         actionHotelUpdate({
           id,
           name,
@@ -123,6 +168,8 @@ export const actionFullHotelUpdate =
           hotelRooms,
           freeRooms,
           dates,
+          disableUserDates,
+          disableUsersDates,
           price,
           owner,
           reviews,

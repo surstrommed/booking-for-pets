@@ -14,9 +14,11 @@ import { Link } from "react-router-dom";
 
 export default function SearchBar({ styles }) {
   const [location, setLocation] = useState("");
-  const [arrivalValue, setArrivalValue] = useState<Date | null>(new Date());
-  const [departureValue, setDepartureValue] = useState<Date | null>(
+  const [arrivalValue, setArrivalValue] = useState<Date | null>(
     new Date(new Date().getTime() + 24 * 60 * 60 * 1000)
+  );
+  const [departureValue, setDepartureValue] = useState<Date | null>(
+    new Date(new Date().getTime() + 48 * 60 * 60 * 1000)
   );
   const [numberValue, setNumberValue] = useState(1);
 
@@ -54,7 +56,7 @@ export default function SearchBar({ styles }) {
               inputFormat="dd/MM/yyyy"
               value={arrivalValue}
               onChange={handleChangeArrival}
-              minDate={new Date()}
+              minDate={new Date(new Date().getTime() + 24 * 60 * 60 * 1000)}
               renderInput={(params) => <TextField {...params} />}
             />
           </LocalizationProvider>
@@ -67,7 +69,7 @@ export default function SearchBar({ styles }) {
               inputFormat="dd/MM/yyyy"
               value={departureValue}
               onChange={handleChangeDeparture}
-              minDate={new Date(new Date().getTime() + 24 * 60 * 60 * 1000)}
+              minDate={new Date(new Date().getTime() + 48 * 60 * 60 * 1000)}
               renderInput={(params) => <TextField {...params} />}
             />
           </LocalizationProvider>

@@ -18,7 +18,7 @@ const HotelsList = ({ promise }) => {
   const numberParameter = params?.number ? spaceAfterComma(params.number) : "";
 
   const hotels = locationParameter
-    ? promise?.getHotels?.payload.filter(
+    ? promise?.getHotels?.payload?.filter(
         (hotel) =>
           hotel.location === locationParameter &&
           numberParameter <= 10 &&

@@ -9,12 +9,18 @@ import {
   promiseReducer,
   authReducer,
   headerReducer,
+  routeReducer,
+  currencyReducer,
 } from "./../reducers/index";
 import thunk from "redux-thunk";
 import { BrowserRouter } from "./Auxiliary/BrowserRouter";
 import { ThemeProvider } from "@mui/material";
 import { theme } from "./../assets/theme";
 import { actionGetHotels } from "./../actions/index";
+import {
+  actionFullGetCurrencyExchange,
+  actionFullGetCurrencyList,
+} from "../actions/thunks";
 
 export const history = createBrowserHistory();
 
@@ -22,6 +28,8 @@ const rootReducer = combineReducers({
   promise: sessionStoredReducer(promiseReducer, "promise"),
   header: headerReducer,
   auth: sessionStoredReducer(authReducer, "auth"),
+  route: sessionStoredReducer(routeReducer, "route"),
+  currencyList: sessionStoredReducer(currencyReducer, "currencyList"),
 });
 
 export type RootState = ReturnType<typeof rootReducer>;
@@ -32,6 +40,10 @@ console.log(store.getState());
 store.subscribe(() => console.log(store.getState()));
 
 store.dispatch(actionGetHotels());
+
+store.dispatch(actionFullGetCurrencyList());
+
+store.dispatch(actionFullGetCurrencyExchange());
 
 export default function App() {
   return (

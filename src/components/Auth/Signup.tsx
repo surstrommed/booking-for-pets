@@ -23,6 +23,8 @@ interface IRegister {
   promise?: object;
   onRegister: (email: string, login: string, password: string) => void;
   modal?: boolean;
+  signInOpenState?: (value: boolean) => void;
+  signUpOpenState?: (value: boolean) => void;
 }
 
 interface RegisterFormValues {
@@ -57,7 +59,12 @@ const validationSchema = Yup.object().shape({
     .required(validationError("Retry password is required")),
 });
 
-const SignUp = ({ onRegister, modal }: IRegister) => {
+const SignUp = ({
+  onRegister,
+  modal,
+  signInOpenState,
+  signUpOpenState,
+}: IRegister) => {
   const [showPassword, setShowPassword] = useState(false);
   const [showRetryPassword, setShowRetryPassword] = useState(false);
   const initialValues: RegisterFormValues = {
@@ -102,7 +109,8 @@ const SignUp = ({ onRegister, modal }: IRegister) => {
               onChange={handleChange}
               error={touched.email && Boolean(errors.email)}
               helperText={touched.email && errors.email}
-              variant="filled"
+              variant="outlined"
+              color="secondary"
               fullWidth
             />
             <br />
@@ -114,7 +122,8 @@ const SignUp = ({ onRegister, modal }: IRegister) => {
               onChange={handleChange}
               error={touched.login && Boolean(errors.login)}
               helperText={touched.login && errors.login}
-              variant="filled"
+              variant="outlined"
+              color="secondary"
               fullWidth
             />
             <br />
@@ -127,7 +136,8 @@ const SignUp = ({ onRegister, modal }: IRegister) => {
               onChange={handleChange}
               error={touched.password && Boolean(errors.password)}
               helperText={touched.password && errors.password}
-              variant="filled"
+              variant="outlined"
+              color="secondary"
               fullWidth
               InputProps={{
                 endAdornment: (
@@ -157,7 +167,8 @@ const SignUp = ({ onRegister, modal }: IRegister) => {
               onChange={handleChange}
               error={touched.retryPassword && Boolean(errors.retryPassword)}
               helperText={touched.retryPassword && errors.retryPassword}
-              variant="filled"
+              variant="outlined"
+              color="secondary"
               fullWidth
               InputProps={{
                 endAdornment: (
@@ -189,19 +200,24 @@ const SignUp = ({ onRegister, modal }: IRegister) => {
             >
               Sign Up
             </Button>
-            {modal || (
-              <Typography
-                variant="subtitle1"
-                gutterBottom
-                component="div"
-                sx={authFormStyles.centerText}
+
+            <Typography
+              variant="subtitle1"
+              gutterBottom
+              component="div"
+              sx={authFormStyles.centerText}
+            >
+              Already have an account?{" "}
+              <Button
+                onClick={() => {
+                  signInOpenState(true);
+                  signUpOpenState(false);
+                }}
+                color="secondary"
               >
-                Already have an account?{" "}
-                <Button component={Link} to="/signin" color="secondary">
-                  Sign In
-                </Button>
-              </Typography>
-            )}
+                Sign In
+              </Button>
+            </Typography>
           </Box>
         </form>
       </div>

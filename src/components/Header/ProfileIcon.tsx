@@ -42,6 +42,14 @@ const ProfileIcon = ({ auth, promise, actionLogOut }: IProfile) => {
     setAnchorElUser(null);
   };
 
+  const updateSignInModal = (value) => {
+    setOpenSignInModal(value);
+  };
+
+  const updateSignUpModal = (value) => {
+    setOpenSignUpModal(value);
+  };
+
   return (
     <>
       {openSignInModal && (
@@ -51,10 +59,18 @@ const ProfileIcon = ({ auth, promise, actionLogOut }: IProfile) => {
             <Preloader
               promiseName={"signin"}
               promiseState={promise}
-              sub={<CSignIn modal />}
+              sub={
+                <CSignIn
+                  modal
+                  signInOpenState={updateSignInModal}
+                  signUpOpenState={updateSignUpModal}
+                />
+              }
               modal
             />
           }
+          type={"signin"}
+          signInOpenState={updateSignInModal}
         />
       )}
       {openSignUpModal && (
@@ -64,10 +80,18 @@ const ProfileIcon = ({ auth, promise, actionLogOut }: IProfile) => {
             <Preloader
               promiseName={"signup"}
               promiseState={promise}
-              sub={<CSignUp modal />}
+              sub={
+                <CSignUp
+                  modal
+                  signInOpenState={updateSignInModal}
+                  signUpOpenState={updateSignUpModal}
+                />
+              }
               modal
             />
           }
+          type={"signup"}
+          signUpOpenState={updateSignUpModal}
         />
       )}
       <Box sx={{ flexGrow: 0 }}>
