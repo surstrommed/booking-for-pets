@@ -27,6 +27,7 @@ import Alert from "@mui/material/Alert";
 import { actionFullHotelUpdate } from "./../../actions/thunks";
 import IosShareOutlinedIcon from "@mui/icons-material/IosShareOutlined";
 import FullWindowGallery from "./FullWindowGallery";
+import { theme } from "./../../assets/theme";
 
 function srcset(image: string, size: number, rows = 1, cols = 1) {
   return {
@@ -67,6 +68,7 @@ const HotelPage = ({ promise, auth, currencyList, onBooking }) => {
 
   const disableUserDates = {};
   const disableUsersDates = [];
+  const disabledDates = [];
 
   const formik = useFormik({
     initialValues: initialValues,
@@ -93,9 +95,10 @@ const HotelPage = ({ promise, auth, currencyList, onBooking }) => {
             disableUsersDates.push(+date);
           }
           if (totalAnimals + values.numberAnimals >= maxAnimals) {
+            disabledDates.push(+date);
             disableUserDates[auth.payload.id] = [
               ...(currentHotel.disableUserDates[auth.payload.id] || []),
-              +date,
+              ...disabledDates,
             ];
           }
         }
@@ -139,29 +142,19 @@ const HotelPage = ({ promise, auth, currencyList, onBooking }) => {
         };
       }
 
-      if (disableUsersDates.length > 0) {
-        onBooking({
-          id: currentHotel.id,
-          disableUsersDates: [
-            ...currentHotel.disableUsersDates,
-            disableUsersDates,
-          ],
-        });
-      } else if (Object.keys(disableUserDates).length > 0) {
-        onBooking({
-          id: currentHotel.id,
-          disableUserDates: {
-            ...(currentHotel.disableUserDates || {}),
-            ...disableUserDates,
-          },
-        });
-      } else {
-        onBooking({
-          id: currentHotel.id,
-          dates: [...currentHotel.dates, userDates],
-          freeRooms: { ...currentHotel.freeRooms, ...vacantRooms },
-        });
-      }
+      onBooking({
+        id: currentHotel.id,
+        dates: [...currentHotel.dates, userDates],
+        freeRooms: { ...currentHotel.freeRooms, ...vacantRooms },
+        disableUserDates: {
+          ...currentHotel.disableUserDates,
+          ...disableUserDates,
+        },
+        disableUsersDates: [
+          ...currentHotel.disableUsersDates,
+          ...disableUsersDates,
+        ],
+      });
     },
   });
 
@@ -329,14 +322,14 @@ const HotelPage = ({ promise, auth, currencyList, onBooking }) => {
                 >
                   <div>
                     {currentCurrency?.sign}
-                    {currentCurrency?.name === "USD"
-                      ? currentHotel.price
-                      : currentHotel.price *
-                        currencyExchangeList[currentCurrency.name].toFixed(1) *
-                        (values?.numberAnimals || 1)}{" "}
+                    {currentHotel.price *
+                      currencyExchangeList[currentCurrency.name].toFixed(1) *
+                      (values?.numberAnimals || 1)}{" "}
                     <sup>
                       {currentCurrency?.sign}
-                      {currentHotel.price}/day
+                      {currentHotel.price *
+                        currencyExchangeList[currentCurrency.name].toFixed(1)}
+                      /day
                     </sup>
                   </div>
                   <div>

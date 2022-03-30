@@ -9,7 +9,7 @@
       "pictureUrl": "https://i.ibb.co/JtkCt7k/557d644f-12f3-49e1-bb66-23c16400540d.png",
       "currency": 2,
       "id": 1,
-      "password": "$2a$10$JMsir1c7cfpouhPw1sC8Nuj2BvI3XPy5V1JTr2VnFLe1YkgGgB.oW"
+      "password": "$2a$10$yl.fZpYxisOo277nWKGcFeh2ILhIzVtZM56tYMUWDVyWmekO7AgEa"
     },
     {
       "email": "user1231@ukr.net",
@@ -32,6 +32,28 @@
       "pictureUrl": "https://i.ibb.co/Drqmh80/557d644f-12f3-49e1-bb66-23c16400540d.png",
       "id": 3,
       "password": "$2a$10$f67ffMHE7TxpbFw0RsoXT.L7iHaWaXX5Ru8T4YaH.6FrQJnSuXiVy"
+    },
+    {
+      "email": "user123@ukr.net",
+      "login": "user123",
+      "firstName": "Kesha",
+      "lastName": "Popov",
+      "currency": 2,
+      "createdAt": 1648658098922,
+      "pictureUrl": "https://i.ibb.co/WGhQN9m/147144.png",
+      "id": 4,
+      "password": "$2a$10$EEITS2nWiEK9O5vKPjK54uGeHflbtjW3ORFrvaLULX2HeL1OCvkLi"
+    },
+    {
+      "email": "user321@ukr.net",
+      "password": "$2a$10$g7Ch1mZOUlw9OtZKdIW2r.g4NiQJl33SuBln9TDRx1wnhUNpzWEWi",
+      "login": "user321",
+      "firstName": "Test",
+      "lastName": "User",
+      "currency": 1,
+      "createdAt": 1648664611101,
+      "pictureUrl": null,
+      "id": 5
     }
   ],
   "hotels": [
@@ -53,39 +75,9 @@
         "https://besplatka.ua/aws/746x-/49/71/74/19/veterinarnyi-centr-zveropolis---gostinica-dlya-kotov-i-photo-7a4d.jpg"
       ],
       "hotelRooms": 40,
-      "freeRooms": {
-        "1648587600000": {
-          "availableSeats": 30,
-          "usersId": [
-            1
-          ],
-          "usersAnimalsCount": [
-            10
-          ]
-        },
-        "1648674000000": {
-          "availableSeats": 30,
-          "usersId": [
-            1
-          ],
-          "usersAnimalsCount": [
-            10
-          ]
-        }
-      },
-      "dates": [
-        [
-          1648587600000,
-          1648674000000,
-          10,
-          1
-        ]
-      ],
-      "disableUserDates": {
-        "1": [
-          1648674000000
-        ]
-      },
+      "freeRooms": {},
+      "dates": [],
+      "disableUserDates": {},
       "disableUsersDates": [],
       "price": "15",
       "owner": {

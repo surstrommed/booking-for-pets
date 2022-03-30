@@ -13,7 +13,6 @@ import VisibilityOffIcon from "@mui/icons-material/VisibilityOff";
 import { connect } from "react-redux";
 import { RootState } from "../App";
 import { actionFullLogin } from "../../actions/thunks";
-import { validationError } from "./../../helpers/index";
 import { CustomTextField } from "./../Auxiliary/CustomTextField";
 import { authFormStyles, authModalStyles } from "./authStyles";
 interface ILogin {
@@ -31,9 +30,9 @@ interface LoginFormValues {
 
 const validationSchema = Yup.object().shape({
   email: Yup.string()
-    .email(validationError("Enter a valid email"))
-    .required(validationError("Email is required")),
-  password: Yup.string().required(validationError("Password is required")),
+    .email("Enter a valid email")
+    .required("Email is required"),
+  password: Yup.string().required("Password is required"),
 });
 
 const SignIn = ({

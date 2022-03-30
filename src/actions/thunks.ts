@@ -49,8 +49,17 @@ export const actionFullLogin =
   };
 
 export const actionFullRegister =
-  (email: string, login: string, password: string) => async (dispatch) => {
-    const registerUser = await dispatch(actionRegister(email, login, password));
+  (
+    email: string,
+    login: string,
+    firstName: string,
+    lastName: string,
+    password: string
+  ) =>
+  async (dispatch) => {
+    const registerUser = await dispatch(
+      actionRegister(email, login, firstName, lastName, password)
+    );
     if (registerUser.user) {
       await dispatch(actionFullLogin(email, password));
     }

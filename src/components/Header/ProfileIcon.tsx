@@ -19,6 +19,7 @@ import { CSignIn } from "./../Auth/Signin";
 import { CSignUp } from "./../Auth/Signup";
 import { Preloader } from "./../Auxiliary/Preloader";
 import { profileIconStyles } from "./headerStyles";
+import { noAvatar } from "../../helpers";
 
 type Logout = () => object;
 interface IProfile {
@@ -97,25 +98,24 @@ const ProfileIcon = ({ auth, promise, actionLogOut }: IProfile) => {
       <Box sx={{ flexGrow: 0 }}>
         <Tooltip title="Open profile">
           <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
-            <Badge badgeContent={3} color="error">
+            {auth?.token ? (
+              <Badge badgeContent={3} color="error">
+                <Button style={profileIconStyles.main}>
+                  <MenuIcon style={profileIconStyles.iconSize} />
+                  <Avatar
+                    src={auth?.payload?.pictureUrl || noAvatar}
+                    style={profileIconStyles.avatarSize}
+                  />
+                </Button>
+              </Badge>
+            ) : (
               <Button style={profileIconStyles.main}>
                 <MenuIcon style={profileIconStyles.iconSize} />
-                {auth?.token ? (
-                  auth?.payload.pictureUrl ? (
-                    <Avatar
-                      src={auth?.payload.pictureUrl}
-                      style={profileIconStyles.avatarSize}
-                    />
-                  ) : (
-                    <PersonIcon style={profileIconStyles.personSize} />
-                  )
-                ) : (
-                  <AccountCircleIcon
-                    style={profileIconStyles.accountCircleSize}
-                  />
-                )}
+                <AccountCircleIcon
+                  style={profileIconStyles.accountCircleSize}
+                />
               </Button>
-            </Badge>
+            )}
           </IconButton>
         </Tooltip>
         <Menu

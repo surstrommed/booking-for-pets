@@ -6,22 +6,30 @@ import {
   Typography,
   InputAdornment,
   IconButton,
-  TextField,
   Box,
 } from "@mui/material";
 import VisibilityIcon from "@mui/icons-material/Visibility";
 import VisibilityOffIcon from "@mui/icons-material/VisibilityOff";
-import { Link } from "react-router-dom";
 import { actionFullRegister } from "../../actions/thunks";
 import { connect } from "react-redux";
 import { RootState } from "../App";
-import { validatePassword, validateLogin } from "../../helpers";
-import { validationError } from "./../../helpers/index";
+import {
+  validatePassword,
+  validateLogin,
+  validateFirstName,
+  validateLastName,
+} from "../../helpers";
 import { CustomTextField } from "./../Auxiliary/CustomTextField";
 import { authFormStyles, authModalStyles } from "./authStyles";
 interface IRegister {
   promise?: object;
-  onRegister: (email: string, login: string, password: string) => void;
+  onRegister: (
+    email: string,
+    login: string,
+    firstName: string,
+    lastName: string,
+    password: string
+  ) => void;
   modal?: boolean;
   signInOpenState?: (value: boolean) => void;
   signUpOpenState?: (value: boolean) => void;
@@ -30,33 +38,43 @@ interface IRegister {
 interface RegisterFormValues {
   email: string;
   login: string;
+  firstName: string;
+  lastName: string;
   password: string;
   retryPassword: string;
 }
 
 const validationSchema = Yup.object().shape({
   email: Yup.string()
-    .email(validationError("Enter a valid email"))
-    .required(validationError("Email is required")),
+    .email("Enter a valid email")
+    .required("Email is required"),
   login: Yup.string()
     .matches(
       validateLogin,
-      validationError(
-        "Login must be 3 to 8 characters long and must contain small letters and numbers"
-      )
+      "Login must be 3 to 8 characters long and must contain small letters and numbers"
     )
-    .required(validationError("Login is required")),
+    .required("Login is required"),
+  firstName: Yup.string()
+    .matches(
+      validateFirstName,
+      "First name must be 2 to 15 characters long and must start with a capital letter"
+    )
+    .required("First name is required"),
+  lastName: Yup.string()
+    .matches(
+      validateLastName,
+      "Last name must be 2 to 20 characters long and must start with a capital letter"
+    )
+    .required("Last name is required"),
   password: Yup.string()
     .matches(
       validatePassword,
-      validationError(
-        "Password must contain at least 8 characters, one uppercase, one number and one special case character"
-      )
+      "Password must contain at least 8 characters, one uppercase, one number and one special case character"
     )
-    .required(validationError("Password is required")),
+    .required("Password is required"),
   retryPassword: Yup.string()
-    .oneOf([Yup.ref("password")], validationError("Passwords do not match"))
-    .required(validationError("Retry password is required")),
+    .oneOf([Yup.ref("password")], "Passwords do not match")
+    .required("Retry password is required"),
 });
 
 const SignUp = ({
@@ -70,6 +88,8 @@ const SignUp = ({
   const initialValues: RegisterFormValues = {
     email: "",
     login: "",
+    firstName: "",
+    lastName: "",
     password: "",
     retryPassword: "",
   };
@@ -77,7 +97,13 @@ const SignUp = ({
     initialValues: initialValues,
     validationSchema: validationSchema,
     onSubmit: (values) => {
-      onRegister(values.email, values.login, values.password);
+      onRegister(
+        values.email,
+        values.login,
+        values.firstName,
+        values.lastName,
+        values.password
+      );
     },
   });
 
@@ -122,6 +148,32 @@ const SignUp = ({
               onChange={handleChange}
               error={touched.login && Boolean(errors.login)}
               helperText={touched.login && errors.login}
+              variant="outlined"
+              color="secondary"
+              fullWidth
+            />
+            <br />
+            <CustomTextField
+              id="firstName"
+              name="firstName"
+              label="First name"
+              value={values.firstName}
+              onChange={handleChange}
+              error={touched.firstName && Boolean(errors.firstName)}
+              helperText={touched.firstName && errors.firstName}
+              variant="outlined"
+              color="secondary"
+              fullWidth
+            />
+            <br />
+            <CustomTextField
+              id="lastName"
+              name="lastName"
+              label="Last name"
+              value={values.lastName}
+              onChange={handleChange}
+              error={touched.lastName && Boolean(errors.lastName)}
+              helperText={touched.lastName && errors.lastName}
               variant="outlined"
               color="secondary"
               fullWidth
@@ -200,7 +252,6 @@ const SignUp = ({
             >
               Sign Up
             </Button>
-
             <Typography
               variant="subtitle1"
               gutterBottom
