@@ -6,10 +6,6 @@ import {
   Typography,
   InputAdornment,
   IconButton,
-<<<<<<< HEAD
-  TextField,
-=======
->>>>>>> feat/9-booking
   Box,
 } from "@mui/material";
 import VisibilityIcon from "@mui/icons-material/Visibility";
@@ -55,10 +51,8 @@ const validationSchema = Yup.object().shape({
   login: Yup.string()
     .matches(
       validateLogin,
-      
-        "Login must be 3 to 8 characters long and must contain small letters and numbers"
-      )
-    
+      "Login must be 3 to 8 characters long and must contain small letters and numbers"
+    )
     .required("Login is required"),
   firstName: Yup.string()
     .matches(
@@ -75,9 +69,7 @@ const validationSchema = Yup.object().shape({
   password: Yup.string()
     .matches(
       validatePassword,
-      
-        "Password must contain at least 8 characters, one uppercase, one number and one special case character"
-      
+      "Password must contain at least 8 characters, one uppercase, one number and one special case character"
     )
     .required("Password is required"),
   retryPassword: Yup.string()
@@ -105,6 +97,7 @@ const SignUp = ({
     initialValues: initialValues,
     validationSchema: validationSchema,
     onSubmit: (values) => {
+      modal ? signUpOpenState(false) : null;
       onRegister(
         values.email,
         values.login,

@@ -2,6 +2,12 @@ a {
   color: black;
   text-decoration: none;
 }
+
+::-webkit-scrollbar {
+  width: 0;
+  height: 0;
+}
+
 .App {
   .Header {
     .SearchBar {
@@ -66,14 +72,11 @@ a {
         }
       }
     }
-<<<<<<< HEAD
-=======
   }
   .HotelsList {
     display: flex;
     flex-direction: row;
     justify-content: space-around;
->>>>>>> feat/9-booking
   }
   .profileForm {
     margin-left: 5%;

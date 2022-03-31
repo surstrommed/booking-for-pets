@@ -47,6 +47,7 @@ const SignIn = ({
     initialValues: initialValues,
     validationSchema: validationSchema,
     onSubmit: (values) => {
+      modal ? signInOpenState(false) : null;
       onLogin(values.email, values.password);
     },
   });

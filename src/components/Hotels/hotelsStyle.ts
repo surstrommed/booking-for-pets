@@ -19,6 +19,7 @@ export const hotelPageStyles = {
   },
   link: {
     textDecoration: "underline",
+    cursor: "pointer",
     marginLeft: "3vh",
   },
   gallery: {
@@ -26,12 +27,11 @@ export const hotelPageStyles = {
   },
   reviews: {
     display: "flex",
-    justifyContent: "space-between",
     flexWrap: "wrap",
   },
   review: {
-    flexBasis: "25%",
-    maxWidth: 345,
+    flexBasis: "45%",
+    margin: "2vh",
   },
   alignCenter: {
     display: "flex",
@@ -54,12 +54,15 @@ export const fullWindowStyles = {
     justifyContent: "center",
   },
   space: { ml: 2, flex: 1 },
-  relativePosition: { position: "relative" },
+  relativePosition: {
+    position: "relative",
+    boxShadow: "none",
+  },
   imageList: {
     width: "50%",
     height: "100%",
     margin: "0 auto",
-    padding: "2vh 0",
+    padding: "2vh auto",
     transform: "translateZ(0)",
   },
 };

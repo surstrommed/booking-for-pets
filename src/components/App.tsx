@@ -1,10 +1,6 @@
 import React from "react";
 import "./../assets/scss/App.scss";
-<<<<<<< HEAD
-import Main from "./../pages/Main";
-=======
 import { CMain } from "./../pages/Main";
->>>>>>> feat/9-booking
 import HeaderBar from "./Header/HeaderBar";
 import { createBrowserHistory } from "history";
 import { createStore, combineReducers, applyMiddleware } from "redux";
@@ -13,11 +9,7 @@ import {
   promiseReducer,
   authReducer,
   headerReducer,
-<<<<<<< HEAD
-=======
-  routeReducer,
   currencyReducer,
->>>>>>> feat/9-booking
 } from "./../reducers/index";
 import thunk from "redux-thunk";
 import { BrowserRouter } from "./Auxiliary/BrowserRouter";
@@ -35,7 +27,6 @@ const rootReducer = combineReducers({
   promise: sessionStoredReducer(promiseReducer, "promise"),
   header: headerReducer,
   auth: sessionStoredReducer(authReducer, "auth"),
-  route: sessionStoredReducer(routeReducer, "route"),
   currencyList: sessionStoredReducer(currencyReducer, "currencyList"),
 });
 

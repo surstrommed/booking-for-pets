@@ -18,7 +18,7 @@ import AdapterDateFns from "@mui/lab/AdapterDateFns";
 import Divider from "@mui/material/Divider";
 import { Typography } from "@mui/material";
 import { hotelPageStyles } from "./hotelsStyle";
-import { Link } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
 import { noAvatar, stringMonth, formatDate } from "../../helpers/index";
 import { useFormik } from "formik";
 import * as Yup from "yup";
@@ -27,7 +27,8 @@ import Alert from "@mui/material/Alert";
 import { actionFullHotelUpdate } from "./../../actions/thunks";
 import IosShareOutlinedIcon from "@mui/icons-material/IosShareOutlined";
 import FullWindowGallery from "./FullWindowGallery";
-import { theme } from "./../../assets/theme";
+import { Link as ScrollLink } from "react-scroll";
+import { history } from "./../App";
 
 function srcset(image: string, size: number, rows = 1, cols = 1) {
   return {
@@ -45,7 +46,12 @@ interface HotelPageFormValues {
 }
 
 const HotelPage = ({ promise, auth, currencyList, onBooking }) => {
-  const { payload: currentHotel } = promise.hotelUpdate;
+  const { hotelId } = useParams();
+  const { payload: hotelsList } = promise.getHotels;
+  const currentHotel = hotelsList?.find((hotel) => hotel.id === +hotelId);
+  if (!currentHotel) {
+    history.push("/");
+  }
   const [openDialog, setOpenDialog] = useState(false);
   const maxAnimals = 10;
   const currencySiteList = currencyList?.currency;
@@ -66,14 +72,18 @@ const HotelPage = ({ promise, auth, currencyList, onBooking }) => {
     numberAnimals: Yup.number().required(),
   });
 
-  const disableUserDates = {};
-  const disableUsersDates = [];
+  const disableUserDates = { ...(currentHotel?.disableUserDates || {}) };
+  const disableUsersDates = [...(currentHotel?.disableUsersDates || [])];
   const disabledDates = [];
 
   const formik = useFormik({
     initialValues: initialValues,
     validationSchema: validationSchema,
     onSubmit: (values) => {
+      const formattedDateArrival = Date.parse(formatDate(values.dateArrival));
+      const formattedDateDeparture = Date.parse(
+        formatDate(values.dateDeparture)
+      );
       if (Object.keys(currentHotel.freeRooms).length !== 0) {
         const bookedDates = Object.keys(currentHotel.freeRooms);
         for (const date of bookedDates) {
@@ -102,12 +112,17 @@ const HotelPage = ({ promise, auth, currencyList, onBooking }) => {
             ];
           }
         }
+      } else {
+        if (values.numberAnimals === maxAnimals) {
+          disabledDates.push(formattedDateArrival);
+          disabledDates.push(formattedDateDeparture);
+          disableUserDates[auth.payload.id] = [
+            ...(currentHotel.disableUserDates[auth.payload.id] || []),
+            ...disabledDates,
+          ];
+        }
       }
 
-      const formattedDateArrival = Date.parse(formatDate(values.dateArrival));
-      const formattedDateDeparture = Date.parse(
-        formatDate(values.dateDeparture)
-      );
       const userDates = [
         formattedDateArrival,
         formattedDateDeparture,
@@ -123,37 +138,67 @@ const HotelPage = ({ promise, auth, currencyList, onBooking }) => {
         dateRangeDecomposition.push(i);
       }
 
-      const vacantRooms = {};
+      const today = Date.parse(formatDate(new Date()));
+      const vacantRooms = { ...(currentHotel?.freeRooms || {}) };
+
+      const vacantRoomsKeys = Object.keys(vacantRooms);
+
+      for (const date of vacantRoomsKeys) {
+        if (today > +date) {
+          delete vacantRooms[date];
+        }
+      }
+
+      const disableUserDatesKeys = Object.keys(disableUserDates);
+
+      for (const userId of disableUserDatesKeys) {
+        if (
+          disableUserDates[userId][0] < today &&
+          disableUserDates[userId][1] < today
+        ) {
+          delete disableUserDates[userId];
+        }
+      }
+
+      for (let i = 0; i < disableUsersDates.length; i++) {
+        if (disableUsersDates[i] < today) {
+          disableUsersDates.splice(i, 1);
+        }
+      }
 
       for (const date of dateRangeDecomposition) {
+        let availableSeats =
+          (currentHotel.freeRooms?.[date]?.availableSeats
+            ? currentHotel.freeRooms[date].availableSeats
+            : currentHotel.hotelRooms) - values.numberAnimals;
+        let availableDiff = 0;
+        if (availableSeats < 0) {
+          availableDiff -= availableSeats;
+          availableSeats = 0;
+        }
         vacantRooms[date] = {
-          availableSeats:
-            (currentHotel.freeRooms?.[date]?.availableSeats
-              ? currentHotel.freeRooms[date].availableSeats
-              : currentHotel.hotelRooms) - values.numberAnimals,
+          availableSeats: availableSeats,
           usersId: [
-            ...(currentHotel.freeRooms?.[date]?.usersId || []),
+            ...(currentHotel?.freeRooms?.[date]?.usersId || []),
             auth.payload.id,
           ],
           usersAnimalsCount: [
-            ...(currentHotel.freeRooms?.[date]?.usersAnimalsCount || []),
-            +values.numberAnimals,
+            ...(currentHotel?.freeRooms?.[date]?.usersAnimalsCount || []),
+            availableDiff > 0
+              ? values.numberAnimals - availableDiff
+              : values.numberAnimals,
           ],
         };
       }
 
       onBooking({
-        id: currentHotel.id,
-        dates: [...currentHotel.dates, userDates],
-        freeRooms: { ...currentHotel.freeRooms, ...vacantRooms },
+        id: currentHotel?.id,
+        userRequests: [...currentHotel.userRequests, userDates],
+        freeRooms: { ...vacantRooms },
         disableUserDates: {
-          ...currentHotel.disableUserDates,
           ...disableUserDates,
         },
-        disableUsersDates: [
-          ...currentHotel.disableUsersDates,
-          ...disableUsersDates,
-        ],
+        disableUsersDates: [...disableUsersDates],
       });
     },
   });
@@ -225,7 +270,7 @@ const HotelPage = ({ promise, auth, currencyList, onBooking }) => {
       ) : null}
       <div>
         <Typography variant="h3" gutterBottom component="div">
-          {currentHotel.name}
+          {currentHotel?.name}
         </Typography>
         <Typography
           sx={hotelPageStyles.blockInfo}
@@ -234,10 +279,10 @@ const HotelPage = ({ promise, auth, currencyList, onBooking }) => {
           gutterBottom
         >
           <div>
-            <Link to="/reviews" style={hotelPageStyles.link}>
-              {currentHotel.reviews.length} review(s)
-            </Link>{" "}
-            · {currentHotel.location}
+            <ScrollLink to="reviews" style={hotelPageStyles.link}>
+              {currentHotel?.reviews?.length} review(s)
+            </ScrollLink>{" "}
+            · {currentHotel?.location}
           </div>
           <div style={hotelPageStyles.alignCenter}>
             <Link to="/share" style={hotelPageStyles.link}>
@@ -306,7 +351,7 @@ const HotelPage = ({ promise, auth, currencyList, onBooking }) => {
               Description:
             </Typography>
             <Typography variant="body1" gutterBottom>
-              {currentHotel.description}
+              {currentHotel?.description}
             </Typography>
           </div>
         </div>
@@ -322,21 +367,28 @@ const HotelPage = ({ promise, auth, currencyList, onBooking }) => {
                 >
                   <div>
                     {currentCurrency?.sign}
-                    {currentHotel.price *
+                    {(values?.dateArrival && values?.dateDeparture
+                      ? Math.trunc(
+                          (values.dateDeparture.getTime() -
+                            values.dateArrival.getTime()) /
+                            (24 * 60 * 60 * 1000)
+                        )
+                      : 1) *
+                      currentHotel?.price *
                       currencyExchangeList[currentCurrency.name].toFixed(1) *
                       (values?.numberAnimals || 1)}{" "}
                     <sup>
                       {currentCurrency?.sign}
-                      {currentHotel.price *
+                      {currentHotel?.price *
                         currencyExchangeList[currentCurrency.name].toFixed(1)}
                       /day
                     </sup>
                   </div>
                   <div>
                     <Typography variant="overline" display="block" gutterBottom>
-                      <Link to="/reviews" style={hotelPageStyles.link}>
-                        {currentHotel.reviews.length} review(s)
-                      </Link>
+                      <ScrollLink to="reviews" style={hotelPageStyles.link}>
+                        {currentHotel?.reviews?.length} review(s)
+                      </ScrollLink>
                     </Typography>
                   </div>
                 </Typography>
@@ -357,7 +409,9 @@ const HotelPage = ({ promise, auth, currencyList, onBooking }) => {
                       minDate={
                         new Date(new Date().getTime() + 24 * 60 * 60 * 1000)
                       }
-                      renderInput={(params) => <TextField {...params} />}
+                      renderInput={(params) => (
+                        <TextField {...params} color="secondary" />
+                      )}
                     />
                   </LocalizationProvider>
                   <Divider
@@ -381,7 +435,9 @@ const HotelPage = ({ promise, auth, currencyList, onBooking }) => {
                       minDate={
                         new Date(new Date().getTime() + 48 * 60 * 60 * 1000)
                       }
-                      renderInput={(params) => <TextField {...params} />}
+                      renderInput={(params) => (
+                        <TextField {...params} color="secondary" />
+                      )}
                     />
                   </LocalizationProvider>
                 </div>
@@ -432,10 +488,10 @@ const HotelPage = ({ promise, auth, currencyList, onBooking }) => {
       <hr />
       <div>
         <Typography variant="h5" gutterBottom component="div">
-          {currentHotel.reviews.length} review(s)
+          {currentHotel?.reviews?.length} review(s)
         </Typography>
-        <div style={hotelPageStyles.reviews}>
-          {currentHotel.reviews.map((review, index) => (
+        <div style={hotelPageStyles.reviews} id="reviews">
+          {(currentHotel?.reviews || []).map((review, index) => (
             <Card sx={hotelPageStyles.review} key={index}>
               <CardHeader
                 avatar={
@@ -468,18 +524,18 @@ const HotelPage = ({ promise, auth, currencyList, onBooking }) => {
         <Card sx={hotelPageStyles.review}>
           <CardHeader
             avatar={
-              <Link to={`/users/${currentHotel.owner.id}`}>
+              <Link to={`/users/${currentHotel?.owner?.id}`}>
                 <Avatar
-                  alt={`${currentHotel.owner.firstName} ${currentHotel.owner.lastName}`}
-                  src={`${currentHotel.owner.pictureUrl || noAvatar}`}
+                  alt={`${currentHotel?.owner?.firstName} ${currentHotel?.owner?.lastName}`}
+                  src={`${currentHotel?.owner?.pictureUrl || noAvatar}`}
                   sx={{ width: 56, height: 56 }}
                 />
               </Link>
             }
-            title={`Onwer: ${currentHotel.owner.firstName} ${currentHotel.owner.lastName}`}
+            title={`Onwer: ${currentHotel?.owner?.firstName} ${currentHotel?.owner?.lastName}`}
             subheader={`On Shaggy tail since ${stringMonth(
-              new Date(currentHotel.owner.createdAt).getMonth()
-            )} ${new Date(currentHotel.owner.createdAt).getFullYear()}`}
+              new Date(currentHotel?.owner?.createdAt).getMonth()
+            )} ${new Date(currentHotel?.owner?.createdAt).getFullYear()}`}
           />
         </Card>
       </div>

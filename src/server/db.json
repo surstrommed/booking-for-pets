@@ -7,9 +7,9 @@
       "lastName": "Zadorozhnyi",
       "createdAt": 1647206008510,
       "pictureUrl": "https://i.ibb.co/JtkCt7k/557d644f-12f3-49e1-bb66-23c16400540d.png",
-      "currency": 2,
+      "currency": 1,
       "id": 1,
-      "password": "$2a$10$yl.fZpYxisOo277nWKGcFeh2ILhIzVtZM56tYMUWDVyWmekO7AgEa"
+      "password": "$2a$10$TRrMWc0HrQ1wirbdFrHMv.h1efH6cYg1c5glmH9FrFUgX3TrMIGyq"
     },
     {
       "email": "user1231@ukr.net",
@@ -54,6 +54,17 @@
       "createdAt": 1648664611101,
       "pictureUrl": null,
       "id": 5
+    },
+    {
+      "email": "kosminaks@ukr.net",
+      "password": "$2a$10$YiaYfs.E0jAg8fE5sstGKOUl/rAHXo0yU55gkwY5/aKaA2CHgibXG",
+      "login": "kosmina",
+      "firstName": "Kseniya",
+      "lastName": "Kosmina",
+      "currency": 1,
+      "createdAt": 1648733149144,
+      "pictureUrl": null,
+      "id": 6
     }
   ],
   "hotels": [
@@ -74,11 +85,59 @@
         "https://talant.shop/static/items/2019/December/5de924e88c52ab7d0ef8a6a7-medium.jpg",
         "https://besplatka.ua/aws/746x-/49/71/74/19/veterinarnyi-centr-zveropolis---gostinica-dlya-kotov-i-photo-7a4d.jpg"
       ],
-      "hotelRooms": 40,
-      "freeRooms": {},
-      "dates": [],
-      "disableUserDates": {},
-      "disableUsersDates": [],
+      "hotelRooms": 20,
+      "freeRooms": {
+        "1648760400000": {
+          "availableSeats": 0,
+          "usersId": [
+            1,
+            5
+          ],
+          "usersAnimalsCount": [
+            10,
+            10
+          ]
+        },
+        "1648846800000": {
+          "availableSeats": 0,
+          "usersId": [
+            1,
+            5
+          ],
+          "usersAnimalsCount": [
+            10,
+            10
+          ]
+        }
+      },
+      "userRequests": [
+        [
+          1648760400000,
+          1648846800000,
+          10,
+          1
+        ],
+        [
+          1648760400000,
+          1648846800000,
+          10,
+          5
+        ]
+      ],
+      "disableUserDates": {
+        "1": [
+          1648760400000,
+          1648846800000
+        ],
+        "5": [
+          1648760400000,
+          1648846800000
+        ]
+      },
+      "disableUsersDates": [
+        1648760400000,
+        1648846800000
+      ],
       "price": "15",
       "owner": {
         "id": 3,

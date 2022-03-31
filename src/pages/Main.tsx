@@ -62,7 +62,7 @@ const Main = ({ promise }) => {
         path="/hotels/hotel/:hotelId"
         element={
           <Preloader
-            promiseName={"hotelUpdate"}
+            promiseName={"getHotels"}
             promiseState={promise}
             sub={<CHotelPage />}
           />
