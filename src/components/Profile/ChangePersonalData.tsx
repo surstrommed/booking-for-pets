@@ -12,7 +12,7 @@ import {
 } from "@mui/material";
 import VisibilityIcon from "@mui/icons-material/Visibility";
 import VisibilityOffIcon from "@mui/icons-material/VisibilityOff";
-import { actionFullUpdate } from "../../actions/thunks";
+import { actionFullUserUpdate } from "../../actions/thunks";
 import { changeProfileStyles } from "./profileStyles";
 
 const validationSchema = Yup.object().shape({
@@ -31,12 +31,12 @@ interface PersonalDataValues {
   password: string;
 }
 
-const ChangePersonalData = ({ auth, promise, onUpdate }) => {
+const ChangePersonalData = ({ auth, onUpdate }) => {
   const [showPassword, setShowPassword] = useState(false);
 
   const initialValues: PersonalDataValues = {
-    email: auth["payload"]["email"],
-    login: auth["payload"]["login"],
+    email: auth.payload.email,
+    login: auth.payload.login,
     password: "",
   };
 
@@ -45,7 +45,7 @@ const ChangePersonalData = ({ auth, promise, onUpdate }) => {
     validationSchema: validationSchema,
     onSubmit: (values) => {
       onUpdate({
-        id: auth["payload"]["id"],
+        id: auth.payload.id,
         email: values.email,
         login: values.login,
         password: values.password,
@@ -133,6 +133,6 @@ const ChangePersonalData = ({ auth, promise, onUpdate }) => {
 export const CChangePersonalData = connect(
   (state: RootState) => ({ auth: state.auth, promise: state.promise }),
   {
-    onUpdate: actionFullUpdate,
+    onUpdate: actionFullUserUpdate,
   }
 )(ChangePersonalData);

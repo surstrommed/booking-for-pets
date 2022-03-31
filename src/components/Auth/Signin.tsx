@@ -10,18 +10,17 @@ import {
 } from "@mui/material";
 import VisibilityIcon from "@mui/icons-material/Visibility";
 import VisibilityOffIcon from "@mui/icons-material/VisibilityOff";
-import { Link } from "react-router-dom";
 import { connect } from "react-redux";
 import { RootState } from "../App";
 import { actionFullLogin } from "../../actions/thunks";
-import { validationError } from "./../../helpers/index";
 import { CustomTextField } from "./../Auxiliary/CustomTextField";
 import { authFormStyles, authModalStyles } from "./authStyles";
-import { history } from "./../App";
 interface ILogin {
   promise?: object;
   onLogin: (email: string, password: string) => void;
   modal?: boolean;
+  signInOpenState?: (value: boolean) => void;
+  signUpOpenState?: (value: boolean) => void;
 }
 
 interface LoginFormValues {
@@ -31,12 +30,17 @@ interface LoginFormValues {
 
 const validationSchema = Yup.object().shape({
   email: Yup.string()
-    .email(validationError("Enter a valid email"))
-    .required(validationError("Email is required")),
-  password: Yup.string().required(validationError("Password is required")),
+    .email("Enter a valid email")
+    .required("Email is required"),
+  password: Yup.string().required("Password is required"),
 });
 
-const SignIn = ({ onLogin, modal }: ILogin) => {
+const SignIn = ({
+  onLogin,
+  modal,
+  signInOpenState,
+  signUpOpenState,
+}: ILogin) => {
   const [showPassword, setShowPassword] = useState(false);
   const initialValues: LoginFormValues = { email: "", password: "" };
   const formik = useFormik({
@@ -71,11 +75,12 @@ const SignIn = ({ onLogin, modal }: ILogin) => {
               id="email"
               name="email"
               label="Email"
+              color="secondary"
               value={values.email}
               onChange={handleChange}
               error={touched.email && Boolean(errors.email)}
               helperText={touched.email && errors.email}
-              variant="filled"
+              variant="outlined"
               fullWidth
             />
             <br />
@@ -89,7 +94,8 @@ const SignIn = ({ onLogin, modal }: ILogin) => {
               error={touched.password && Boolean(errors.password)}
               helperText={touched.password && errors.password}
               fullWidth
-              variant="filled"
+              color="secondary"
+              variant="outlined"
               InputProps={{
                 endAdornment: (
                   <InputAdornment position="end">
@@ -120,19 +126,23 @@ const SignIn = ({ onLogin, modal }: ILogin) => {
             >
               Sign In
             </Button>
-            {modal || (
-              <Typography
-                variant="subtitle1"
-                gutterBottom
-                component="div"
-                sx={authFormStyles.centerText}
+            <Typography
+              variant="subtitle1"
+              gutterBottom
+              component="div"
+              sx={authFormStyles.centerText}
+            >
+              Don&apos;t have an account yet?{" "}
+              <Button
+                onClick={() => {
+                  signInOpenState(false);
+                  signUpOpenState(true);
+                }}
+                color="secondary"
               >
-                Don&apos;t have an account yet?{" "}
-                <Button component={Link} to="/signup" color="secondary">
-                  Sign Up
-                </Button>
-              </Typography>
-            )}
+                Sign Up
+              </Button>
+            </Typography>
           </Box>
         </form>
       </div>

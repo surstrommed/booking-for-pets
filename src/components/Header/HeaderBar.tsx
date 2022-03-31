@@ -10,6 +10,7 @@ import Button from "@mui/material/Button";
 import MenuItem from "@mui/material/MenuItem";
 import MenuIcon from "@mui/icons-material/Menu";
 import PetsIcon from "@mui/icons-material/Pets";
+import LanguageOutlinedIcon from "@mui/icons-material/LanguageOutlined";
 import useScrollTrigger from "@mui/material/useScrollTrigger";
 import { CProfileIcon } from "./ProfileIcon";
 import { Link } from "react-router-dom";
@@ -23,6 +24,11 @@ import {
   actionExpandSmallHeader,
 } from "./../../actions/types";
 import { headerBar } from "./headerStyles";
+import SlideDialogCurrency from "./SlideDialogCurrency";
+import ModalWindow from "./../Auxiliary/ModalWindow";
+import { Preloader } from "./../Auxiliary/Preloader";
+import { CSignIn } from "./../Auth/Signin";
+import { CSignUp } from "./../Auth/Signup";
 
 const pages = ["Products", "Pricing", "Blog"];
 type ButtonEvent = React.MouseEvent<HTMLButtonElement>;
@@ -69,11 +75,16 @@ const ElevationScroll = (props: Props) => {
 
 export default function HeaderBar(props: Props) {
   const [anchorElNav, setAnchorElNav] = useState(null);
+  const [openDialog, setOpenDialog] = useState(false);
+  const [openSignInModal, setOpenSignInModal] = useState(false);
+  const [openSignUpModal, setOpenSignUpModal] = useState(false);
   const smallHeader = useSelector((state) => state.header.smallHeader);
   const bigHeader = useSelector((state) => state.header.bigHeader);
   const expandSmallHeader = useSelector(
     (state) => state.header.expandSmallHeader
   );
+  const currentUser = useSelector((state) => state?.auth?.payload);
+  const promise = useSelector((state) => state?.promise);
   const location = useLocation().pathname;
   const dispatch = useDispatch();
 
@@ -98,10 +109,69 @@ export default function HeaderBar(props: Props) {
     }
   });
 
+  const updateOpenDialogStatus = (value) => {
+    setOpenDialog(value);
+  };
+
+  const updateSignInModal = (value) => {
+    setOpenSignInModal(value);
+  };
+
+  const updateSignUpModal = (value) => {
+    setOpenSignUpModal(value);
+  };
+
   return (
     <div className="Header">
       <ElevationScroll {...props}>
         <AppBar>
+          {openDialog ? (
+            <SlideDialogCurrency
+              updateOpenDialogStatus={updateOpenDialogStatus}
+            />
+          ) : null}
+          {openSignInModal && (
+            <ModalWindow
+              title={"Sign in"}
+              body={
+                <Preloader
+                  promiseName={"signin"}
+                  promiseState={promise}
+                  sub={
+                    <CSignIn
+                      modal
+                      signInOpenState={updateSignInModal}
+                      signUpOpenState={updateSignUpModal}
+                    />
+                  }
+                  modal
+                />
+              }
+              type={"signin"}
+              signInOpenState={updateSignInModal}
+            />
+          )}
+          {openSignUpModal && (
+            <ModalWindow
+              title={"Sign up"}
+              body={
+                <Preloader
+                  promiseName={"signup"}
+                  promiseState={promise}
+                  sub={
+                    <CSignUp
+                      modal
+                      signInOpenState={updateSignInModal}
+                      signUpOpenState={updateSignUpModal}
+                    />
+                  }
+                  modal
+                />
+              }
+              type={"signup"}
+              signUpOpenState={updateSignUpModal}
+            />
+          )}
           <Container maxWidth="xl">
             <Toolbar disableGutters>
               <Typography
@@ -192,15 +262,23 @@ export default function HeaderBar(props: Props) {
                     styles={
                       bigHeader
                         ? { border: "1px solid black" }
-                        : { border: "1px solid grey", borderRadius: "35px" }
+                        : { borderRadius: "35px" }
                     }
                   />
                 ) : null}
               </Box>
-              <Button sx={headerBar.ownerButton}>
+              <Button sx={headerBar.headerButtons}>
                 <Link to="/owners" onClick={() => window.scrollTo(0, 0)}>
                   For owners
                 </Link>
+              </Button>
+              <Button
+                sx={headerBar.headerButtons}
+                onClick={() =>
+                  currentUser ? setOpenDialog(true) : setOpenSignInModal(true)
+                }
+              >
+                <LanguageOutlinedIcon />
               </Button>
               <CProfileIcon />
             </Toolbar>

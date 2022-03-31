@@ -13,7 +13,19 @@ const Loader = () => {
   );
 };
 
-export const Preloader = ({ promiseName, promiseState, sub, modal }) => {
+interface IPreloader {
+  promiseName: string;
+  promiseState: object;
+  sub: React.ReactElement | string | number;
+  modal?: boolean;
+}
+
+export const Preloader = ({
+  promiseName,
+  promiseState,
+  sub,
+  modal,
+}: IPreloader) => {
   return (
     <>
       {!promiseState[promiseName] ||

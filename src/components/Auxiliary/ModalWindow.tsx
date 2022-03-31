@@ -1,23 +1,40 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import Backdrop from "@mui/material/Backdrop";
 import Box from "@mui/material/Box";
 import Modal from "@mui/material/Modal";
 import Fade from "@mui/material/Fade";
 import Typography from "@mui/material/Typography";
-import { history } from "./../App";
 import { modalWindowStyles } from "./auxiliaryStyles";
 
 interface IModal {
   title: string;
   body: string | React.ReactElement;
+  type: string;
+  signInOpenState?: (value: boolean) => void;
+  signUpOpenState?: (value: boolean) => void;
 }
 
-export default function ModalWindow({ title, body }: IModal) {
+export default function ModalWindow({
+  title,
+  body,
+  type,
+  signInOpenState,
+  signUpOpenState,
+}: IModal) {
   const [open, setOpen] = useState(true);
   const handleClose = () => {
     setOpen(false);
-    history.go(0);
   };
+
+  useEffect(() => {
+    if (open) {
+      type === "signin" ? signInOpenState(true) : null;
+      type === "signup" ? signUpOpenState(true) : null;
+    } else {
+      type === "signin" ? signInOpenState(false) : null;
+      type === "signup" ? signUpOpenState(false) : null;
+    }
+  }, [open]);
 
   return (
     <div>

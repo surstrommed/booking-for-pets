@@ -41,6 +41,26 @@ export function authReducer(state, { type, token }) {
   return state;
 }
 
+export function currencyReducer(state = {}, { type, currency, exchangeList }) {
+  if (type === "CURRENCY_LIST") {
+    if (Object.keys(currency).length > 0) {
+      return {
+        ...state,
+        currency,
+      };
+    } else return state;
+  }
+  if (type === "EXCHANGE_LIST") {
+    if (Object.keys(exchangeList).length > 0) {
+      return {
+        ...state,
+        exchangeList,
+      };
+    } else return state;
+  }
+  return state;
+}
+
 export const sessionStoredReducer =
   (reducer, sessionStorageName) => (state, action) => {
     if (!state && sessionStorage[sessionStorageName]) {
@@ -82,6 +102,28 @@ export function headerReducer(state, { type }) {
       smallHeader: false,
       bigHeader: false,
       expandSmallHeader: true,
+    };
+  }
+  return state;
+}
+
+export function routeReducer(state, { type, route, params }) {
+  if (!state) {
+    state = {
+      route: "",
+      params: "",
+    };
+  }
+  if (type === "ROUTE") {
+    return {
+      ...state,
+      route,
+    };
+  }
+  if (type === "PARAMS") {
+    return {
+      ...state,
+      params,
     };
   }
   return state;

@@ -1,6 +1,10 @@
 import React from "react";
 import "./../assets/scss/App.scss";
+<<<<<<< HEAD
 import Main from "./../pages/Main";
+=======
+import { CMain } from "./../pages/Main";
+>>>>>>> feat/9-booking
 import HeaderBar from "./Header/HeaderBar";
 import { createBrowserHistory } from "history";
 import { createStore, combineReducers, applyMiddleware } from "redux";
@@ -9,18 +13,30 @@ import {
   promiseReducer,
   authReducer,
   headerReducer,
+<<<<<<< HEAD
+=======
+  routeReducer,
+  currencyReducer,
+>>>>>>> feat/9-booking
 } from "./../reducers/index";
 import thunk from "redux-thunk";
 import { BrowserRouter } from "./Auxiliary/BrowserRouter";
 import { ThemeProvider } from "@mui/material";
 import { theme } from "./../assets/theme";
+import { actionGetHotels } from "./../actions/index";
+import {
+  actionFullGetCurrencyExchange,
+  actionFullGetCurrencyList,
+} from "../actions/thunks";
 
 export const history = createBrowserHistory();
 
 const rootReducer = combineReducers({
-  promise: promiseReducer,
+  promise: sessionStoredReducer(promiseReducer, "promise"),
   header: headerReducer,
   auth: sessionStoredReducer(authReducer, "auth"),
+  route: sessionStoredReducer(routeReducer, "route"),
+  currencyList: sessionStoredReducer(currencyReducer, "currencyList"),
 });
 
 export type RootState = ReturnType<typeof rootReducer>;
@@ -30,13 +46,19 @@ export const getState = store.getState;
 console.log(store.getState());
 store.subscribe(() => console.log(store.getState()));
 
+store.dispatch(actionGetHotels());
+
+store.dispatch(actionFullGetCurrencyList());
+
+store.dispatch(actionFullGetCurrencyExchange());
+
 export default function App() {
   return (
     <BrowserRouter history={history}>
       <ThemeProvider theme={theme}>
         <div className="App">
           <HeaderBar />
-          <Main />
+          <CMain />
         </div>
       </ThemeProvider>
     </BrowserRouter>

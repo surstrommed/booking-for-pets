@@ -4,6 +4,7 @@ import { RootState } from "../App";
 import { Box, Typography } from "@mui/material";
 import { CDropzone } from "./../Auxiliary/Dropzone";
 import { changeProfileStyles } from "./profileStyles";
+import { noAvatar } from "../../helpers/index";
 
 const ChangeAvatar = ({ auth }) => {
   return (
@@ -17,10 +18,7 @@ const ChangeAvatar = ({ auth }) => {
           component="img"
           sx={changeProfileStyles.avatarImage}
           alt="Avatar image"
-          src={
-            auth?.["payload"]?.["pictureUrl"] ||
-            "https://upload.wikimedia.org/wikipedia/commons/9/99/Sample_User_Icon.png"
-          }
+          src={auth?.["payload"]?.["pictureUrl"] || noAvatar}
         />
         <CDropzone
           type="image"
