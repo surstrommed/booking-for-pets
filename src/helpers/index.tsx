@@ -123,3 +123,9 @@ export function truncText(str) {
 export function formatDate(date) {
   return `${date.getFullYear()}-${date.getMonth() + 1}-${date.getDate()}`;
 }
+
+export function formatStringDate(date) {
+  return `${stringMonth(new Date(date).getMonth())} ${new Date(
+    date
+  ).getDate()}, ${new Date(date).getFullYear()}`;
+}

@@ -19,7 +19,7 @@ import Divider from "@mui/material/Divider";
 import { Typography } from "@mui/material";
 import { hotelPageStyles } from "./hotelsStyle";
 import { Link, useParams } from "react-router-dom";
-import { noAvatar, stringMonth, formatDate } from "../../helpers/index";
+import { noAvatar, formatDate, formatStringDate } from "../../helpers/index";
 import { useFormik } from "formik";
 import * as Yup from "yup";
 import { CustomTextField } from "./../Auxiliary/CustomTextField";
@@ -29,6 +29,7 @@ import IosShareOutlinedIcon from "@mui/icons-material/IosShareOutlined";
 import FullWindowGallery from "./FullWindowGallery";
 import { Link as ScrollLink } from "react-scroll";
 import { history } from "./../App";
+import useSnackBar from "./../Auxiliary/SnackBar";
 
 function srcset(image: string, size: number, rows = 1, cols = 1) {
   return {
@@ -75,10 +76,13 @@ const HotelPage = ({ promise, auth, currencyList, onBooking }) => {
   const disableUserDates = { ...(currentHotel?.disableUserDates || {}) };
   const disableUsersDates = [...(currentHotel?.disableUsersDates || [])];
   const disabledDates = [];
+  let bookedSeats = 0;
 
   const formik = useFormik({
     initialValues: initialValues,
     validationSchema: validationSchema,
+    validateOnChange: false,
+    validateOnBlur: false,
     onSubmit: (values) => {
       const formattedDateArrival = Date.parse(formatDate(values.dateArrival));
       const formattedDateDeparture = Date.parse(
@@ -176,6 +180,10 @@ const HotelPage = ({ promise, auth, currencyList, onBooking }) => {
           availableDiff -= availableSeats;
           availableSeats = 0;
         }
+        bookedSeats =
+          availableDiff > 0
+            ? values.numberAnimals - availableDiff
+            : values.numberAnimals;
         vacantRooms[date] = {
           availableSeats: availableSeats,
           usersId: [
@@ -184,9 +192,7 @@ const HotelPage = ({ promise, auth, currencyList, onBooking }) => {
           ],
           usersAnimalsCount: [
             ...(currentHotel?.freeRooms?.[date]?.usersAnimalsCount || []),
-            availableDiff > 0
-              ? values.numberAnimals - availableDiff
-              : values.numberAnimals,
+            bookedSeats,
           ],
         };
       }
@@ -203,6 +209,22 @@ const HotelPage = ({ promise, auth, currencyList, onBooking }) => {
     },
   });
 
+  const { handleSubmit, errors, values, handleChange } = formik;
+
+  useEffect(() => {
+    if (values?.dateArrival && values?.dateDeparture) {
+      if (
+        Date.parse(formatDate(values.dateArrival)) >=
+        Date.parse(formatDate(values.dateDeparture))
+      ) {
+        formik.setFieldValue(
+          "dateDeparture",
+          new Date(values.dateArrival.getTime() + 24 * 60 * 60 * 1000)
+        );
+      }
+    }
+  }, [values.dateArrival, values.dateDeparture]);
+
   const disableBookingDates = (date) => {
     const formattedDate = Date.parse(formatDate(date));
     return (
@@ -213,21 +235,6 @@ const HotelPage = ({ promise, auth, currencyList, onBooking }) => {
         ))
     );
   };
-
-  const { handleSubmit, errors, values, handleChange, dirty } = formik;
-
-  useEffect(() => {
-    if (values?.dateArrival && values?.dateDeparture) {
-      if (
-        Date.parse(formatDate(values.dateArrival)) >=
-        Date.parse(formatDate(values.dateDeparture))
-      ) {
-        values.dateDeparture = new Date(
-          values.dateArrival.getTime() + 24 * 60 * 60 * 1000
-        );
-      }
-    }
-  }, [values.dateArrival, values.dateDeparture]);
 
   if (errors?.dateArrival) {
     errors.dateArrival = "Arrival date is required";
@@ -260,14 +267,16 @@ const HotelPage = ({ promise, auth, currencyList, onBooking }) => {
     setOpenDialog(value);
   };
 
+  const [msg, sendSnackbar] = useSnackBar();
+
   return (
     <div style={hotelPageStyles.main}>
-      {openDialog ? (
+      {openDialog && (
         <FullWindowGallery
           updateOpenDialogStatus={updateOpenDialogStatus}
           gallery={fullHotelPhotos}
         />
-      ) : null}
+      )}
       <div>
         <Typography variant="h3" gutterBottom component="div">
           {currentHotel?.name}
@@ -474,8 +483,20 @@ const HotelPage = ({ promise, auth, currencyList, onBooking }) => {
                   color="secondary"
                   variant="contained"
                   fullWidth
-                  disabled={
-                    !auth?.token || !dirty || Object.keys(errors).length > 0
+                  disabled={!auth?.token}
+                  onClick={() =>
+                    values.dateArrival &&
+                    values.dateDeparture &&
+                    values.numberAnimals &&
+                    sendSnackbar({
+                      msg: `You have booked ${
+                        values.numberAnimals
+                      } seats from ${formatStringDate(
+                        Date.parse(values.dateArrival)
+                      )} to ${formatStringDate(
+                        Date.parse(values.dateDeparture)
+                      )}`,
+                    })
                   }
                 >
                   {auth?.token ? "Book" : "Login to book"}
@@ -504,11 +525,7 @@ const HotelPage = ({ promise, auth, currencyList, onBooking }) => {
                   </Link>
                 }
                 title={`${review.owner.firstName} ${review.owner.lastName}`}
-                subheader={`${stringMonth(
-                  new Date(review.createdAt).getMonth()
-                )} ${new Date(review.createdAt).getDate()}, ${new Date(
-                  review.createdAt
-                ).getFullYear()}`}
+                subheader={formatStringDate(review.createdAt)}
               />
               <CardContent>
                 <Typography variant="body2" color="text.secondary">
@@ -533,9 +550,9 @@ const HotelPage = ({ promise, auth, currencyList, onBooking }) => {
               </Link>
             }
             title={`Onwer: ${currentHotel?.owner?.firstName} ${currentHotel?.owner?.lastName}`}
-            subheader={`On Shaggy tail since ${stringMonth(
-              new Date(currentHotel?.owner?.createdAt).getMonth()
-            )} ${new Date(currentHotel?.owner?.createdAt).getFullYear()}`}
+            subheader={`On Shaggy tail since ${formatStringDate(
+              currentHotel?.owner?.createdAt
+            )}`}
           />
         </Card>
       </div>

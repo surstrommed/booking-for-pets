@@ -6,10 +6,10 @@
       "firstName": "Anton",
       "lastName": "Zadorozhnyi",
       "createdAt": 1647206008510,
-      "pictureUrl": "https://i.ibb.co/JtkCt7k/557d644f-12f3-49e1-bb66-23c16400540d.png",
+      "pictureUrl": "https://i.ibb.co/MsPzzFM/147144.png",
       "currency": 1,
       "id": 1,
-      "password": "$2a$10$TRrMWc0HrQ1wirbdFrHMv.h1efH6cYg1c5glmH9FrFUgX3TrMIGyq"
+      "password": "$2a$10$kEt9nhEhB8UBzT54fRcvvex6iMa7F0h.cYfa8tprn0uGi/XFpSxKC"
     },
     {
       "email": "user1231@ukr.net",
@@ -85,59 +85,11 @@
         "https://talant.shop/static/items/2019/December/5de924e88c52ab7d0ef8a6a7-medium.jpg",
         "https://besplatka.ua/aws/746x-/49/71/74/19/veterinarnyi-centr-zveropolis---gostinica-dlya-kotov-i-photo-7a4d.jpg"
       ],
-      "hotelRooms": 20,
-      "freeRooms": {
-        "1648760400000": {
-          "availableSeats": 0,
-          "usersId": [
-            1,
-            5
-          ],
-          "usersAnimalsCount": [
-            10,
-            10
-          ]
-        },
-        "1648846800000": {
-          "availableSeats": 0,
-          "usersId": [
-            1,
-            5
-          ],
-          "usersAnimalsCount": [
-            10,
-            10
-          ]
-        }
-      },
-      "userRequests": [
-        [
-          1648760400000,
-          1648846800000,
-          10,
-          1
-        ],
-        [
-          1648760400000,
-          1648846800000,
-          10,
-          5
-        ]
-      ],
-      "disableUserDates": {
-        "1": [
-          1648760400000,
-          1648846800000
-        ],
-        "5": [
-          1648760400000,
-          1648846800000
-        ]
-      },
-      "disableUsersDates": [
-        1648760400000,
-        1648846800000
-      ],
+      "hotelRooms": 40,
+      "freeRooms": {},
+      "userRequests": [],
+      "disableUserDates": {},
+      "disableUsersDates": [],
       "price": "15",
       "owner": {
         "id": 3,

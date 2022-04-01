@@ -123,6 +123,16 @@ export const actionChangeAvatar = (image: File) => async (dispatch) => {
   }
 };
 
+export const actionDeleteAvatar = () => async (dispatch) => {
+  const { password } = jwtDecode(sessionStorage.authToken);
+  const { id, email }: { id: number; email: string } = getState().auth.payload;
+  if (id && email && password) {
+    await dispatch(
+      actionFullUserUpdate({ id, email, password, pictureUrl: null })
+    );
+  }
+};
+
 export const actionChangePassword =
   (password: string, newPassword: string) => async (dispatch) => {
     const { id, email }: { id: number; email: string } =

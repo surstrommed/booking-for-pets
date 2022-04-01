@@ -11,20 +11,42 @@ const HotelsList = ({ promise }) => {
   const locationParameter = params?.location
     ? spaceAfterComma(params.location)
     : "";
-  const arrivalParameter = params?.arrive ? spaceAfterComma(params.arrive) : "";
-  const departureParameter = params?.departure
-    ? spaceAfterComma(params.departure)
-    : "";
-  const numberParameter = params?.number ? spaceAfterComma(params.number) : "";
+  const arrivalParameter = params?.arrive || "";
+  const departureParameter = params?.departure || "";
+  const numberParameter = params?.number || "";
 
-  const hotels = locationParameter
-    ? promise?.getHotels?.payload?.filter(
-        (hotel) =>
-          hotel.location === locationParameter &&
-          numberParameter <= 10 &&
-          hotel.freeRooms >= numberParameter
-      )
-    : promise?.getHotels?.payload;
+  const dateAvailabilityCheck = (freeRooms) => {
+    let checkFlag = true;
+    if (Object.keys(freeRooms).length > 0) {
+      const freeRoomsKeys = Object.keys(freeRooms);
+      const checkArrival = freeRoomsKeys.some(
+        (userId) => userId === arrivalParameter
+      );
+      const checkDeparture = freeRoomsKeys.some(
+        (userId) => userId === departureParameter
+      );
+      if (checkArrival) {
+        if (freeRooms[arrivalParameter].availableSeats - +numberParameter < 0) {
+          checkFlag = false;
+        }
+      }
+      if (checkDeparture) {
+        if (
+          freeRooms[departureParameter].availableSeats - +numberParameter <
+          0
+        ) {
+          checkFlag = false;
+        }
+      }
+    }
+    return checkFlag;
+  };
+
+  const hotels = promise?.getHotels?.payload?.filter(
+    (hotel) =>
+      hotel.location === locationParameter &&
+      dateAvailabilityCheck(hotel.freeRooms)
+  );
 
   return (
     <>

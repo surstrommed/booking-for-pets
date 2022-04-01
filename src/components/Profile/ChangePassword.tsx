@@ -3,17 +3,14 @@ import { connect } from "react-redux";
 import { RootState } from "../App";
 import { useFormik } from "formik";
 import * as Yup from "yup";
-import {
-  Button,
-  Typography,
-  InputAdornment,
-  IconButton,
-  TextField,
-} from "@mui/material";
+import { Button, InputAdornment, IconButton, TextField } from "@mui/material";
 import VisibilityIcon from "@mui/icons-material/Visibility";
 import VisibilityOffIcon from "@mui/icons-material/VisibilityOff";
 import { actionChangePassword } from "./../../actions/thunks";
 import { changeProfileStyles } from "./profileStyles";
+import Card from "@mui/material/Card";
+import { Typography } from "@mui/material";
+import { validatePassword } from "../../helpers";
 
 const validationSchema = Yup.object().shape({
   password: Yup.string().required("Password is required"),
@@ -23,7 +20,7 @@ const validationSchema = Yup.object().shape({
   newPassword: Yup.string()
     .required()
     .matches(
-      /^.*(?=.{8,})((?=.*[!@#$%^&*()\-_=+{};:,<.>]){1})(?=.*\d)((?=.*[a-z]){1})((?=.*[A-Z]){1}).*$/,
+      validatePassword,
       "Password must contain at least 8 characters, one uppercase, one number and one special case character"
     ),
 });
@@ -50,11 +47,11 @@ const ChangePassword = ({ changePassword }) => {
   const { handleSubmit, handleChange, values, touched, errors } = formik;
 
   return (
-    <div>
-      <Typography variant="h4" gutterBottom component="div">
-        Your password:
+    <Card sx={changeProfileStyles.passwordCard}>
+      <Typography variant="body1" gutterBottom>
+        To change your password, please enter your current password, repeat it
+        and enter the new password you wish to set.
       </Typography>
-      <hr />
       <form className="profileForm" onSubmit={handleSubmit}>
         <TextField
           id="password"
@@ -65,6 +62,8 @@ const ChangePassword = ({ changePassword }) => {
           onChange={handleChange}
           error={touched.password && Boolean(errors.password)}
           helperText={touched.password && errors.password}
+          color="secondary"
+          fullWidth
           InputProps={{
             endAdornment: (
               <InputAdornment position="end">
@@ -89,6 +88,8 @@ const ChangePassword = ({ changePassword }) => {
           onChange={handleChange}
           error={touched.retryPassword && Boolean(errors.retryPassword)}
           helperText={touched.retryPassword && errors.retryPassword}
+          color="secondary"
+          fullWidth
           InputProps={{
             endAdornment: (
               <InputAdornment position="end">
@@ -117,6 +118,8 @@ const ChangePassword = ({ changePassword }) => {
           onChange={handleChange}
           error={touched.newPassword && Boolean(errors.newPassword)}
           helperText={touched.newPassword && errors.newPassword}
+          color="secondary"
+          fullWidth
           InputProps={{
             endAdornment: (
               <InputAdornment position="end">
@@ -135,7 +138,7 @@ const ChangePassword = ({ changePassword }) => {
         <Button
           type="submit"
           variant="contained"
-          color="primary"
+          color="secondary"
           style={changeProfileStyles.saveButton}
           disabled={
             !values.password ||
@@ -147,7 +150,7 @@ const ChangePassword = ({ changePassword }) => {
           Save
         </Button>
       </form>
-    </div>
+    </Card>
   );
 };
 

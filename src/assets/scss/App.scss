@@ -79,18 +79,18 @@ a {
     justify-content: space-around;
   }
   .profileForm {
-    margin-left: 5%;
+    margin-left: 30%;
     div {
       margin: 1vh;
+      width: 70%;
+    }
+    button {
+      width: 50%;
     }
   }
   .alertError {
     width: 50%;
     margin-left: 25%;
-  }
-  #changeAvatar {
-    width: 30%;
-    margin-left: 5%;
   }
   .customDropzone {
     background: white;
