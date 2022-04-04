@@ -104,4 +104,29 @@ export const profileIconStyles = {
     fontSize: "32px",
   },
   fontWeight: { fontWeight: "bold" },
+  flexGrow: {
+    flexGrow: 0,
+  },
+  padding: {
+    p: 0,
+  },
+  marginProfileMenu: { mt: "45px" },
+};
+
+export const dialogCurrencyStyles = {
+  tab: {
+    p: 3,
+  },
+  tabs: {
+    display: "flex",
+    marginTop: "5vh",
+  },
+  tabBoxMain: {
+    padding: "3vh 0 3vh 3vh",
+    borderBottom: 1,
+    borderColor: "divider",
+  },
+  tabBoxWidth: {
+    width: "100%",
+  },
 };

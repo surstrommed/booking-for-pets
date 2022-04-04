@@ -9,6 +9,7 @@ import { RootState } from "../App";
 import { connect } from "react-redux";
 import { actionFullHotelUpdate } from "./../../actions/thunks";
 import { truncText } from "../../helpers/index";
+import { hotelCardStyles } from "./hotelsStyle";
 
 const HotelCard = ({
   index,
@@ -21,10 +22,7 @@ const HotelCard = ({
 }) => {
   return (
     <Link to={`/hotels/hotel/${id}`}>
-      <Card
-        sx={{ width: 245, height: 300 }}
-        onClick={() => hotelUpdate({ id })}
-      >
+      <Card sx={hotelCardStyles.main} onClick={() => hotelUpdate({ id })}>
         <CardActionArea>
           <CardMedia
             component="img"

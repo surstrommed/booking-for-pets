@@ -85,59 +85,99 @@
         "https://talant.shop/static/items/2019/December/5de924e88c52ab7d0ef8a6a7-medium.jpg",
         "https://besplatka.ua/aws/746x-/49/71/74/19/veterinarnyi-centr-zveropolis---gostinica-dlya-kotov-i-photo-7a4d.jpg"
       ],
-      "hotelRooms": 20,
+      "hotelRooms": 40,
       "freeRooms": {
-        "1648760400000": {
-          "availableSeats": 0,
+        "1649106000000": {
+          "availableSeats": 30,
           "usersId": [
             1,
-            5
+            1,
+            1,
+            1,
+            1,
+            1
           ],
           "usersAnimalsCount": [
-            10,
-            10
+            3,
+            3,
+            1,
+            1,
+            1,
+            1
           ]
         },
-        "1648846800000": {
-          "availableSeats": 0,
+        "1649192400000": {
+          "availableSeats": 30,
           "usersId": [
             1,
-            5
+            1,
+            1,
+            1,
+            1,
+            1
           ],
           "usersAnimalsCount": [
-            10,
-            10
+            3,
+            3,
+            1,
+            1,
+            1,
+            1
+          ]
+        },
+        "1649278800000": {
+          "availableSeats": 33,
+          "usersId": [
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1
+          ],
+          "usersAnimalsCount": [
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1
+          ]
+        },
+        "1649365200000": {
+          "availableSeats": 37,
+          "usersId": [
+            1,
+            1,
+            1
+          ],
+          "usersAnimalsCount": [
+            1,
+            1,
+            1
           ]
         }
       },
-      "userRequests": [
-        [
-          1648760400000,
-          1648846800000,
-          10,
-          1
-        ],
-        [
-          1648760400000,
-          1648846800000,
-          10,
-          5
-        ]
-      ],
+      "userRequests": [],
       "disableUserDates": {
         "1": [
-          1648760400000,
-          1648846800000
-        ],
-        "5": [
-          1648760400000,
-          1648846800000
+          1649106000000,
+          1649192400000,
+          1649106000000,
+          1649192400000,
+          1649106000000,
+          1649192400000,
+          1649106000000,
+          1649192400000,
+          1649106000000,
+          1649192400000,
+          1649106000000,
+          1649192400000
         ]
       },
-      "disableUsersDates": [
-        1648760400000,
-        1648846800000
-      ],
+      "disableUsersDates": [],
       "price": "15",
       "owner": {
         "id": 3,

@@ -13,7 +13,7 @@ import IconButton from "@mui/material/IconButton";
 import IosShareOutlinedIcon from "@mui/icons-material/IosShareOutlined";
 import { fullWindowStyles } from "./hotelsStyle";
 
-function srcset(
+function formatImageSrc(
   image: string,
   width: number,
   height: number,
@@ -97,7 +97,7 @@ export default function FullWindowGallery({ updateOpenDialogStatus, gallery }) {
             return (
               <ImageListItem key={index} cols={cols} rows={rows}>
                 <img
-                  {...srcset(item.img, 250, 200, rows, cols)}
+                  {...formatImageSrc(item.img, 250, 200, rows, cols)}
                   alt={item.title}
                   loading="lazy"
                 />

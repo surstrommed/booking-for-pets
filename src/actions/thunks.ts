@@ -184,5 +184,6 @@ export const actionFullHotelUpdate =
           reviews,
         })
       );
+      window.location.reload();
     }
   };

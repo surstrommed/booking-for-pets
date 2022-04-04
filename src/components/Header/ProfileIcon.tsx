@@ -95,9 +95,12 @@ const ProfileIcon = ({ auth, promise, actionLogOut }: IProfile) => {
           signUpOpenState={updateSignUpModal}
         />
       )}
-      <Box sx={{ flexGrow: 0 }}>
+      <Box sx={profileIconStyles.flexGrow}>
         <Tooltip title="Open profile">
-          <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
+          <IconButton
+            onClick={handleOpenUserMenu}
+            sx={profileIconStyles.padding}
+          >
             {auth?.token ? (
               <Badge badgeContent={3} color="error">
                 <Button style={profileIconStyles.main}>
@@ -119,7 +122,7 @@ const ProfileIcon = ({ auth, promise, actionLogOut }: IProfile) => {
           </IconButton>
         </Tooltip>
         <Menu
-          sx={{ mt: "45px" }}
+          sx={profileIconStyles.marginProfileMenu}
           id="menu-appbar"
           anchorEl={anchorElUser}
           anchorOrigin={{

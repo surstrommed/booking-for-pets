@@ -25,11 +25,10 @@ export const hotelPageStyles = {
   gallery: {
     borderRadius: "5vh",
   },
-  reviews: {
+  dFlex: {
     display: "flex",
-    flexWrap: "wrap",
   },
-  review: {
+  owner: {
     flexBasis: "45%",
     margin: "2vh",
   },
@@ -41,6 +40,17 @@ export const hotelPageStyles = {
   stickyBlock: {
     position: "sticky",
     maxWidth: 400,
+  },
+  submitButton: {
+    width: "50%",
+    fontSize: "10px",
+    position: "absolute",
+    bottom: 5,
+    left: 50,
+  },
+  datePickerBlock: {
+    display: "flex",
+    marginBottom: 10,
   },
 };
 
@@ -65,4 +75,23 @@ export const fullWindowStyles = {
     padding: "2vh auto",
     transform: "translateZ(0)",
   },
+};
+
+export const hotelCardStyles = {
+  main: {
+    width: 245,
+    height: 300,
+  },
+};
+
+export const hotelReviewStyles = {
+  main: {
+    width: 245,
+    height: 300,
+  },
+  review: {
+    flexBasis: "45%",
+    margin: "2vh",
+  },
+  reviewAvatar: { width: 56, height: 56 },
 };
