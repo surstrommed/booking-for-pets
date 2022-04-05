@@ -80,12 +80,15 @@ const ChangePersonalData = ({ auth, onUpdate }) => {
 
   return (
     <Card sx={changeProfileStyles.personalDataCard}>
-      <Typography variant="body1" gutterBottom>
+      <Typography variant="body2" gutterBottom>
         To change the data, enter a new value in one of the fields and click
         Save to update your data.
       </Typography>
       <div>
-        <form className="profileForm" onSubmit={handleSubmit}>
+        <form
+          onSubmit={handleSubmit}
+          style={changeProfileStyles.personalDataForm}
+        >
           <TextField
             id="email"
             name="email"
@@ -96,6 +99,7 @@ const ChangePersonalData = ({ auth, onUpdate }) => {
             helperText={touched.email && errors.email}
             color="secondary"
             fullWidth
+            sx={changeProfileStyles.personalDataFormField}
           />
           <br />
           <TextField
@@ -108,6 +112,7 @@ const ChangePersonalData = ({ auth, onUpdate }) => {
             helperText={touched.login && errors.login}
             color="secondary"
             fullWidth
+            sx={changeProfileStyles.personalDataFormField}
           />
           <br />
           <TextField
@@ -120,6 +125,7 @@ const ChangePersonalData = ({ auth, onUpdate }) => {
             helperText={touched.firstName && errors.firstName}
             color="secondary"
             fullWidth
+            sx={changeProfileStyles.personalDataFormField}
           />
           <br />
           <TextField
@@ -132,11 +138,9 @@ const ChangePersonalData = ({ auth, onUpdate }) => {
             helperText={touched.lastName && errors.lastName}
             color="secondary"
             fullWidth
+            sx={changeProfileStyles.personalDataFormField}
           />
           <br />
-          <Typography variant="caption" display="block" gutterBottom>
-            Confirm your password to change user data
-          </Typography>
           <TextField
             id="password"
             name="password"
@@ -148,6 +152,7 @@ const ChangePersonalData = ({ auth, onUpdate }) => {
             helperText={touched.password && errors.password}
             color="secondary"
             fullWidth
+            sx={changeProfileStyles.personalDataFormField}
             InputProps={{
               endAdornment: (
                 <InputAdornment position="end">
@@ -162,6 +167,14 @@ const ChangePersonalData = ({ auth, onUpdate }) => {
               ),
             }}
           />
+          <Typography
+            variant="caption"
+            display="block"
+            align="center"
+            gutterBottom
+          >
+            Confirm your password to change user data
+          </Typography>
           <br />
           <Button
             type="submit"

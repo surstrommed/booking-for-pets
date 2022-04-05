@@ -4,6 +4,7 @@ import Autocomplete from "@mui/material/Autocomplete";
 import CircularProgress from "@mui/material/CircularProgress";
 import { getHotels } from "./../../server/api/api";
 import { uniqueArray } from "../../helpers";
+import { autocompleteStyles } from "./auxiliaryStyles";
 
 export const AsyncAutocomplete = ({ updateLocation }) => {
   const [open, setOpen] = useState(false);
@@ -38,7 +39,7 @@ export const AsyncAutocomplete = ({ updateLocation }) => {
   return (
     <Autocomplete
       id="asynchronous-demo"
-      sx={{ width: 300 }}
+      sx={autocompleteStyles.main}
       open={open}
       onSelect={updateLocation}
       onOpen={() => {
@@ -63,7 +64,7 @@ export const AsyncAutocomplete = ({ updateLocation }) => {
                   <CircularProgress
                     color="inherit"
                     size={20}
-                    sx={{ marginRight: 2 }}
+                    sx={autocompleteStyles.loading}
                   />
                 ) : null}
                 {params.InputProps.endAdornment}

@@ -19,17 +19,21 @@ const HotelsList = ({ promise }) => {
     let checkFlag = true;
     if (Object.keys(freeRooms).length > 0) {
       const freeRoomsKeys = Object.keys(freeRooms);
+
       const checkArrival = freeRoomsKeys.some(
         (userId) => userId === arrivalParameter
       );
+
       const checkDeparture = freeRoomsKeys.some(
         (userId) => userId === departureParameter
       );
+
       if (checkArrival) {
         if (freeRooms[arrivalParameter].availableSeats - +numberParameter < 0) {
           checkFlag = false;
         }
       }
+
       if (checkDeparture) {
         if (
           freeRooms[departureParameter].availableSeats - +numberParameter <
@@ -57,12 +61,14 @@ const HotelsList = ({ promise }) => {
         {(hotels || []).map((hotel, index) => (
           <CHotelCard
             key={index}
-            index
-            id={hotel.id}
-            image={hotel.photos[0]}
-            title={hotel.name}
-            description={hotel.description}
-            price={hotel.price}
+            hotelData={{
+              index,
+              id: hotel.id,
+              image: hotel.photos[0],
+              title: hotel.name,
+              description: hotel.description,
+              price: hotel.price,
+            }}
           />
         ))}
       </div>

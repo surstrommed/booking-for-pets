@@ -1,45 +1,35 @@
 import React from "react";
-import Card from "@mui/material/Card";
-import CardContent from "@mui/material/CardContent";
-import CardMedia from "@mui/material/CardMedia";
-import Typography from "@mui/material/Typography";
+import { Card, CardContent, CardMedia, Typography } from "@mui/material";
 import { CardActionArea } from "@mui/material";
 import { Link } from "react-router-dom";
 import { RootState } from "../App";
 import { connect } from "react-redux";
 import { actionFullHotelUpdate } from "./../../actions/thunks";
 import { truncText } from "../../helpers/index";
+import { hotelCardStyles } from "./hotelsStyle";
 
-const HotelCard = ({
-  index,
-  id,
-  image,
-  title,
-  description,
-  price,
-  hotelUpdate,
-}) => {
+const HotelCard = ({ hotelData, hotelUpdate }) => {
   return (
-    <Link to={`/hotels/hotel/${id}`}>
+    <Link to={`/hotels/hotel/${hotelData.id}`}>
       <Card
-        sx={{ width: 245, height: 300 }}
-        onClick={() => hotelUpdate({ id })}
+        sx={hotelCardStyles.main}
+        onClick={() => hotelUpdate({ id: hotelData.id })}
       >
         <CardActionArea>
           <CardMedia
             component="img"
             height="140"
-            image={`${image}`}
-            alt={`Hotel ${index + 1}`}
+            image={`${hotelData.image}`}
+            alt={`Hotel ${hotelData.index + 1}`}
           />
           <CardContent>
             <Typography gutterBottom variant="h5" component="div">
-              {title}
+              {hotelData.title}
             </Typography>
             <Typography variant="body2" color="text.secondary">
-              {truncText(description)}
+              {truncText(hotelData.description)}
               <br />
-              {price}
+              {hotelData.price}
             </Typography>
           </CardContent>
         </CardActionArea>

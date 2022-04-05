@@ -5,12 +5,9 @@ import { Box } from "@mui/material";
 import { CDropzone } from "./../Auxiliary/Dropzone";
 import { changeProfileStyles } from "./profileStyles";
 import { noAvatar } from "../../helpers/index";
-import Badge from "@mui/material/Badge";
-import IconButton from "@mui/material/IconButton";
 import CancelIcon from "@mui/icons-material/Cancel";
-import Card from "@mui/material/Card";
-import CardActions from "@mui/material/CardActions";
 import { actionDeleteAvatar } from "../../actions/thunks";
+import { Badge, IconButton, Card, CardActions } from "@mui/material";
 
 const ChangeAvatar = ({ auth, deleteAvatar }) => {
   return (
@@ -18,12 +15,10 @@ const ChangeAvatar = ({ auth, deleteAvatar }) => {
       {auth?.payload?.pictureUrl ? (
         <Badge
           overlap="circular"
+          sx={changeProfileStyles.avatarBadge}
           anchorOrigin={{ vertical: "top", horizontal: "right" }}
           badgeContent={
-            <IconButton
-              onClick={() => deleteAvatar()}
-              sx={changeProfileStyles.cancelIcon}
-            >
+            <IconButton onClick={() => deleteAvatar()}>
               <CancelIcon />
             </IconButton>
           }

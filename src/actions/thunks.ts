@@ -38,32 +38,26 @@ export const actionPromise = (name, promise) => async (dispatch) => {
 export const actionFullLogin =
   (email: string, password: string) => async (dispatch) => {
     const loginUser = await dispatch(actionLogin(email, password));
+
     if (loginUser) {
       const token = jwtCode({ ...loginUser.user, password });
       sessionStorage.authToken = token;
+
       if (sessionStorage.authToken) {
         await dispatch(actionAuthLogin(token));
-        history.go(0);
+        (history.location.pathname.includes("signin") ||
+          history.location.pathname.includes("signup")) &&
+          history.push("/");
       }
     }
   };
 
-export const actionFullRegister =
-  (
-    email: string,
-    login: string,
-    firstName: string,
-    lastName: string,
-    password: string
-  ) =>
-  async (dispatch) => {
-    const registerUser = await dispatch(
-      actionRegister(email, login, firstName, lastName, password)
-    );
-    if (registerUser.user) {
-      await dispatch(actionFullLogin(email, password));
-    }
-  };
+export const actionFullRegister = (user) => async (dispatch) => {
+  const registerUser = await dispatch(actionRegister(user));
+  if (registerUser.user) {
+    await dispatch(actionFullLogin(user.email, user.password));
+  }
+};
 
 export const actionFullGetCurrencyExchange = () => async (dispatch) => {
   const currencyExchangeList = await dispatch(actionGetCurrencyExchange());
@@ -80,34 +74,26 @@ export const actionFullGetCurrencyList = () => async (dispatch) => {
 };
 
 export const actionFullUserUpdate =
-  ({
-    id,
-    email,
-    login,
-    firstName,
-    lastName,
-    password,
-    newPassword,
-    pictureUrl,
-    currency,
-  }: UserModel) =>
-  async (dispatch) => {
-    const findUser = await dispatch(actionLogin(email, password));
+  (userData: UserModel) => async (dispatch) => {
+    const findUser = await dispatch(
+      actionLogin(userData.email, userData.password)
+    );
+
     if (findUser) {
       const updateUser = await dispatch(
         actionUserUpdate({
-          id,
-          email,
-          login,
-          firstName,
-          lastName,
-          password: newPassword ? newPassword : password,
-          pictureUrl,
-          currency,
+          ...userData,
+          password: userData?.newPassword || userData?.password,
         })
       );
+
       if (Object.keys(updateUser).length !== 0) {
-        await dispatch(actionFullLogin(email, newPassword || password));
+        await dispatch(
+          actionFullLogin(
+            userData.email,
+            userData?.newPassword || userData?.password
+          )
+        );
       }
     }
   };
@@ -116,6 +102,7 @@ export const actionChangeAvatar = (image: File) => async (dispatch) => {
   const avatar: string = await dispatch(actionUploadPhoto(image));
   const { password } = jwtDecode(sessionStorage.authToken);
   const { id, email }: { id: number; email: string } = getState().auth.payload;
+
   if (avatar && id && email && password) {
     await dispatch(
       actionFullUserUpdate({ id, email, password, pictureUrl: avatar })
@@ -137,6 +124,7 @@ export const actionChangePassword =
   (password: string, newPassword: string) => async (dispatch) => {
     const { id, email }: { id: number; email: string } =
       getState().auth.payload;
+
     if (id && email) {
       await dispatch(
         actionFullUserUpdate({ id, email, password, newPassword })
@@ -149,50 +137,18 @@ export const actionChooseCurrency =
     const { password } = jwtDecode(sessionStorage.authToken);
     const { id, email }: { id: number; email: string } =
       getState().auth.payload;
+
     if (id && email && password) {
-      await dispatch(
-        actionFullUserUpdate({ id, email, password, currency: currencyId })
-      );
+      await dispatch(actionFullUserUpdate({ id, email, password, currencyId }));
     }
   };
 
 export const actionFullHotelUpdate =
-  ({
-    id,
-    name,
-    location,
-    address,
-    description,
-    photos,
-    hotelRooms,
-    freeRooms,
-    dates,
-    disableUserDates,
-    disableUsersDates,
-    price,
-    owner,
-    reviews,
-  }: HotelModel) =>
-  async (dispatch) => {
+  (hotelData: HotelModel) => async (dispatch) => {
     const { payload: allHotels } = getState().promise.getHotels;
+
     if (allHotels && Object.keys(allHotels).length !== 0) {
-      await dispatch(
-        actionHotelUpdate({
-          id,
-          name,
-          location,
-          address,
-          description,
-          photos,
-          hotelRooms,
-          freeRooms,
-          dates,
-          disableUserDates,
-          disableUsersDates,
-          price,
-          owner,
-          reviews,
-        })
-      );
+      await dispatch(actionHotelUpdate(hotelData));
+      history.go(0);
     }
   };

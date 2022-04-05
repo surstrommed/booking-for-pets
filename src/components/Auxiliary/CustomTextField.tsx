@@ -1,13 +1,9 @@
 import React from "react";
 import { alpha, styled } from "@mui/material/styles";
 import TextField, { TextFieldProps } from "@mui/material/TextField";
-import { OutlinedInputProps } from "@mui/material/OutlinedInput";
 
 export const CustomTextField = styled((props: TextFieldProps) => (
-  <TextField
-    InputProps={{ disableUnderline: true } as Partial<OutlinedInputProps>}
-    {...props}
-  />
+  <TextField {...props} />
 ))(({ theme }) => ({
   "& .MuiFilledInput-root": {
     border: "1px solid #e2e2e1",

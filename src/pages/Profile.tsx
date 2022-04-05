@@ -1,7 +1,6 @@
 import React, { useState } from "react";
 import Tabs from "@mui/material/Tabs";
 import Tab from "@mui/material/Tab";
-import Typography from "@mui/material/Typography";
 import Box from "@mui/material/Box";
 import { CChangePassword } from "./../components/Profile/ChangePassword";
 import { CChangeAvatar } from "./../components/Profile/ChangeAvatar";
@@ -9,7 +8,7 @@ import { CChangePersonalData } from "./../components/Profile/ChangePersonalData"
 import { Preloader } from "./../components/Auxiliary/Preloader";
 import { connect } from "react-redux";
 import { RootState } from "../components/App";
-
+import { pagesStyles } from "./pagesStyles";
 interface TabPanelProps {
   children?: React.ReactNode;
   index: number;
@@ -26,16 +25,12 @@ function TabPanel(props: TabPanelProps) {
       aria-labelledby={`vertical-tab-${index}`}
       {...other}
     >
-      {value === index && (
-        <Box sx={{ p: 3 }}>
-          <Typography>{children}</Typography>
-        </Box>
-      )}
+      {value === index && <Box sx={{ p: 3 }}>{children}</Box>}
     </div>
   );
 }
 
-function a11yProps(index: number) {
+function tabsProps(index: number) {
   return {
     id: `vertical-tab-${index}`,
     "aria-controls": `vertical-tabpanel-${index}`,
@@ -52,29 +47,20 @@ export const Profile = connect((state: RootState) => ({
   };
 
   return (
-    <Box
-      sx={{
-        flexGrow: 1,
-        display: "flex",
-      }}
-    >
+    <Box sx={pagesStyles.profile.main}>
       <Tabs
         orientation="vertical"
         variant="scrollable"
         value={value}
         textColor="secondary"
         onChange={handleChange}
-        sx={{
-          borderRight: 1,
-          borderColor: "divider",
-          height: "100%",
-        }}
+        sx={pagesStyles.profile.tabs}
       >
-        <Tab label="Avatar" {...a11yProps(0)} />
-        <Tab label="Personal data" {...a11yProps(1)} />
-        <Tab label="Password" {...a11yProps(2)} />
+        <Tab label="Avatar" {...tabsProps(0)} />
+        <Tab label="Personal data" {...tabsProps(1)} />
+        <Tab label="Password" {...tabsProps(2)} />
       </Tabs>
-      <div style={{ marginLeft: "auto", marginRight: "auto" }}>
+      <div style={pagesStyles.profile.tabPanel}>
         <TabPanel value={value} index={0}>
           <Preloader
             promiseName={"uploadAvatar"}

@@ -47,12 +47,12 @@ const ChangePassword = ({ changePassword }) => {
   const { handleSubmit, handleChange, values, touched, errors } = formik;
 
   return (
-    <Card sx={changeProfileStyles.passwordCard}>
-      <Typography variant="body1" gutterBottom>
+    <Card sx={changeProfileStyles.passwordsCard}>
+      <Typography variant="body2" gutterBottom>
         To change your password, please enter your current password, repeat it
         and enter the new password you wish to set.
       </Typography>
-      <form className="profileForm" onSubmit={handleSubmit}>
+      <form onSubmit={handleSubmit} style={changeProfileStyles.passwordsForm}>
         <TextField
           id="password"
           name="password"
@@ -64,6 +64,7 @@ const ChangePassword = ({ changePassword }) => {
           helperText={touched.password && errors.password}
           color="secondary"
           fullWidth
+          sx={changeProfileStyles.passwordFormField}
           InputProps={{
             endAdornment: (
               <InputAdornment position="end">
@@ -90,6 +91,7 @@ const ChangePassword = ({ changePassword }) => {
           helperText={touched.retryPassword && errors.retryPassword}
           color="secondary"
           fullWidth
+          sx={changeProfileStyles.passwordFormField}
           InputProps={{
             endAdornment: (
               <InputAdornment position="end">
@@ -120,6 +122,7 @@ const ChangePassword = ({ changePassword }) => {
           helperText={touched.newPassword && errors.newPassword}
           color="secondary"
           fullWidth
+          sx={changeProfileStyles.passwordFormField}
           InputProps={{
             endAdornment: (
               <InputAdornment position="end">

@@ -21,15 +21,17 @@ import {
 } from "../../helpers";
 import { CustomTextField } from "./../Auxiliary/CustomTextField";
 import { authFormStyles, authModalStyles } from "./authStyles";
+import { history } from "./../App";
+
 interface IRegister {
   promise?: object;
-  onRegister: (
-    email: string,
-    login: string,
-    firstName: string,
-    lastName: string,
-    password: string
-  ) => void;
+  onRegister: (user: {
+    email: string;
+    login: string;
+    firstName: string;
+    lastName: string;
+    password: string;
+  }) => void;
   modal?: boolean;
   signInOpenState?: (value: boolean) => void;
   signUpOpenState?: (value: boolean) => void;
@@ -98,13 +100,8 @@ const SignUp = ({
     validationSchema: validationSchema,
     onSubmit: (values) => {
       modal ? signUpOpenState(false) : null;
-      onRegister(
-        values.email,
-        values.login,
-        values.firstName,
-        values.lastName,
-        values.password
-      );
+      const { email, login, firstName, lastName, password } = values;
+      onRegister({ email, login, firstName, lastName, password });
     },
   });
 
@@ -261,10 +258,14 @@ const SignUp = ({
             >
               Already have an account?{" "}
               <Button
-                onClick={() => {
-                  signInOpenState(true);
-                  signUpOpenState(false);
-                }}
+                onClick={
+                  modal
+                    ? () => {
+                        signInOpenState(true);
+                        signUpOpenState(false);
+                      }
+                    : () => history.push("/signin")
+                }
                 color="secondary"
               >
                 Sign In

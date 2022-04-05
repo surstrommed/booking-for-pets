@@ -96,6 +96,29 @@ export const profileIconStyles = {
   avatarIcon: {
     width: "24px",
     height: "32px",
+    backgroundColor: "#fff",
   },
   fontWeight: { fontWeight: "bold" },
+  flexGrow: {
+    flexGrow: 0,
+  },
+  marginProfileMenu: { mt: "45px" },
+};
+
+export const dialogCurrencyStyles = {
+  tab: {
+    p: 3,
+  },
+  tabs: {
+    display: "flex",
+    marginTop: "5vh",
+  },
+  tabBoxMain: {
+    padding: "3vh 0 3vh 3vh",
+    borderBottom: 1,
+    borderColor: "divider",
+  },
+  tabBoxWidth: {
+    width: "100%",
+  },
 };

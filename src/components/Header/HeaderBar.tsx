@@ -1,22 +1,25 @@
 import React, { useEffect, useState } from "react";
-import AppBar from "@mui/material/AppBar";
-import Box from "@mui/material/Box";
-import Toolbar from "@mui/material/Toolbar";
-import IconButton from "@mui/material/IconButton";
-import Typography from "@mui/material/Typography";
-import Menu from "@mui/material/Menu";
-import Container from "@mui/material/Container";
-import Button from "@mui/material/Button";
-import MenuItem from "@mui/material/MenuItem";
+import {
+  AppBar,
+  Box,
+  Toolbar,
+  IconButton,
+  Typography,
+  Menu,
+  Container,
+  Button,
+  MenuItem,
+} from "@mui/material";
 import MenuIcon from "@mui/icons-material/Menu";
 import PetsIcon from "@mui/icons-material/Pets";
+import SearchIcon from "@mui/icons-material/Search";
 import LanguageOutlinedIcon from "@mui/icons-material/LanguageOutlined";
 import useScrollTrigger from "@mui/material/useScrollTrigger";
 import { CProfileIcon } from "./ProfileIcon";
 import { Link } from "react-router-dom";
 import { useLocation } from "react-router-dom";
 import SearchBar from "./SearchBar";
-import SearchIcon from "@mui/icons-material/Search";
+
 import { useDispatch, useSelector } from "react-redux";
 import {
   actionSmallHeader,
@@ -78,11 +81,13 @@ export default function HeaderBar(props: Props) {
   const [openDialog, setOpenDialog] = useState(false);
   const [openSignInModal, setOpenSignInModal] = useState(false);
   const [openSignUpModal, setOpenSignUpModal] = useState(false);
+
   const smallHeader = useSelector((state) => state.header.smallHeader);
   const bigHeader = useSelector((state) => state.header.bigHeader);
   const expandSmallHeader = useSelector(
     (state) => state.header.expandSmallHeader
   );
+
   const currentUser = useSelector((state) => state?.auth?.payload);
   const promise = useSelector((state) => state?.promise);
   const location = useLocation().pathname;
@@ -125,11 +130,11 @@ export default function HeaderBar(props: Props) {
     <div className="Header">
       <ElevationScroll {...props}>
         <AppBar>
-          {openDialog ? (
+          {openDialog && (
             <SlideDialogCurrency
               updateOpenDialogStatus={updateOpenDialogStatus}
             />
-          ) : null}
+          )}
           {openSignInModal && (
             <ModalWindow
               title={"Sign in"}

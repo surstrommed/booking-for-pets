@@ -21,3 +21,8 @@ export const modalWindowStyles = {
   title: { textAlign: "center" },
   body: { mt: 2 },
 };
+
+export const autocompleteStyles = {
+  main: { width: 300 },
+  loading: { marginRight: 2 },
+};

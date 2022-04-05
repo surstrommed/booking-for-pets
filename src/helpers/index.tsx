@@ -9,6 +9,21 @@ const apiErrors = [
   "This email or login already exists",
 ];
 
+const stringMonthsArray = [
+  "January",
+  "February",
+  "March",
+  "April",
+  "May",
+  "June",
+  "July",
+  "August",
+  "September",
+  "October",
+  "November",
+  "December",
+];
+
 export const apiUrl = "http://localhost:3000/";
 
 export const noAvatar =
@@ -17,20 +32,6 @@ export const noAvatar =
 export const defaultCurrencyId = 1;
 
 export const stringMonth = (monthNumber) => {
-  const stringMonthsArray = [
-    "January",
-    "February",
-    "March",
-    "April",
-    "May",
-    "June",
-    "July",
-    "August",
-    "September",
-    "October",
-    "November",
-    "December",
-  ];
   return stringMonthsArray[monthNumber];
 };
 
@@ -52,7 +53,7 @@ function base64url(source) {
   return encodedSource;
 }
 
-export const jwtCode = (data: { email: string; login: string }) => {
+export const jwtCode = (data) => {
   try {
     const header = {
       alg: "HS256",

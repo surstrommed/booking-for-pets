@@ -1,9 +1,5 @@
 import React, { useState, useEffect } from "react";
-import Backdrop from "@mui/material/Backdrop";
-import Box from "@mui/material/Box";
-import Modal from "@mui/material/Modal";
-import Fade from "@mui/material/Fade";
-import Typography from "@mui/material/Typography";
+import { Backdrop, Box, Modal, Fade, Typography } from "@mui/material";
 import { modalWindowStyles } from "./auxiliaryStyles";
 
 interface IModal {
@@ -60,12 +56,18 @@ export default function ModalWindow({
               {title}
             </Typography>
             <hr />
-            <Typography
-              id="transition-modal-description"
-              sx={modalWindowStyles.body}
-            >
-              {body}
-            </Typography>
+            <div>
+              {typeof body === "string" ? (
+                <Typography
+                  id="transition-modal-description"
+                  sx={modalWindowStyles.body}
+                >
+                  {body}
+                </Typography>
+              ) : (
+                <>{body}</>
+              )}
+            </div>
           </Box>
         </Fade>
       </Modal>
