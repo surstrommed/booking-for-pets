@@ -1,13 +1,9 @@
 import React, { useState } from "react";
-import ButtonGroup from "@mui/material/ButtonGroup";
-import Box from "@mui/material/Box";
+import { ButtonGroup, Box, TextField, Button, Divider } from "@mui/material";
 import DesktopDatePicker from "@mui/lab/DesktopDatePicker";
 import LocalizationProvider from "@mui/lab/LocalizationProvider";
 import AdapterDateFns from "@mui/lab/AdapterDateFns";
-import TextField from "@mui/material/TextField";
-import Button from "@mui/material/Button";
 import SearchIcon from "@mui/icons-material/Search";
-import Divider from "@mui/material/Divider";
 import { searchBar } from "./headerStyles";
 import { AsyncAutocomplete } from "./../Auxiliary/AsyncAutocomplete";
 import { Link } from "react-router-dom";

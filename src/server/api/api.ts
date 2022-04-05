@@ -36,7 +36,7 @@ const imageFetch = (url: string) => async (file: File) => {
     console.log("Error uploading image", error);
     throw new Error("Failed to connect to the server, please try again later.");
   });
-  return obj?.["data"]?.["data"]?.["image"]?.["url"];
+  return obj?.data?.data?.image?.url;
 };
 
 const exchangeRatesFetch = (url: string) => async () => {
@@ -44,7 +44,7 @@ const exchangeRatesFetch = (url: string) => async () => {
     console.log("Error getting exchange currency list", error);
     throw new Error("Failed to connect to the server, please try again later.");
   });
-  return obj?.["data"]?.["rates"];
+  return obj?.data?.rates;
 };
 
 export const uploadImage = imageFetch(

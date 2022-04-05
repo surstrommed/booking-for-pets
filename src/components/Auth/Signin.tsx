@@ -15,6 +15,8 @@ import { RootState } from "../App";
 import { actionFullLogin } from "../../actions/thunks";
 import { CustomTextField } from "./../Auxiliary/CustomTextField";
 import { authFormStyles, authModalStyles } from "./authStyles";
+import { history } from "./../App";
+
 interface ILogin {
   promise?: object;
   onLogin: (email: string, password: string) => void;
@@ -48,7 +50,8 @@ const SignIn = ({
     validationSchema: validationSchema,
     onSubmit: (values) => {
       modal ? signInOpenState(false) : null;
-      onLogin(values.email, values.password);
+      const { email, password } = values;
+      onLogin(email, password);
     },
   });
 
@@ -135,10 +138,14 @@ const SignIn = ({
             >
               Don&apos;t have an account yet?{" "}
               <Button
-                onClick={() => {
-                  signInOpenState(false);
-                  signUpOpenState(true);
-                }}
+                onClick={
+                  modal
+                    ? () => {
+                        signInOpenState(false);
+                        signUpOpenState(true);
+                      }
+                    : () => history.push("/signup")
+                }
                 color="secondary"
               >
                 Sign Up

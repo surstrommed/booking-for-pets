@@ -1,11 +1,13 @@
 import React, { useState, useEffect, forwardRef } from "react";
-import Dialog from "@mui/material/Dialog";
-import Slide from "@mui/material/Slide";
-import Tabs from "@mui/material/Tabs";
-import Tab from "@mui/material/Tab";
-import Typography from "@mui/material/Typography";
-import Box from "@mui/material/Box";
-import Button from "@mui/material/Button";
+import {
+  Dialog,
+  Slide,
+  Tabs,
+  Tab,
+  Typography,
+  Box,
+  Button,
+} from "@mui/material";
 import { RootState } from "../App";
 import { connect, useSelector } from "react-redux";
 import { Preloader } from "./../Auxiliary/Preloader";
@@ -51,7 +53,7 @@ function TabPanel(props: TabPanelProps) {
 function BasicTabs({ auth, currencyList, chooseCurrency }) {
   const currencySiteList = currencyList?.currency;
   const currentCurrency = (currencySiteList || []).find(
-    (currency) => auth?.payload?.currency === currency?.id
+    (currency) => auth?.payload?.currencyId === currency?.id
   );
   const [value, setValue] = useState(0);
 

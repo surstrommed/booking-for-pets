@@ -1,6 +1,5 @@
 import React from "react";
-import Typography from "@mui/material/Typography";
-import Box from "@mui/material/Box";
+import { Box } from "@mui/material";
 import { CSignUp } from "./../components/Auth/Signup";
 import { Preloader } from "./../components/Auxiliary/Preloader";
 import { RootState } from "../components/App";

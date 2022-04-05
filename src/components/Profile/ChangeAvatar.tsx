@@ -5,9 +5,7 @@ import { Box, Typography } from "@mui/material";
 import { CDropzone } from "./../Auxiliary/Dropzone";
 import { changeProfileStyles } from "./profileStyles";
 import { noAvatar } from "../../helpers/index";
-import Badge from "@mui/material/Badge";
-import IconButton from "@mui/material/IconButton";
-import CancelIcon from "@mui/icons-material/Cancel";
+import { Badge, IconButton, CancelIcon } from "@mui/material";
 
 const ChangeAvatar = ({ auth }) => {
   return (

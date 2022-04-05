@@ -35,12 +35,14 @@ const HotelsList = ({ promise }) => {
         {(hotels || []).map((hotel, index) => (
           <CHotelCard
             key={index}
-            index
-            id={hotel.id}
-            image={hotel.photos[0]}
-            title={hotel.name}
-            description={hotel.description}
-            price={hotel.price}
+            hotelData={{
+              index,
+              id: hotel.id,
+              image: hotel.photos[0],
+              title: hotel.name,
+              description: hotel.description,
+              price: hotel.price,
+            }}
           />
         ))}
       </div>

@@ -1,7 +1,7 @@
-import { number } from "yup";
-
 export interface JsonModel {
   users: UserModel[];
+  hotels: HotelModel[];
+  currency: CurrencyModel[];
 }
 export interface UserModel {
   id: number;
@@ -13,7 +13,7 @@ export interface UserModel {
   newPassword?: string;
   createdAt?: number;
   pictureUrl?: string | null;
-  currency?: number;
+  currencyId?: number;
 }
 
 export interface HotelModel {
@@ -31,4 +31,10 @@ export interface HotelModel {
   price?: string;
   owner?: object;
   reviews?: object[];
+}
+
+export interface CurrencyModel {
+  id: number;
+  name: string;
+  sign: string;
 }

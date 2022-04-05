@@ -1,16 +1,18 @@
 import React, { useState, forwardRef, useEffect } from "react";
-import Dialog from "@mui/material/Dialog";
-import AppBar from "@mui/material/AppBar";
-import Toolbar from "@mui/material/Toolbar";
-import Slide from "@mui/material/Slide";
+import {
+  Dialog,
+  AppBar,
+  Toolbar,
+  Slide,
+  Typography,
+  ImageList,
+  ImageListItem,
+  IconButton,
+} from "@mui/material";
 import ArrowBackIosNewOutlinedIcon from "@mui/icons-material/ArrowBackIosNewOutlined";
-import { Link } from "react-router-dom";
 import GradeOutlinedIcon from "@mui/icons-material/GradeOutlined";
-import { Typography } from "@mui/material";
-import ImageList from "@mui/material/ImageList";
-import ImageListItem from "@mui/material/ImageListItem";
-import IconButton from "@mui/material/IconButton";
 import IosShareOutlinedIcon from "@mui/icons-material/IosShareOutlined";
+import { Link } from "react-router-dom";
 import { fullWindowStyles } from "./hotelsStyle";
 
 function formatImageSrc(

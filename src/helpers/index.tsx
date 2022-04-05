@@ -53,7 +53,7 @@ function base64url(source) {
   return encodedSource;
 }
 
-export const jwtCode = (data: { email: string; login: string }) => {
+export const jwtCode = (data) => {
   try {
     const header = {
       alg: "HS256",
