@@ -13,7 +13,6 @@ import { UserModel, HotelModel } from "../server/api/api-models";
 import { defaultCurrencyId } from "./../helpers/index";
 
 export const actionLogin = (email: string, password: string) => {
-  console.log(email, password);
   return actionPromise("signin", userLogin({ email, password }));
 };
 
