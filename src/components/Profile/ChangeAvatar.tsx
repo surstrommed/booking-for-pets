@@ -5,9 +5,8 @@ import { Box } from "@mui/material";
 import { CDropzone } from "./../Auxiliary/Dropzone";
 import { changeProfileStyles } from "./profileStyles";
 import { noAvatar } from "../../helpers/index";
+import { Badge, IconButton } from "@mui/material";
 import CancelIcon from "@mui/icons-material/Cancel";
-import { actionDeleteAvatar } from "../../actions/thunks";
-import { Badge, IconButton, Card, CardActions } from "@mui/material";
 
 const ChangeAvatar = ({ auth, deleteAvatar }) => {
   return (
