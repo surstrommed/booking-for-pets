@@ -240,7 +240,7 @@ export default function HeaderBar(props: Props) {
               </Typography>
               <Box sx={headerBar.searchBox}>
                 {smallHeader ? (
-                  location === "/" ? (
+                  location === "/" && (
                     <Button
                       className="SearchField"
                       variant="contained"
@@ -249,7 +249,7 @@ export default function HeaderBar(props: Props) {
                     >
                       Start your search
                     </Button>
-                  ) : null
+                  )
                 ) : (
                   <div>
                     <Button>Search</Button>
@@ -258,7 +258,7 @@ export default function HeaderBar(props: Props) {
                 )}
               </Box>
               <Box sx={headerBar.searchFields}>
-                {bigHeader || expandSmallHeader ? (
+                {(bigHeader || expandSmallHeader) && (
                   <SearchBar
                     styles={
                       bigHeader
@@ -266,7 +266,7 @@ export default function HeaderBar(props: Props) {
                         : { borderRadius: "35px" }
                     }
                   />
-                ) : null}
+                )}
               </Box>
               <Button sx={headerBar.headerButtons}>
                 <Link to="/owners" onClick={() => window.scrollTo(0, 0)}>
