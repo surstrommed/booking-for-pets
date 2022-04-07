@@ -13,7 +13,6 @@ export const CustomTextField = styled((props: TextFieldProps) => (
     border: "1px solid #e2e2e1",
     overflow: "hidden",
     borderRadius: 4,
-    backgroundColor: "#fff",
     transition: theme.transitions.create([
       "border-color",
       "background-color",
@@ -23,9 +22,9 @@ export const CustomTextField = styled((props: TextFieldProps) => (
       backgroundColor: "transparent",
     },
     "&.Mui-focused": {
-      backgroundColor: "transparent",
+      backgroundColor: theme.palette.secondary.main,
       boxShadow: `${alpha(theme.palette.primary.main, 0.25)} 0 0 0 2px`,
-      borderColor: theme.palette.primary.main,
+      borderColor: theme.palette.secondary.main,
     },
   },
   "& label.Mui-focused": {

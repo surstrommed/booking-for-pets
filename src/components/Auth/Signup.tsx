@@ -1,76 +1,52 @@
 import React, { useState } from "react";
 import { useFormik } from "formik";
-import * as Yup from "yup";
 import {
   Button,
   Typography,
   InputAdornment,
   IconButton,
-  TextField,
   Box,
 } from "@mui/material";
 import VisibilityIcon from "@mui/icons-material/Visibility";
 import VisibilityOffIcon from "@mui/icons-material/VisibilityOff";
-import { Link } from "react-router-dom";
 import { actionFullRegister } from "../../actions/thunks";
 import { connect } from "react-redux";
 import { RootState } from "../App";
-import { validatePassword, validateLogin } from "../../helpers";
-import { validationError } from "./../../helpers/index";
 import { CustomTextField } from "./../Auxiliary/CustomTextField";
 import { authFormStyles, authModalStyles } from "./authStyles";
-interface IRegister {
-  promise?: object;
-  onRegister: (email: string, login: string, password: string) => void;
-  modal?: boolean;
-}
+import { signUpVS } from "./../../helpers/validationSchemes";
+import { IRegister, RegisterFormValues } from "./../../server/api/api-models";
 
-interface RegisterFormValues {
-  email: string;
-  login: string;
-  password: string;
-  retryPassword: string;
-}
-
-const validationSchema = Yup.object().shape({
-  email: Yup.string()
-    .email(validationError("Enter a valid email"))
-    .required(validationError("Email is required")),
-  login: Yup.string()
-    .matches(
-      validateLogin,
-      validationError(
-        "Login must be 3 to 8 characters long and must contain small letters and numbers"
-      )
-    )
-    .required(validationError("Login is required")),
-  password: Yup.string()
-    .matches(
-      validatePassword,
-      validationError(
-        "Password must contain at least 8 characters, one uppercase, one number and one special case character"
-      )
-    )
-    .required(validationError("Password is required")),
-  retryPassword: Yup.string()
-    .oneOf([Yup.ref("password")], validationError("Passwords do not match"))
-    .required(validationError("Retry password is required")),
-});
-
-const SignUp = ({ onRegister, modal }: IRegister) => {
+const SignUp = ({
+  onRegister,
+  modal,
+  signInOpenState,
+  signUpOpenState,
+}: IRegister) => {
   const [showPassword, setShowPassword] = useState(false);
   const [showRetryPassword, setShowRetryPassword] = useState(false);
+
   const initialValues: RegisterFormValues = {
     email: "",
     login: "",
+    firstName: "",
+    lastName: "",
     password: "",
     retryPassword: "",
   };
+
   const formik = useFormik({
     initialValues: initialValues,
-    validationSchema: validationSchema,
+    validationSchema: signUpVS,
     onSubmit: (values) => {
-      onRegister(values.email, values.login, values.password);
+      modal ? signUpOpenState(false) : null;
+      onRegister(
+        values.email,
+        values.login,
+        values.firstName,
+        values.lastName,
+        values.password
+      );
     },
   });
 
@@ -102,7 +78,8 @@ const SignUp = ({ onRegister, modal }: IRegister) => {
               onChange={handleChange}
               error={touched.email && Boolean(errors.email)}
               helperText={touched.email && errors.email}
-              variant="filled"
+              variant="outlined"
+              color="secondary"
               fullWidth
             />
             <br />
@@ -114,7 +91,34 @@ const SignUp = ({ onRegister, modal }: IRegister) => {
               onChange={handleChange}
               error={touched.login && Boolean(errors.login)}
               helperText={touched.login && errors.login}
-              variant="filled"
+              variant="outlined"
+              color="secondary"
+              fullWidth
+            />
+            <br />
+            <CustomTextField
+              id="firstName"
+              name="firstName"
+              label="First name"
+              value={values.firstName}
+              onChange={handleChange}
+              error={touched.firstName && Boolean(errors.firstName)}
+              helperText={touched.firstName && errors.firstName}
+              variant="outlined"
+              color="secondary"
+              fullWidth
+            />
+            <br />
+            <CustomTextField
+              id="lastName"
+              name="lastName"
+              label="Last name"
+              value={values.lastName}
+              onChange={handleChange}
+              error={touched.lastName && Boolean(errors.lastName)}
+              helperText={touched.lastName && errors.lastName}
+              variant="outlined"
+              color="secondary"
               fullWidth
             />
             <br />
@@ -127,7 +131,8 @@ const SignUp = ({ onRegister, modal }: IRegister) => {
               onChange={handleChange}
               error={touched.password && Boolean(errors.password)}
               helperText={touched.password && errors.password}
-              variant="filled"
+              variant="outlined"
+              color="secondary"
               fullWidth
               InputProps={{
                 endAdornment: (
@@ -157,7 +162,8 @@ const SignUp = ({ onRegister, modal }: IRegister) => {
               onChange={handleChange}
               error={touched.retryPassword && Boolean(errors.retryPassword)}
               helperText={touched.retryPassword && errors.retryPassword}
-              variant="filled"
+              variant="outlined"
+              color="secondary"
               fullWidth
               InputProps={{
                 endAdornment: (
@@ -189,19 +195,23 @@ const SignUp = ({ onRegister, modal }: IRegister) => {
             >
               Sign Up
             </Button>
-            {modal || (
-              <Typography
-                variant="subtitle1"
-                gutterBottom
-                component="div"
-                sx={authFormStyles.centerText}
+            <Typography
+              variant="subtitle1"
+              gutterBottom
+              component="div"
+              sx={authFormStyles.centerText}
+            >
+              Already have an account?{" "}
+              <Button
+                onClick={() => {
+                  signInOpenState(true);
+                  signUpOpenState(false);
+                }}
+                color="secondary"
               >
-                Already have an account?{" "}
-                <Button component={Link} to="/signin" color="secondary">
-                  Sign In
-                </Button>
-              </Typography>
-            )}
+                Sign In
+              </Button>
+            </Typography>
           </Box>
         </form>
       </div>

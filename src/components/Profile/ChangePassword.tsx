@@ -14,19 +14,7 @@ import VisibilityIcon from "@mui/icons-material/Visibility";
 import VisibilityOffIcon from "@mui/icons-material/VisibilityOff";
 import { actionChangePassword } from "./../../actions/thunks";
 import { changeProfileStyles } from "./profileStyles";
-
-const validationSchema = Yup.object().shape({
-  password: Yup.string().required("Password is required"),
-  retryPassword: Yup.string()
-    .oneOf([Yup.ref("password")], "Passwords do not match")
-    .required("Password is required"),
-  newPassword: Yup.string()
-    .required()
-    .matches(
-      /^.*(?=.{8,})((?=.*[!@#$%^&*()\-_=+{};:,<.>]){1})(?=.*\d)((?=.*[a-z]){1})((?=.*[A-Z]){1}).*$/,
-      "Password must contain at least 8 characters, one uppercase, one number and one special case character"
-    ),
-});
+import { changePasswordVS } from "../../helpers/validationSchemes";
 
 const ChangePassword = ({ changePassword }) => {
   const [showPassword, setShowPassword] = useState(false);
@@ -41,7 +29,7 @@ const ChangePassword = ({ changePassword }) => {
 
   const formik = useFormik({
     initialValues: initialValues,
-    validationSchema: validationSchema,
+    validationSchema: changePasswordVS,
     onSubmit: (values) => {
       changePassword(values.password, values.newPassword);
     },

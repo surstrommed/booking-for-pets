@@ -4,6 +4,7 @@ import Box from "@mui/material/Box";
 import Alert from "@mui/material/Alert";
 import AlertTitle from "@mui/material/AlertTitle";
 import { preloaderStyles } from "./auxiliaryStyles";
+import { IPreloader } from "../../server/api/api-models";
 
 const Loader = () => {
   return (
@@ -13,7 +14,12 @@ const Loader = () => {
   );
 };
 
-export const Preloader = ({ promiseName, promiseState, sub, modal }) => {
+export const Preloader = ({
+  promiseName,
+  promiseState,
+  sub,
+  modal,
+}: IPreloader) => {
   return (
     <>
       {!promiseState[promiseName] ||

@@ -19,14 +19,8 @@ import { CSignIn } from "./../Auth/Signin";
 import { CSignUp } from "./../Auth/Signup";
 import { Preloader } from "./../Auxiliary/Preloader";
 import { profileIconStyles } from "./headerStyles";
-
-type Logout = () => object;
-interface IProfile {
-  auth: object;
-  promise: object;
-  actionLogOut: Logout;
-  signed?: boolean;
-}
+import { noAvatar } from "../../helpers";
+import { IProfile } from "./../../server/api/api-models";
 
 type ButtonEvent = React.MouseEvent<HTMLButtonElement>;
 
@@ -42,6 +36,14 @@ const ProfileIcon = ({ auth, promise, actionLogOut }: IProfile) => {
     setAnchorElUser(null);
   };
 
+  const updateSignInModal = (value) => {
+    setOpenSignInModal(value);
+  };
+
+  const updateSignUpModal = (value) => {
+    setOpenSignUpModal(value);
+  };
+
   return (
     <>
       {openSignInModal && (
@@ -51,10 +53,18 @@ const ProfileIcon = ({ auth, promise, actionLogOut }: IProfile) => {
             <Preloader
               promiseName={"signin"}
               promiseState={promise}
-              sub={<CSignIn modal />}
+              sub={
+                <CSignIn
+                  modal
+                  signInOpenState={updateSignInModal}
+                  signUpOpenState={updateSignUpModal}
+                />
+              }
               modal
             />
           }
+          type={"signin"}
+          signInOpenState={updateSignInModal}
         />
       )}
       {openSignUpModal && (
@@ -64,38 +74,48 @@ const ProfileIcon = ({ auth, promise, actionLogOut }: IProfile) => {
             <Preloader
               promiseName={"signup"}
               promiseState={promise}
-              sub={<CSignUp modal />}
+              sub={
+                <CSignUp
+                  modal
+                  signInOpenState={updateSignInModal}
+                  signUpOpenState={updateSignUpModal}
+                />
+              }
               modal
             />
           }
+          type={"signup"}
+          signUpOpenState={updateSignUpModal}
         />
       )}
-      <Box sx={{ flexGrow: 0 }}>
+      <Box sx={profileIconStyles.flexGrow}>
         <Tooltip title="Open profile">
-          <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
-            <Badge badgeContent={3} color="error">
+          <IconButton
+            onClick={handleOpenUserMenu}
+            sx={profileIconStyles.padding}
+          >
+            {auth?.token ? (
+              <Badge badgeContent={3} color="error">
+                <Button style={profileIconStyles.main}>
+                  <MenuIcon style={profileIconStyles.iconSize} />
+                  <Avatar
+                    src={auth?.payload?.pictureUrl || noAvatar}
+                    style={profileIconStyles.avatarSize}
+                  />
+                </Button>
+              </Badge>
+            ) : (
               <Button style={profileIconStyles.main}>
                 <MenuIcon style={profileIconStyles.iconSize} />
-                {auth?.token ? (
-                  auth?.payload.pictureUrl ? (
-                    <Avatar
-                      src={auth?.payload.pictureUrl}
-                      style={profileIconStyles.avatarSize}
-                    />
-                  ) : (
-                    <PersonIcon style={profileIconStyles.personSize} />
-                  )
-                ) : (
-                  <AccountCircleIcon
-                    style={profileIconStyles.accountCircleSize}
-                  />
-                )}
+                <AccountCircleIcon
+                  style={profileIconStyles.accountCircleSize}
+                />
               </Button>
-            </Badge>
+            )}
           </IconButton>
         </Tooltip>
         <Menu
-          sx={{ mt: "45px" }}
+          sx={profileIconStyles.marginProfileMenu}
           id="menu-appbar"
           anchorEl={anchorElUser}
           anchorOrigin={{
@@ -118,6 +138,14 @@ const ProfileIcon = ({ auth, promise, actionLogOut }: IProfile) => {
                   textAlign="center"
                 >
                   Notifications
+                </Typography>
+              </MenuItem>
+              <MenuItem onClick={() => history.push("/wishlist")}>
+                <Typography
+                  sx={profileIconStyles.fontWeight}
+                  textAlign="center"
+                >
+                  Wishlist
                 </Typography>
               </MenuItem>
               <hr />

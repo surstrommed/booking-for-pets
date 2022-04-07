@@ -3,34 +3,290 @@
     {
       "email": "crng@ukr.net",
       "login": "admin",
+      "firstName": "Anton",
+      "lastName": "Zadorozhnyi",
       "createdAt": 1647206008510,
-      "pictureUrl": "https://i.ibb.co/r4ZdxgS/557d644f-12f3-49e1-bb66-23c16400540d.png",
+      "pictureUrl": "https://i.ibb.co/JtkCt7k/557d644f-12f3-49e1-bb66-23c16400540d.png",
+      "currency": 1,
       "id": 1,
-      "password": "$2a$10$nW6d0.VtckwIVnZ.zZTVducrM7crRKav4gmdJnh9efeE9LpYNSX2G"
+      "password": "$2a$10$TRrMWc0HrQ1wirbdFrHMv.h1efH6cYg1c5glmH9FrFUgX3TrMIGyq"
     },
     {
       "email": "user1231@ukr.net",
       "login": "user1231",
+      "firstName": "Sergii",
+      "lastName": "Udyansky",
       "createdAt": 1647238804177,
       "pictureUrl": null,
+      "currency": 1,
       "id": 2,
       "password": "$2a$10$Vc6vl.gESjMYUXmRWnCRN.xT.z0qNXxYv8yZ/QLN/cihMkupAN6Ye"
     },
     {
       "email": "asdasd@ukr.net",
       "login": "asdasda",
+      "firstName": "Andriy",
+      "lastName": "Yarovy",
+      "currency": 1,
       "createdAt": 1647351949978,
       "pictureUrl": "https://i.ibb.co/Drqmh80/557d644f-12f3-49e1-bb66-23c16400540d.png",
       "id": 3,
       "password": "$2a$10$f67ffMHE7TxpbFw0RsoXT.L7iHaWaXX5Ru8T4YaH.6FrQJnSuXiVy"
     },
     {
-      "email": "user@ukr.net",
-      "login": "user1",
-      "createdAt": 1647362882575,
-      "pictureUrl": "https://i.ibb.co/PDn1DkL/Sample-User-Icon.png",
+      "email": "user123@ukr.net",
+      "login": "user123",
+      "firstName": "Kesha",
+      "lastName": "Popov",
+      "currency": 2,
+      "createdAt": 1648658098922,
+      "pictureUrl": "https://i.ibb.co/WGhQN9m/147144.png",
       "id": 4,
-      "password": "$2a$10$mLmlt7uAQifvBtxFWR0Kiu0TA7dCuH3bdJDchLxrdQTe0q4eRcJcu"
+      "password": "$2a$10$EEITS2nWiEK9O5vKPjK54uGeHflbtjW3ORFrvaLULX2HeL1OCvkLi"
+    },
+    {
+      "email": "user321@ukr.net",
+      "password": "$2a$10$g7Ch1mZOUlw9OtZKdIW2r.g4NiQJl33SuBln9TDRx1wnhUNpzWEWi",
+      "login": "user321",
+      "firstName": "Test",
+      "lastName": "User",
+      "currency": 1,
+      "createdAt": 1648664611101,
+      "pictureUrl": null,
+      "id": 5
+    },
+    {
+      "email": "kosminaks@ukr.net",
+      "password": "$2a$10$YiaYfs.E0jAg8fE5sstGKOUl/rAHXo0yU55gkwY5/aKaA2CHgibXG",
+      "login": "kosmina",
+      "firstName": "Kseniya",
+      "lastName": "Kosmina",
+      "currency": 1,
+      "createdAt": 1648733149144,
+      "pictureUrl": null,
+      "id": 6
+    }
+  ],
+  "hotels": [
+    {
+      "id": 1,
+      "name": "True friend",
+      "location": "Kiev, Ukraine",
+      "address": "Sofievskaya street, 31",
+      "description": "Sociis natoque penatibus et magnis dis parturient montes nascetur ridiculus mus mauris vitae ultricies leo integer malesuada nunc vel risus commodo viverra maecenas accumsan lacus vel facilisis volutpat est velit egestas dui id ornare arcu odio ut sem nulla pharetra diam sit amet nisl suscipit adipiscing bibendum est ultricies integer quis auctor elit sed vulputate mi sit amet mauris commodo quis imperdiet massa tincidunt nunc pulvinar sapien et ligula ullamcorper malesuada proin libero nunc consequat interdum varius sit amet mattis vulputate enim nulla aliquet porttitor lacus luctus accumsan tortor posuere ac ut consequat semper viverra nam libero justo laoreet sit",
+      "photos": [
+        "https://barberpet.com.ua/wp-content/uploads/2020/03/hotel-dog1.jpg",
+        "https://expresstour.com.ua/upload/image/acutel_4.jpg",
+        "https://talant.shop/static/items/2019/December/5de924e88c52ab7d0ef8a6a7-medium.jpg",
+        "https://besplatka.ua/aws/746x-/49/71/74/19/veterinarnyi-centr-zveropolis---gostinica-dlya-kotov-i-photo-7a4d.jpg",
+        "https://dogcathotel.com/Media/dogcathotel/Hotel/IMG_6402%20(5).jpg",
+        "https://barberpet.com.ua/wp-content/uploads/2020/03/hotel-dog1.jpg",
+        "https://expresstour.com.ua/upload/image/acutel_4.jpg",
+        "https://talant.shop/static/items/2019/December/5de924e88c52ab7d0ef8a6a7-medium.jpg",
+        "https://besplatka.ua/aws/746x-/49/71/74/19/veterinarnyi-centr-zveropolis---gostinica-dlya-kotov-i-photo-7a4d.jpg"
+      ],
+      "hotelRooms": 40,
+      "freeRooms": {
+        "1649106000000": {
+          "availableSeats": 30,
+          "usersId": [
+            1,
+            1,
+            1,
+            1,
+            1,
+            1
+          ],
+          "usersAnimalsCount": [
+            3,
+            3,
+            1,
+            1,
+            1,
+            1
+          ]
+        },
+        "1649192400000": {
+          "availableSeats": 30,
+          "usersId": [
+            1,
+            1,
+            1,
+            1,
+            1,
+            1
+          ],
+          "usersAnimalsCount": [
+            3,
+            3,
+            1,
+            1,
+            1,
+            1
+          ]
+        },
+        "1649278800000": {
+          "availableSeats": 33,
+          "usersId": [
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1
+          ],
+          "usersAnimalsCount": [
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1
+          ]
+        },
+        "1649365200000": {
+          "availableSeats": 37,
+          "usersId": [
+            1,
+            1,
+            1
+          ],
+          "usersAnimalsCount": [
+            1,
+            1,
+            1
+          ]
+        }
+      },
+      "userRequests": [],
+      "disableUserDates": {
+        "1": [
+          1649106000000,
+          1649192400000,
+          1649106000000,
+          1649192400000,
+          1649106000000,
+          1649192400000,
+          1649106000000,
+          1649192400000,
+          1649106000000,
+          1649192400000,
+          1649106000000,
+          1649192400000
+        ]
+      },
+      "disableUsersDates": [],
+      "price": "15",
+      "owner": {
+        "id": 3,
+        "email": "asdasd@ukr.net",
+        "login": "asdasda",
+        "firstName": "Andriy",
+        "lastName": "Yarovy",
+        "createdAt": 1647351949978,
+        "pictureUrl": "https://i.ibb.co/Drqmh80/557d644f-12f3-49e1-bb66-23c16400540d.png"
+      },
+      "reviews": [
+        {
+          "id": 1,
+          "rating": 5,
+          "text": "Sociis natoque penatibus et magnis dis parturient montes nascetur ridiculus mus mauris vitae ultricies",
+          "createdAt": 1647362882575,
+          "owner": {
+            "id": 2,
+            "email": "user1231@ukr.net",
+            "login": "user1231",
+            "firstName": "Sergii",
+            "lastName": "Udyansky",
+            "createdAt": 1647238804177,
+            "pictureUrl": null
+          }
+        },
+        {
+          "id": 2,
+          "rating": 5,
+          "text": "Ultricies sociis natoque penatibus et magnis dis parturient montes nascetur ridiculus mus mauris vitae",
+          "createdAt": 1647362882575,
+          "owner": {
+            "id": 2,
+            "email": "user1231@ukr.net",
+            "login": "user1231",
+            "firstName": "Sergii",
+            "lastName": "Udyansky",
+            "createdAt": 1647238804177,
+            "pictureUrl": null
+          }
+        }
+      ]
+    },
+    {
+      "id": 2,
+      "name": "Chotyrokhlapyy druh",
+      "location": "Kharkiv, Ukraine",
+      "address": "Sumskaya street, 40",
+      "description": "Sociis natoque penatibus et magnis dis parturient montes nascetur ridiculus mus mauris vitae ultricies leo integer malesuada nunc vel risus commodo viverra maecenas accumsan lacus vel facilisis volutpat est velit egestas dui id ornare arcu odio ut sem nulla pharetra diam sit amet nisl suscipit adipiscing bibendum est ultricies integer quis auctor elit sed vulputate mi sit amet mauris commodo quis imperdiet massa tincidunt nunc pulvinar sapien et ligula ullamcorper malesuada proin libero nunc consequat interdum varius sit amet mattis vulputate enim nulla aliquet porttitor lacus luctus accumsan tortor posuere ac ut consequat semper viverra nam libero justo laoreet sit",
+      "photos": [
+        "https://expresstour.com.ua/upload/image/acutel_4.jpg",
+        "https://barberpet.com.ua/wp-content/uploads/2020/03/hotel-dog1.jpg",
+        "https://talant.shop/static/items/2019/December/5de924e88c52ab7d0ef8a6a7-medium.jpg",
+        "https://besplatka.ua/aws/746x-/49/71/74/19/veterinarnyi-centr-zveropolis---gostinica-dlya-kotov-i-photo-7a4d.jpg",
+        "https://dogcathotel.com/Media/dogcathotel/Hotel/IMG_6402%20(5).jpg",
+        "https://expresstour.com.ua/upload/image/acutel_4.jpg",
+        "https://barberpet.com.ua/wp-content/uploads/2020/03/hotel-dog1.jpg",
+        "https://talant.shop/static/items/2019/December/5de924e88c52ab7d0ef8a6a7-medium.jpg",
+        "https://besplatka.ua/aws/746x-/49/71/74/19/veterinarnyi-centr-zveropolis---gostinica-dlya-kotov-i-photo-7a4d.jpg"
+      ],
+      "hotelRooms": 30,
+      "freeRooms": {},
+      "dates": [],
+      "disableUserDates": {},
+      "disableUsersDates": [],
+      "price": "10",
+      "owner": {
+        "id": 3,
+        "email": "asdasd@ukr.net",
+        "login": "asdasda",
+        "firstName": "Andriy",
+        "lastName": "Yarovy",
+        "createdAt": 1647351949978,
+        "pictureUrl": "https://i.ibb.co/Drqmh80/557d644f-12f3-49e1-bb66-23c16400540d.png"
+      },
+      "reviews": [
+        {
+          "id": 3,
+          "rating": 5,
+          "text": "Vitae ultricies sociis natoque penatibus et magnis dis parturient montes nascetur ridiculus mus mauris",
+          "createdAt": 1647362882575,
+          "owner": {
+            "id": 2,
+            "email": "user1231@ukr.net",
+            "login": "user1231",
+            "firstName": "Sergii",
+            "lastName": "Udyansky",
+            "createdAt": 1647238804177,
+            "pictureUrl": null
+          }
+        }
+      ]
+    }
+  ],
+  "currency": [
+    {
+      "id": 1,
+      "name": "USD",
+      "sign": "$"
+    },
+    {
+      "id": 2,
+      "name": "EUR",
+      "sign": "€"
+    },
+    {
+      "id": 3,
+      "name": "UAH",
+      "sign": "₴"
     }
   ]
 }
