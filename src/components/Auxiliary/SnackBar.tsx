@@ -6,6 +6,7 @@ import CloseIcon from "@mui/icons-material/Close";
 const useSnackBar = () => {
   const [conf, setConf] = useState({});
   const { enqueueSnackbar, closeSnackbar } = useSnackbar();
+
   const action = (key) => (
     <Fragment>
       <IconButton
@@ -17,8 +18,9 @@ const useSnackBar = () => {
       </IconButton>
     </Fragment>
   );
+
   useEffect(() => {
-    if (conf?.msg) {
+    if (conf.msg) {
       let variant = "success";
       if (conf.variant) {
         variant = conf.variant;
@@ -30,6 +32,7 @@ const useSnackBar = () => {
       });
     }
   }, [conf]);
+
   return [conf, setConf];
 };
 

@@ -78,10 +78,6 @@ function BasicTabs({ auth, currencyList, chooseCurrency }) {
         </Typography>
       </TabPanel>
       <TabPanel value={value} index={1}>
-        <Typography variant="h5" gutterBottom component="span">
-          Choose a currency
-        </Typography>
-        <br />
         <Typography variant="body1" gutterBottom component="span">
           Selected: {currentCurrency?.sign}
         </Typography>
@@ -104,12 +100,7 @@ function BasicTabs({ auth, currencyList, chooseCurrency }) {
               {currency.name} - {currency.sign}
             </Button>
           ))}
-        </div>
-      </TabPanel>
-      <TabPanel value={value} index={1}>
-        <Typography variant="h5" gutterBottom component="div">
-          Choose a language
-        </Typography>
+        </span>
       </TabPanel>
     </Box>
   );

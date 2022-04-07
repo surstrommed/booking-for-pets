@@ -24,10 +24,8 @@ export const headerBar = {
   },
   searchFields: {
     marginTop: "15%",
-    left: "5%",
-    justifyContent: "center",
-    alignItems: "center",
     position: "absolute",
+    left: "5%",
     display: {
       xs: "none",
       md: "block",
@@ -44,7 +42,7 @@ export const searchBar = {
   buttonGroup: {
     backgroundColor: "#fff",
     borderRadius: 10,
-    padding: "1vh 0",
+    padding: "1vh",
     "& .MuiFilledInput-root": {
       borderRadius: 10,
     },
@@ -59,9 +57,8 @@ export const searchBar = {
       borderRadius: 10,
     },
     "& .MuiOutlinedInput-root.Mui-focused": {
-      border: `1px solid ${theme.palette.secondary.main}`,
+      borderColor: "#fff !important",
     },
-
     "& label.Mui-focused": {
       marginTop: 1,
       color: theme.palette.secondary.main,

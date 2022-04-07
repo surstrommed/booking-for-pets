@@ -93,14 +93,16 @@ const ProfileIcon = ({ auth, promise, actionLogOut }: IProfile) => {
         <Tooltip title="Open profile">
           <IconButton onClick={handleOpenUserMenu} sx={profileIconStyles.main}>
             {auth?.token ? (
-              <Badge badgeContent={3} color="error">
+              // <Badge badgeContent={3} color="error">
+              <>
                 <MenuIcon sx={profileIconStyles.menuIcon} />
                 <Avatar
                   src={auth?.payload?.pictureUrl || noAvatar}
                   sx={profileIconStyles.avatarIcon}
                 />
-              </Badge>
+              </>
             ) : (
+              // </Badge>
               <>
                 <MenuIcon sx={profileIconStyles.menuIcon} />
                 <AccountCircleIcon />

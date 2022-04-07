@@ -49,18 +49,16 @@ export default function ModalWindow({
               {title}
             </Typography>
             <hr />
-            <div>
-              {typeof body === "string" ? (
-                <Typography
-                  id="transition-modal-description"
-                  sx={modalWindowStyles.body}
-                >
-                  {body}
-                </Typography>
-              ) : (
-                <>{body}</>
-              )}
-            </div>
+            {typeof body === "string" ? (
+              <Typography
+                id="transition-modal-description"
+                sx={modalWindowStyles.body}
+              >
+                {body}
+              </Typography>
+            ) : (
+              <>{body}</>
+            )}
           </Box>
         </Fade>
       </Modal>
