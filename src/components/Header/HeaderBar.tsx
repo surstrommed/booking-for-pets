@@ -126,11 +126,11 @@ export default function HeaderBar(props: Props) {
     <div className="Header">
       <ElevationScroll {...props}>
         <AppBar>
-          {openDialog ? (
+          {openDialog && (
             <SlideDialogCurrency
               updateOpenDialogStatus={updateOpenDialogStatus}
             />
-          ) : null}
+          )}
           {openSignInModal && (
             <ModalWindow
               title={"Sign in"}

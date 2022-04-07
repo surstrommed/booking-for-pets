@@ -7,7 +7,6 @@ import {
   MenuItem,
   Typography,
   IconButton,
-  Button,
   Badge,
 } from "@mui/material";
 import AccountCircleIcon from "@mui/icons-material/AccountCircle";
@@ -92,27 +91,20 @@ const ProfileIcon = ({ auth, promise, actionLogOut }: IProfile) => {
       )}
       <Box sx={profileIconStyles.flexGrow}>
         <Tooltip title="Open profile">
-          <IconButton
-            onClick={handleOpenUserMenu}
-            sx={profileIconStyles.padding}
-          >
+          <IconButton onClick={handleOpenUserMenu} sx={profileIconStyles.main}>
             {auth?.token ? (
               <Badge badgeContent={3} color="error">
-                <Button style={profileIconStyles.main}>
-                  <MenuIcon style={profileIconStyles.iconSize} />
-                  <Avatar
-                    src={auth?.payload?.pictureUrl || noAvatar}
-                    style={profileIconStyles.avatarSize}
-                  />
-                </Button>
+                <MenuIcon sx={profileIconStyles.menuIcon} />
+                <Avatar
+                  src={auth?.payload?.pictureUrl || noAvatar}
+                  sx={profileIconStyles.avatarIcon}
+                />
               </Badge>
             ) : (
-              <Button style={profileIconStyles.main}>
-                <MenuIcon style={profileIconStyles.iconSize} />
-                <AccountCircleIcon
-                  style={profileIconStyles.accountCircleSize}
-                />
-              </Button>
+              <>
+                <MenuIcon sx={profileIconStyles.menuIcon} />
+                <AccountCircleIcon />
+              </>
             )}
           </IconButton>
         </Tooltip>

@@ -54,6 +54,9 @@ const HotelPage = ({ promise, auth, currencyList, onBooking }) => {
   const formik = useFormik({
     initialValues: initialValues,
     validationSchema: hotelPageVS,
+    validateOnChange: false,
+    validateOnBlur: false,
+
     onSubmit: (values) => {
       const formattedDateArrival = Date.parse(formatDate(values.dateArrival));
       const formattedDateDeparture = Date.parse(
@@ -161,24 +164,26 @@ const HotelPage = ({ promise, auth, currencyList, onBooking }) => {
 
   return (
     <div style={hotelPageStyles.main}>
-      {openDialog ? (
+      {openDialog && (
         <FullWindowGallery
           updateOpenDialogStatus={updateOpenDialogStatus}
           gallery={galleryHotelPhotos}
         />
-      ) : null}
+      )}
       <HotelHeader currentHotel={currentHotel} />
       <HotelGallery
         currentHotel={currentHotel}
         updateOpenDialogStatus={updateOpenDialogStatus}
       />
       <HotelDescription
-        currentHotel={currentHotel}
-        formik={formik}
-        currentCurrency={currentCurrency}
-        currencyExchangeList={currencyExchangeList}
-        disableBookingDates={disableBookingDates}
-        auth={auth}
+        hotelDescriptionProps={{
+          currentHotel,
+          formik,
+          currentCurrency,
+          currencyExchangeList,
+          disableBookingDates,
+          auth,
+        }}
       />
       <hr />
       <HotelReviews currentHotel={currentHotel} />

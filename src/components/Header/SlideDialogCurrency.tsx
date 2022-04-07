@@ -14,6 +14,7 @@ import { Preloader } from "./../Auxiliary/Preloader";
 import { actionChooseCurrency } from "./../../actions/thunks";
 import { dialogCurrencyStyles } from "./headerStyles";
 import { TabPanelProps } from "../../server/api/api-models";
+import useSnackBar from "./../Auxiliary/SnackBar";
 
 const Transition = forwardRef(function Transition(props, ref) {
   return <Slide direction="up" ref={ref} {...props} />;
@@ -56,6 +57,8 @@ function BasicTabs({ auth, currencyList, chooseCurrency }) {
     setValue(newValue);
   };
 
+  const [, sendSnackbar] = useSnackBar();
+
   return (
     <Box sx={dialogCurrencyStyles.tabBoxWidth}>
       <Box sx={dialogCurrencyStyles.tabBoxMain}>
@@ -65,18 +68,24 @@ function BasicTabs({ auth, currencyList, chooseCurrency }) {
           textColor="secondary"
           indicatorColor="secondary"
         >
-          <Tab label="Currency" {...setTabsProps(0)} />
-          <Tab label="Language" {...setTabsProps(1)} />
+          <Tab label="Language" {...setTabsProps(0)} />
+          <Tab label="Currency" {...setTabsProps(1)} />
         </Tabs>
       </Box>
       <TabPanel value={value} index={0}>
-        <Typography variant="h5" gutterBottom component="div">
+        <Typography variant="h5" gutterBottom component="span">
+          Choose a language
+        </Typography>
+      </TabPanel>
+      <TabPanel value={value} index={1}>
+        <Typography variant="h5" gutterBottom component="span">
           Choose a currency
         </Typography>
-        <Typography variant="body1" gutterBottom component="div">
+        <br />
+        <Typography variant="body1" gutterBottom component="span">
           Selected: {currentCurrency?.sign}
         </Typography>
-        <div style={dialogCurrencyStyles.tabs}>
+        <span style={dialogCurrencyStyles.tabs}>
           {(currencySiteList || []).map((currency, index) => (
             <Button
               key={index}
@@ -85,7 +94,12 @@ function BasicTabs({ auth, currencyList, chooseCurrency }) {
               size="large"
               disabled={currentCurrency.id === currency.id}
               sx={{ margin: "0 2vh" }}
-              onClick={() => chooseCurrency(currency.id)}
+              onClick={() => {
+                chooseCurrency(currency.id);
+                sendSnackbar({
+                  msg: `You have selected currency: ${currency?.name}`,
+                });
+              }}
             >
               {currency.name} - {currency.sign}
             </Button>

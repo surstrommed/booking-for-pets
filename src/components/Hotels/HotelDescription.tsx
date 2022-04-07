@@ -14,6 +14,8 @@ import {
 } from "@mui/material";
 import { Link as ScrollLink } from "react-scroll";
 import { maxAnimals } from "./bookingFunctions";
+import useSnackBar from "./../Auxiliary/SnackBar";
+import { formatStringDate } from "../../helpers";
 
 const LeftBlockDescription = ({ currentHotel }) => {
   return (
@@ -42,17 +44,13 @@ const LeftBlockDescription = ({ currentHotel }) => {
   );
 };
 
-const RightBlockDescription = ({
-  currentHotel,
-  formik,
-  currentCurrency,
-  currencyExchangeList,
-  disableBookingDates,
-  auth,
-}) => {
+const RightBlockDescription = ({ rightBlockDescriptionProps }) => {
+  const { handleSubmit, values, handleChange, errors } =
+    rightBlockDescriptionProps.formik;
+  const [, sendSnackbar] = useSnackBar();
   return (
     <div style={hotelPageStyles.descriptionRightBlock}>
-      <form onSubmit={formik.handleSubmit}>
+      <form onSubmit={handleSubmit}>
         <Card>
           <CardContent>
             <Typography
@@ -62,28 +60,33 @@ const RightBlockDescription = ({
               sx={hotelPageStyles.blockInfo}
             >
               <div>
-                {currentCurrency?.sign || "$"}
-                {(formik.values?.dateArrival && formik.values?.dateDeparture
+                {rightBlockDescriptionProps.currentCurrency?.sign || "$"}
+                {(values?.dateArrival && values?.dateDeparture
                   ? Math.trunc(
-                      (formik.values.dateDeparture.getTime() -
-                        formik.values.dateArrival.getTime()) /
+                      (values.dateDeparture.getTime() -
+                        values.dateArrival.getTime()) /
                         (24 * 60 * 60 * 1000)
                     )
                   : 1) *
-                  currentHotel?.price *
-                  currencyExchangeList[currentCurrency.name].toFixed(1) *
-                  (formik.values?.numberAnimals || 1)}{" "}
+                  rightBlockDescriptionProps.currentHotel?.price *
+                  rightBlockDescriptionProps.currencyExchangeList[
+                    rightBlockDescriptionProps.currentCurrency.name
+                  ].toFixed(1) *
+                  (values?.numberAnimals || 1)}{" "}
                 <sup>
-                  {currentCurrency?.sign}
-                  {currentHotel?.price *
-                    currencyExchangeList[currentCurrency.name].toFixed(1)}
+                  {rightBlockDescriptionProps.currentCurrency?.sign}
+                  {rightBlockDescriptionProps.currentHotel?.price *
+                    rightBlockDescriptionProps.currencyExchangeList[
+                      rightBlockDescriptionProps.currentCurrency.name
+                    ].toFixed(1)}
                   /day
                 </sup>
               </div>
               <div>
                 <Typography variant="overline" display="block" gutterBottom>
                   <ScrollLink to="reviews" style={hotelPageStyles.link}>
-                    {currentHotel?.reviews?.length} review(s)
+                    {rightBlockDescriptionProps.currentHotel?.reviews?.length}{" "}
+                    review(s)
                   </ScrollLink>
                 </Typography>
               </div>
@@ -91,8 +94,8 @@ const RightBlockDescription = ({
             <div style={hotelPageStyles.datePickerBlock}>
               <DatePicker
                 type="arrival"
-                formik={formik}
-                disableFnc={disableBookingDates}
+                formik={rightBlockDescriptionProps.formik}
+                disableFnc={rightBlockDescriptionProps.disableBookingDates}
               />
               <Divider
                 orientation="vertical"
@@ -101,8 +104,8 @@ const RightBlockDescription = ({
               />
               <DatePicker
                 type="departure"
-                formik={formik}
-                disableFnc={disableBookingDates}
+                formik={rightBlockDescriptionProps.formik}
+                disableFnc={rightBlockDescriptionProps.disableBookingDates}
               />
             </div>
             <Box>
@@ -110,8 +113,8 @@ const RightBlockDescription = ({
                 id="numberAnimals"
                 name="numberAnimals"
                 label="Number of animals"
-                value={formik.values.numberAnimals}
-                onChange={formik.handleChange}
+                value={values.numberAnimals}
+                onChange={handleChange}
                 type="number"
                 variant="standard"
                 color="secondary"
@@ -123,13 +126,12 @@ const RightBlockDescription = ({
                   },
                 }}
               />
-              {Object.keys(formik.errors).length > 0
-                ? Object.values(formik.errors).map((error, index) => (
-                    <Alert severity="error" key={index}>
-                      {error}
-                    </Alert>
-                  ))
-                : null}
+              {Object.keys(errors).length > 0 &&
+                Object.values(errors).map((error, index) => (
+                  <Alert severity="error" key={index}>
+                    {error}
+                  </Alert>
+                ))}
             </Box>
           </CardContent>
           <CardActions>
@@ -138,13 +140,23 @@ const RightBlockDescription = ({
               color="secondary"
               variant="contained"
               fullWidth
-              disabled={
-                !auth?.token ||
-                !formik.dirty ||
-                Object.keys(formik.errors).length > 0
+              disabled={!rightBlockDescriptionProps.auth?.token}
+              onClick={() =>
+                values.dateArrival &&
+                values.dateDeparture &&
+                values.numberAnimals &&
+                sendSnackbar({
+                  msg: `You have booked ${
+                    values.numberAnimals
+                  } seats from ${formatStringDate(
+                    Date.parse(values.dateArrival)
+                  )} to ${formatStringDate(Date.parse(values.dateDeparture))}`,
+                })
               }
             >
-              {auth?.token ? "Book" : "Login to book"}
+              {rightBlockDescriptionProps.auth?.token
+                ? "Book"
+                : "Login to book"}
             </Button>
           </CardActions>
         </Card>
@@ -153,24 +165,19 @@ const RightBlockDescription = ({
   );
 };
 
-export const HotelDescription = ({
-  currentHotel,
-  formik,
-  currentCurrency,
-  currencyExchangeList,
-  disableBookingDates,
-  auth,
-}) => {
+export const HotelDescription = ({ hotelDescriptionProps }) => {
   return (
     <div style={hotelPageStyles.descriptionBlock}>
-      <LeftBlockDescription currentHotel={currentHotel} />
+      <LeftBlockDescription currentHotel={hotelDescriptionProps.currentHotel} />
       <RightBlockDescription
-        currentHotel={currentHotel}
-        formik={formik}
-        currentCurrency={currentCurrency}
-        currencyExchangeList={currencyExchangeList}
-        disableBookingDates={disableBookingDates}
-        auth={auth}
+        rightBlockDescriptionProps={{
+          currentHotel: hotelDescriptionProps.currentHotel,
+          formik: hotelDescriptionProps.formik,
+          currentCurrency: hotelDescriptionProps.currentCurrency,
+          currencyExchangeList: hotelDescriptionProps.currencyExchangeList,
+          disableBookingDates: hotelDescriptionProps.disableBookingDates,
+          auth: hotelDescriptionProps.auth,
+        }}
       />
     </div>
   );

@@ -45,9 +45,11 @@ export const actionFullLogin =
 
       if (sessionStorage.authToken) {
         await dispatch(actionAuthLogin(token));
-        history.go(0);
-        history.push("/");
+        (history.location.pathname.includes("signin") ||
+          history.location.pathname.includes("signup")) &&
+          history.push("/");
       }
+      history.push(0);
     }
   };
 
@@ -105,6 +107,16 @@ export const actionChangeAvatar = (image: File) => async (dispatch) => {
   if (avatar && id && email && password) {
     await dispatch(
       actionFullUserUpdate({ id, email, password, pictureUrl: avatar })
+    );
+  }
+};
+
+export const actionDeleteAvatar = () => async (dispatch) => {
+  const { password } = jwtDecode(sessionStorage.authToken);
+  const { id, email }: { id: number; email: string } = getState().auth.payload;
+  if (id && email && password) {
+    await dispatch(
+      actionFullUserUpdate({ id, email, password, pictureUrl: null })
     );
   }
 };

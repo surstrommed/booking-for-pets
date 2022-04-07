@@ -6,10 +6,16 @@
       "firstName": "Anton",
       "lastName": "Zadorozhnyi",
       "createdAt": 1647206008510,
-      "currencyId": 1,
+      "currencyId": 2,
       "id": 1,
-      "password": "$2a$10$FKNrzL6tqqD5Ia4Q4yf0reD8kNt8NB/ZQb1t5tLSN2P3M12nRWf5C",
-      "pictureUrl": "https://i.ibb.co/5TPcmtX/147144.png"
+      "pictureUrl": "https://i.ibb.co/9y8jFmf/147144.png",
+      "wishlists": [
+        {
+          "name": "Test",
+          "hotelsId": []
+        }
+      ],
+      "password": "$2a$10$2Inrc2I1rp7yHQ1h8Ta/oeXuVrdFuft.HqCtoB8LT0wQEQSMjxZYG"
     },
     {
       "email": "user1231@ukr.net",
@@ -76,94 +82,47 @@
       ],
       "hotelRooms": 40,
       "freeRooms": {
-        "1649106000000": {
-          "availableSeats": 30,
-          "usersId": [
-            1,
-            1,
-            1,
-            1,
-            1,
-            1
-          ],
-          "usersAnimalsCount": [
-            3,
-            3,
-            1,
-            1,
-            1,
-            1
-          ]
-        },
         "1649192400000": {
-          "availableSeats": 30,
+          "availableSeats": 29,
           "usersId": [
-            1,
-            1,
-            1,
-            1,
             1,
             1
           ],
           "usersAnimalsCount": [
-            3,
-            3,
-            1,
-            1,
-            1,
-            1
+            5,
+            6
           ]
         },
         "1649278800000": {
-          "availableSeats": 33,
+          "availableSeats": 29,
           "usersId": [
-            1,
-            1,
-            1,
-            1,
-            1,
             1,
             1
           ],
           "usersAnimalsCount": [
-            1,
-            1,
-            1,
-            1,
-            1,
-            1,
-            1
-          ]
-        },
-        "1649365200000": {
-          "availableSeats": 37,
-          "usersId": [
-            1,
-            1,
-            1
-          ],
-          "usersAnimalsCount": [
-            1,
-            1,
-            1
+            5,
+            6
           ]
         }
       },
-      "userRequests": [],
+      "userRequests": [
+        [
+          1649192400000,
+          1649278800000,
+          5,
+          1
+        ],
+        [
+          1649192400000,
+          1649278800000,
+          6,
+          1
+        ]
+      ],
       "disableUserDates": {
         "1": [
-          1649106000000,
           1649192400000,
-          1649106000000,
-          1649192400000,
-          1649106000000,
-          1649192400000,
-          1649106000000,
-          1649192400000,
-          1649106000000,
-          1649192400000,
-          1649106000000,
-          1649192400000
+          1649278800000
         ]
       },
       "disableUsersDates": [],

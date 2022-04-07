@@ -2,13 +2,13 @@ import React, { useState } from "react";
 import { connect } from "react-redux";
 import { RootState } from "../App";
 import { useFormik } from "formik";
-import * as Yup from "yup";
 import {
   Button,
-  Typography,
   InputAdornment,
   IconButton,
   TextField,
+  Card,
+  Typography,
 } from "@mui/material";
 import VisibilityIcon from "@mui/icons-material/Visibility";
 import VisibilityOffIcon from "@mui/icons-material/VisibilityOff";
@@ -38,12 +38,12 @@ const ChangePassword = ({ changePassword }) => {
   const { handleSubmit, handleChange, values, touched, errors } = formik;
 
   return (
-    <div>
-      <Typography variant="h4" gutterBottom component="div">
-        Your password:
+    <Card sx={changeProfileStyles.passwordsCard}>
+      <Typography variant="body2" gutterBottom>
+        To change your password, please enter your current password, repeat it
+        and enter the new password you wish to set.
       </Typography>
-      <hr />
-      <form className="profileForm" onSubmit={handleSubmit}>
+      <form onSubmit={handleSubmit} style={changeProfileStyles.passwordsForm}>
         <TextField
           id="password"
           name="password"
@@ -53,6 +53,9 @@ const ChangePassword = ({ changePassword }) => {
           onChange={handleChange}
           error={touched.password && Boolean(errors.password)}
           helperText={touched.password && errors.password}
+          color="secondary"
+          fullWidth
+          sx={changeProfileStyles.passwordFormField}
           InputProps={{
             endAdornment: (
               <InputAdornment position="end">
@@ -77,6 +80,9 @@ const ChangePassword = ({ changePassword }) => {
           onChange={handleChange}
           error={touched.retryPassword && Boolean(errors.retryPassword)}
           helperText={touched.retryPassword && errors.retryPassword}
+          color="secondary"
+          fullWidth
+          sx={changeProfileStyles.passwordFormField}
           InputProps={{
             endAdornment: (
               <InputAdornment position="end">
@@ -105,6 +111,9 @@ const ChangePassword = ({ changePassword }) => {
           onChange={handleChange}
           error={touched.newPassword && Boolean(errors.newPassword)}
           helperText={touched.newPassword && errors.newPassword}
+          color="secondary"
+          fullWidth
+          sx={changeProfileStyles.passwordFormField}
           InputProps={{
             endAdornment: (
               <InputAdornment position="end">
@@ -123,7 +132,7 @@ const ChangePassword = ({ changePassword }) => {
         <Button
           type="submit"
           variant="contained"
-          color="primary"
+          color="secondary"
           style={changeProfileStyles.saveButton}
           disabled={
             !values.password ||
@@ -135,7 +144,7 @@ const ChangePassword = ({ changePassword }) => {
           Save
         </Button>
       </form>
-    </div>
+    </Card>
   );
 };
 

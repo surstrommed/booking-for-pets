@@ -85,30 +85,22 @@ export const searchBar = {
 export const profileIconStyles = {
   main: {
     color: "grey",
-    backgroundColor: theme.palette.primary.light,
     borderRadius: 25,
     border: "1px solid grey",
     height: 40,
   },
-  iconSize: {
+  menuIcon: {
     fontSize: "20px",
+    margin: "auto 1vh auto 0",
   },
-  avatarSize: {
-    marginLeft: "2vh",
+  avatarIcon: {
     width: "24px",
     height: "32px",
-  },
-  personSize: { marginLeft: "1vh", fontSize: "32px" },
-  accountCircleSize: {
-    marginLeft: "1vh",
-    fontSize: "32px",
+    backgroundColor: "#fff",
   },
   fontWeight: { fontWeight: "bold" },
   flexGrow: {
     flexGrow: 0,
-  },
-  padding: {
-    p: 0,
   },
   marginProfileMenu: { mt: "45px" },
 };
