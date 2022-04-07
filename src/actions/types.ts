@@ -27,3 +27,13 @@ export const actionSmallHeader = () => ({ type: "SMALL" });
 export const actionBigHeader = () => ({ type: "BIG" });
 
 export const actionExpandSmallHeader = () => ({ type: "EXPAND" });
+
+export const actionGetExchangeList = (exchangeList) => ({
+  type: "EXCHANGE_LIST",
+  exchangeList,
+});
+
+export const actionGetCurrencyList = (currency) => ({
+  type: "CURRENCY_LIST",
+  currency,
+});

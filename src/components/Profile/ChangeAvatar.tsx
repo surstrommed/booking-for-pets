@@ -4,6 +4,10 @@ import { RootState } from "../App";
 import { Box, Typography } from "@mui/material";
 import { CDropzone } from "./../Auxiliary/Dropzone";
 import { changeProfileStyles } from "./profileStyles";
+import { noAvatar } from "../../helpers/index";
+import Badge from "@mui/material/Badge";
+import IconButton from "@mui/material/IconButton";
+import CancelIcon from "@mui/icons-material/Cancel";
 
 const ChangeAvatar = ({ auth }) => {
   return (
@@ -13,15 +17,22 @@ const ChangeAvatar = ({ auth }) => {
       </Typography>
       <hr />
       <div id="changeAvatar">
-        <Box
-          component="img"
-          sx={changeProfileStyles.avatarImage}
-          alt="Avatar image"
-          src={
-            auth?.["payload"]?.["pictureUrl"] ||
-            "https://upload.wikimedia.org/wikipedia/commons/9/99/Sample_User_Icon.png"
+        <Badge
+          overlap="circular"
+          anchorOrigin={{ vertical: "top", horizontal: "right" }}
+          badgeContent={
+            <IconButton>
+              <CancelIcon />
+            </IconButton>
           }
-        />
+        >
+          <Box
+            component="img"
+            sx={changeProfileStyles.avatarImage}
+            alt="Avatar image"
+            src={auth?.["payload"]?.["pictureUrl"] || noAvatar}
+          />
+        </Badge>
         <CDropzone
           type="image"
           limit={1}

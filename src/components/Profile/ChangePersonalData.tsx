@@ -12,40 +12,26 @@ import {
 } from "@mui/material";
 import VisibilityIcon from "@mui/icons-material/Visibility";
 import VisibilityOffIcon from "@mui/icons-material/VisibilityOff";
-import { actionFullUpdate } from "../../actions/thunks";
+import { actionFullUserUpdate } from "../../actions/thunks";
 import { changeProfileStyles } from "./profileStyles";
+import { PersonalDataValues } from "../../server/api/api-models";
+import { changePersonalDataVS } from "./../../helpers/validationSchemes";
 
-const validationSchema = Yup.object().shape({
-  email: Yup.string().email("Enter a valid email"),
-  login: Yup.string()
-    .min(3, "Login must be at least 3 characters long")
-    .max(8, "Login must be maximum 8 characters long"),
-  password: Yup.string()
-    .min(8, "Password should be of minimum 8 characters length")
-    .required(),
-});
-
-interface PersonalDataValues {
-  email: string;
-  login: string;
-  password: string;
-}
-
-const ChangePersonalData = ({ auth, promise, onUpdate }) => {
+const ChangePersonalData = ({ auth, onUpdate }) => {
   const [showPassword, setShowPassword] = useState(false);
 
   const initialValues: PersonalDataValues = {
-    email: auth["payload"]["email"],
-    login: auth["payload"]["login"],
+    email: auth.payload.email,
+    login: auth.payload.login,
     password: "",
   };
 
   const formik = useFormik({
     initialValues: initialValues,
-    validationSchema: validationSchema,
+    validationSchema: changePersonalDataVS,
     onSubmit: (values) => {
       onUpdate({
-        id: auth["payload"]["id"],
+        id: auth.payload.id,
         email: values.email,
         login: values.login,
         password: values.password,
@@ -133,6 +119,6 @@ const ChangePersonalData = ({ auth, promise, onUpdate }) => {
 export const CChangePersonalData = connect(
   (state: RootState) => ({ auth: state.auth, promise: state.promise }),
   {
-    onUpdate: actionFullUpdate,
+    onUpdate: actionFullUserUpdate,
   }
 )(ChangePersonalData);
