@@ -22,12 +22,8 @@ import {
   completeDisableUserDates,
   completeDisableUsersDates,
 } from "./bookingFunctions";
-
-export interface HotelPageFormValues {
-  dateArrival: Date | null;
-  dateDeparture: Date | null;
-  numberAnimals: number;
-}
+import { HotelPageFormValues } from "../../server/api/api-models";
+import { hotelPageVS } from "./../../helpers/validationSchemes";
 
 const HotelPage = ({ promise, auth, currencyList, onBooking }) => {
   const { hotelId } = useParams();
@@ -51,19 +47,13 @@ const HotelPage = ({ promise, auth, currencyList, onBooking }) => {
     numberAnimals: 1,
   };
 
-  const validationSchema = Yup.object().shape({
-    dateArrival: Yup.date().required(),
-    dateDeparture: Yup.date().required(),
-    numberAnimals: Yup.number().required(),
-  });
-
   let disableUserDates = { ...(currentHotel?.disableUserDates || {}) };
   let disableUsersDates = [...(currentHotel?.disableUsersDates || [])];
   let freeRooms = { ...(currentHotel?.freeRooms || {}) };
 
   const formik = useFormik({
     initialValues: initialValues,
-    validationSchema: validationSchema,
+    validationSchema: hotelPageVS,
     onSubmit: (values) => {
       const formattedDateArrival = Date.parse(formatDate(values.dateArrival));
       const formattedDateDeparture = Date.parse(

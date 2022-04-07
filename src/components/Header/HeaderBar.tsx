@@ -32,16 +32,12 @@ import ModalWindow from "./../Auxiliary/ModalWindow";
 import { Preloader } from "./../Auxiliary/Preloader";
 import { CSignIn } from "./../Auth/Signin";
 import { CSignUp } from "./../Auth/Signup";
+import { ElevationScrollProps } from "../../server/api/api-models";
 
 const pages = ["Products", "Pricing", "Blog"];
 type ButtonEvent = React.MouseEvent<HTMLButtonElement>;
 
-interface Props {
-  window?: () => Window;
-  children: React.ReactElement;
-}
-
-const ElevationScroll = (props: Props) => {
+const ElevationScroll = (props: ElevationScrollProps) => {
   const location = useLocation().pathname;
   const { children, window } = props;
   const trigger = useScrollTrigger({

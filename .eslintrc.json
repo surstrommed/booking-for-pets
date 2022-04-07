@@ -27,6 +27,10 @@
       }
     ],
     "react/prop-types": 0,
+<<<<<<< HEAD
     "no-console": ["error", { "allow": [""] }]
+=======
+    "no-console": ["error", { "allow": ["warn"] }]
+>>>>>>> feat/9-booking
   }
 }

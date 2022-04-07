@@ -1,6 +1,7 @@
 import React from "react";
 import { LinearProgress, Box, Alert, AlertTitle } from "@mui/material";
 import { preloaderStyles } from "./auxiliaryStyles";
+import { IPreloader } from "../../server/api/api-models";
 
 const Loader = () => {
   return (
@@ -9,13 +10,6 @@ const Loader = () => {
     </Box>
   );
 };
-
-interface IPreloader {
-  promiseName: string;
-  promiseState: object;
-  sub: React.ReactElement | string | number;
-  modal?: boolean;
-}
 
 export const Preloader = ({
   promiseName,

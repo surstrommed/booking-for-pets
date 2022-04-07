@@ -15,27 +15,8 @@ import { RootState } from "../App";
 import { actionFullLogin } from "../../actions/thunks";
 import { CustomTextField } from "./../Auxiliary/CustomTextField";
 import { authFormStyles, authModalStyles } from "./authStyles";
-import { history } from "./../App";
-
-interface ILogin {
-  promise?: object;
-  onLogin: (email: string, password: string) => void;
-  modal?: boolean;
-  signInOpenState?: (value: boolean) => void;
-  signUpOpenState?: (value: boolean) => void;
-}
-
-interface LoginFormValues {
-  email: string;
-  password: string;
-}
-
-const validationSchema = Yup.object().shape({
-  email: Yup.string()
-    .email("Enter a valid email")
-    .required("Email is required"),
-  password: Yup.string().required("Password is required"),
-});
+import { ILogin, LoginFormValues } from "./../../server/api/api-models";
+import { signInVS } from "../../helpers/validationSchemes";
 
 const SignIn = ({
   onLogin,
@@ -45,9 +26,10 @@ const SignIn = ({
 }: ILogin) => {
   const [showPassword, setShowPassword] = useState(false);
   const initialValues: LoginFormValues = { email: "", password: "" };
+
   const formik = useFormik({
     initialValues: initialValues,
-    validationSchema: validationSchema,
+    validationSchema: signInVS,
     onSubmit: (values) => {
       modal ? signInOpenState(false) : null;
       const { email, password } = values;

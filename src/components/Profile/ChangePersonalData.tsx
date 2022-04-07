@@ -14,22 +14,8 @@ import VisibilityIcon from "@mui/icons-material/Visibility";
 import VisibilityOffIcon from "@mui/icons-material/VisibilityOff";
 import { actionFullUserUpdate } from "../../actions/thunks";
 import { changeProfileStyles } from "./profileStyles";
-
-const validationSchema = Yup.object().shape({
-  email: Yup.string().email("Enter a valid email"),
-  login: Yup.string()
-    .min(3, "Login must be at least 3 characters long")
-    .max(8, "Login must be maximum 8 characters long"),
-  password: Yup.string()
-    .min(8, "Password should be of minimum 8 characters length")
-    .required(),
-});
-
-interface PersonalDataValues {
-  email: string;
-  login: string;
-  password: string;
-}
+import { PersonalDataValues } from "../../server/api/api-models";
+import { changePersonalDataVS } from "./../../helpers/validationSchemes";
 
 const ChangePersonalData = ({ auth, onUpdate }) => {
   const [showPassword, setShowPassword] = useState(false);
@@ -42,7 +28,7 @@ const ChangePersonalData = ({ auth, onUpdate }) => {
 
   const formik = useFormik({
     initialValues: initialValues,
-    validationSchema: validationSchema,
+    validationSchema: changePersonalDataVS,
     onSubmit: (values) => {
       onUpdate({
         id: auth.payload.id,

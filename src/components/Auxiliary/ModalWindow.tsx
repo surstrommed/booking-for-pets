@@ -1,14 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { Backdrop, Box, Modal, Fade, Typography } from "@mui/material";
 import { modalWindowStyles } from "./auxiliaryStyles";
-
-interface IModal {
-  title: string;
-  body: string | React.ReactElement;
-  type: string;
-  signInOpenState?: (value: boolean) => void;
-  signUpOpenState?: (value: boolean) => void;
-}
+import { IModal } from "../../server/api/api-models";
 
 export default function ModalWindow({
   title,
