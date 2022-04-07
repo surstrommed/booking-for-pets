@@ -6,10 +6,10 @@
       "firstName": "Anton",
       "lastName": "Zadorozhnyi",
       "createdAt": 1647206008510,
-      "pictureUrl": "https://i.ibb.co/JtkCt7k/557d644f-12f3-49e1-bb66-23c16400540d.png",
-      "currency": 1,
+      "currencyId": 1,
       "id": 1,
-      "password": "$2a$10$TRrMWc0HrQ1wirbdFrHMv.h1efH6cYg1c5glmH9FrFUgX3TrMIGyq"
+      "password": "$2a$10$FKNrzL6tqqD5Ia4Q4yf0reD8kNt8NB/ZQb1t5tLSN2P3M12nRWf5C",
+      "pictureUrl": "https://i.ibb.co/5TPcmtX/147144.png"
     },
     {
       "email": "user1231@ukr.net",
@@ -18,7 +18,7 @@
       "lastName": "Udyansky",
       "createdAt": 1647238804177,
       "pictureUrl": null,
-      "currency": 1,
+      "currencyId": 1,
       "id": 2,
       "password": "$2a$10$Vc6vl.gESjMYUXmRWnCRN.xT.z0qNXxYv8yZ/QLN/cihMkupAN6Ye"
     },
@@ -27,7 +27,7 @@
       "login": "asdasda",
       "firstName": "Andriy",
       "lastName": "Yarovy",
-      "currency": 1,
+      "currencyId": 1,
       "createdAt": 1647351949978,
       "pictureUrl": "https://i.ibb.co/Drqmh80/557d644f-12f3-49e1-bb66-23c16400540d.png",
       "id": 3,
@@ -38,33 +38,22 @@
       "login": "user123",
       "firstName": "Kesha",
       "lastName": "Popov",
-      "currency": 2,
+      "currencyId": 2,
       "createdAt": 1648658098922,
       "pictureUrl": "https://i.ibb.co/WGhQN9m/147144.png",
       "id": 4,
       "password": "$2a$10$EEITS2nWiEK9O5vKPjK54uGeHflbtjW3ORFrvaLULX2HeL1OCvkLi"
     },
     {
-      "email": "user321@ukr.net",
-      "password": "$2a$10$g7Ch1mZOUlw9OtZKdIW2r.g4NiQJl33SuBln9TDRx1wnhUNpzWEWi",
-      "login": "user321",
-      "firstName": "Test",
+      "email": "user1@ukr.net",
+      "password": "$2a$10$WzKz5TUpnVDzs44l8ncAB..ZPaITzYpRqtOhdhtGTEuDEOzWqWLC2",
+      "login": "user1",
+      "firstName": "User",
       "lastName": "User",
-      "currency": 1,
-      "createdAt": 1648664611101,
+      "currencyId": 1,
+      "createdAt": 1649151893470,
       "pictureUrl": null,
       "id": 5
-    },
-    {
-      "email": "kosminaks@ukr.net",
-      "password": "$2a$10$YiaYfs.E0jAg8fE5sstGKOUl/rAHXo0yU55gkwY5/aKaA2CHgibXG",
-      "login": "kosmina",
-      "firstName": "Kseniya",
-      "lastName": "Kosmina",
-      "currency": 1,
-      "createdAt": 1648733149144,
-      "pictureUrl": null,
-      "id": 6
     }
   ],
   "hotels": [
@@ -240,7 +229,7 @@
       ],
       "hotelRooms": 30,
       "freeRooms": {},
-      "dates": [],
+      "userRequests": [],
       "disableUserDates": {},
       "disableUsersDates": [],
       "price": "10",

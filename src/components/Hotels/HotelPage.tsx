@@ -1,18 +1,11 @@
 import React, { useState, useEffect } from "react";
+import * as Yup from "yup";
 import { connect } from "react-redux";
 import { RootState } from "../App";
-import Typography from "@mui/material/Typography";
-import Card from "@mui/material/Card";
-import CardContent from "@mui/material/CardContent";
-import CardActions from "@mui/material/CardActions";
-import Button from "@mui/material/Button";
-import Box from "@mui/material/Box";
-import Divider from "@mui/material/Divider";
 import { hotelPageStyles } from "./hotelsStyle";
 import { useParams } from "react-router-dom";
 import { formatDate } from "../../helpers/index";
 import { useFormik } from "formik";
-import * as Yup from "yup";
 import { actionFullHotelUpdate } from "./../../actions/thunks";
 import FullWindowGallery from "./FullWindowGallery";
 import { history } from "./../App";
@@ -45,7 +38,7 @@ const HotelPage = ({ promise, auth, currencyList, onBooking }) => {
   const currencySiteList = currencyList?.currency;
   const currencyExchangeList = currencyList?.exchangeList;
   const currentCurrency = (currencySiteList || []).find(
-    (currency) => auth?.payload?.currency === currency?.id
+    (currency) => auth?.payload?.currencyId === currency?.id
   ) || { name: "USD", sign: "$" };
 
   const initialValues: HotelPageFormValues = {

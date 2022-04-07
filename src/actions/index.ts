@@ -16,60 +16,23 @@ export const actionLogin = (email: string, password: string) => {
   return actionPromise("signin", userLogin({ email, password }));
 };
 
-export const actionRegister = (
-  email: string,
-  login: string,
-  firstName: string,
-  lastName: string,
-  password: string
-) => {
+export const actionRegister = (userData: UserModel) => {
   return actionPromise(
     "signup",
     userRegister({
-      email,
-      login,
-      firstName,
-      lastName,
-      password,
-      currency: defaultCurrencyId,
+      ...userData,
+      currencyId: defaultCurrencyId,
     })
   );
 };
 
-export const actionUserUpdate = ({
-  id,
-  email,
-  login,
-  firstName,
-  lastName,
-  password,
-  pictureUrl,
-  currency,
-}: UserModel) => {
+export const actionUserUpdate = (userData: UserModel) => {
   const { auth } = getState();
-  const user = auth?.payload;
-  const newUserData = {
-    id,
-    email,
-    login,
-    password,
-    pictureUrl,
-    firstName,
-    lastName,
-    currency,
-  };
-  const arrayUserData = Object.entries(newUserData);
-  const filteredUserDataArray = arrayUserData.filter(
-    ([key, value]) => typeof value !== "undefined"
-  );
-  const filteredUserDataObj = {};
-  for (let i = 0; i < filteredUserDataArray.length; i++) {
-    filteredUserDataObj[filteredUserDataArray[i][0]] =
-      filteredUserDataArray[i][1];
-  }
+  const currentUser = auth?.payload;
+
   return actionPromise(
     "userUpdate",
-    userUpdate({ ...user, ...filteredUserDataObj }, "PUT")
+    userUpdate({ ...currentUser, ...userData }, "PUT")
   );
 };
 
@@ -81,52 +44,13 @@ export const actionGetHotels = () => {
   return actionPromise("getHotels", getHotels());
 };
 
-export const actionHotelUpdate = ({
-  id,
-  name,
-  location,
-  address,
-  description,
-  photos,
-  hotelRooms,
-  freeRooms,
-  dates,
-  disableUserDates,
-  disableUsersDates,
-  price,
-  owner,
-  reviews,
-}: HotelModel) => {
+export const actionHotelUpdate = (hotelData: HotelModel) => {
   const { payload: allHotels } = getState().promise.getHotels;
-  const searchedHotel = allHotels.find((hotel) => hotel.id === id);
-  const newHotelData = {
-    id,
-    name,
-    location,
-    address,
-    description,
-    photos,
-    hotelRooms,
-    freeRooms,
-    dates,
-    disableUserDates,
-    disableUsersDates,
-    price,
-    owner,
-    reviews,
-  };
-  const arrayHotelData = Object.entries(newHotelData);
-  const filteredHotelDataArray = arrayHotelData?.filter(
-    ([key, value]) => typeof value !== "undefined"
-  );
-  const filteredHotelDataObj = {};
-  for (let i = 0; i < filteredHotelDataArray.length; i++) {
-    filteredHotelDataObj[filteredHotelDataArray[i][0]] =
-      filteredHotelDataArray[i][1];
-  }
+  const currentHotel = allHotels.find((hotel) => hotel.id === hotelData.id);
+
   return actionPromise(
     "hotelUpdate",
-    getHotels({ ...searchedHotel, ...filteredHotelDataObj }, "PUT")
+    getHotels({ ...currentHotel, ...hotelData }, "PUT")
   );
 };
 

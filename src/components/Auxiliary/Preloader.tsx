@@ -1,8 +1,5 @@
 import React from "react";
-import LinearProgress from "@mui/material/LinearProgress";
-import Box from "@mui/material/Box";
-import Alert from "@mui/material/Alert";
-import AlertTitle from "@mui/material/AlertTitle";
+import { LinearProgress, Box, Alert, AlertTitle } from "@mui/material";
 import { preloaderStyles } from "./auxiliaryStyles";
 import { IPreloader } from "../../server/api/api-models";
 
@@ -26,16 +23,20 @@ export const Preloader = ({
       promiseState[promiseName]?.status === "RESOLVED" ? (
         sub
       ) : promiseState[promiseName]?.status === "REJECTED" ? (
-        <>
-          <Alert
-            severity="error"
-            style={modal ? preloaderStyles.modal : preloaderStyles.main}
-          >
-            <AlertTitle>Error</AlertTitle>
-            {promiseState[promiseName]?.["error"]?.["message"]}
-          </Alert>
-          {sub}
-        </>
+        promiseState[promiseName]?.error?.message ? (
+          <>
+            <Alert
+              severity="error"
+              style={modal ? preloaderStyles.modal : preloaderStyles.main}
+            >
+              <AlertTitle>Error</AlertTitle>
+              {promiseState[promiseName]?.error?.message}
+            </Alert>
+            {sub}
+          </>
+        ) : (
+          <>{sub}</>
+        )
       ) : (
         <Loader />
       )}

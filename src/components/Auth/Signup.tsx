@@ -40,13 +40,8 @@ const SignUp = ({
     validationSchema: signUpVS,
     onSubmit: (values) => {
       modal ? signUpOpenState(false) : null;
-      onRegister(
-        values.email,
-        values.login,
-        values.firstName,
-        values.lastName,
-        values.password
-      );
+      const { email, login, firstName, lastName, password } = values;
+      onRegister({ email, login, firstName, lastName, password });
     },
   });
 
@@ -203,10 +198,14 @@ const SignUp = ({
             >
               Already have an account?{" "}
               <Button
-                onClick={() => {
-                  signInOpenState(true);
-                  signUpOpenState(false);
-                }}
+                onClick={
+                  modal
+                    ? () => {
+                        signInOpenState(true);
+                        signUpOpenState(false);
+                      }
+                    : () => history.push("/signin")
+                }
                 color="secondary"
               >
                 Sign In

@@ -25,7 +25,7 @@ const Dropzone = ({ text, actionAvatar, type, limit }) => {
 
   return (
     <div
-      className={`${typeError ? "redText" : null} customDropzone`}
+      className={`${typeError && "redText"} customDropzone`}
       {...getRootProps()}
     >
       <input {...getInputProps()} />

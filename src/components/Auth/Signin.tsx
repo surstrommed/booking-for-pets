@@ -32,7 +32,8 @@ const SignIn = ({
     validationSchema: signInVS,
     onSubmit: (values) => {
       modal ? signInOpenState(false) : null;
-      onLogin(values.email, values.password);
+      const { email, password } = values;
+      onLogin(email, password);
     },
   });
 
@@ -119,10 +120,14 @@ const SignIn = ({
             >
               Don&apos;t have an account yet?{" "}
               <Button
-                onClick={() => {
-                  signInOpenState(false);
-                  signUpOpenState(true);
-                }}
+                onClick={
+                  modal
+                    ? () => {
+                        signInOpenState(false);
+                        signUpOpenState(true);
+                      }
+                    : () => history.push("/signup")
+                }
                 color="secondary"
               >
                 Sign Up

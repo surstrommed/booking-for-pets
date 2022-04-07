@@ -1,16 +1,17 @@
 import React, { useState } from "react";
-import Box from "@mui/material/Box";
-import Avatar from "@mui/material/Avatar";
-import Tooltip from "@mui/material/Tooltip";
-import Menu from "@mui/material/Menu";
-import MenuItem from "@mui/material/MenuItem";
-import Typography from "@mui/material/Typography";
-import IconButton from "@mui/material/IconButton";
+import {
+  Box,
+  Avatar,
+  Tooltip,
+  Menu,
+  MenuItem,
+  Typography,
+  IconButton,
+  Button,
+  Badge,
+} from "@mui/material";
 import AccountCircleIcon from "@mui/icons-material/AccountCircle";
-import PersonIcon from "@mui/icons-material/Person";
 import MenuIcon from "@mui/icons-material/Menu";
-import Button from "@mui/material/Button";
-import Badge from "@mui/material/Badge";
 import { connect } from "react-redux";
 import { actionAuthLogout } from "../../actions/types";
 import { RootState, history } from "../App";
@@ -28,6 +29,7 @@ const ProfileIcon = ({ auth, promise, actionLogOut }: IProfile) => {
   const [anchorElUser, setAnchorElUser] = useState(null);
   const [openSignInModal, setOpenSignInModal] = useState(false);
   const [openSignUpModal, setOpenSignUpModal] = useState(false);
+
   const handleOpenUserMenu = (event: ButtonEvent) => {
     setAnchorElUser(event.currentTarget);
   };

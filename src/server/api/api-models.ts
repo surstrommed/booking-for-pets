@@ -1,5 +1,7 @@
 export interface JsonModel {
   users: UserModel[];
+  hotels: HotelModel[];
+  currency: CurrencyModel[];
 }
 export interface UserModel {
   id: number;
@@ -11,7 +13,7 @@ export interface UserModel {
   newPassword?: string;
   createdAt?: number;
   pictureUrl?: string | null;
-  currency?: number;
+  currencyId?: number;
 }
 
 export interface HotelModel {
