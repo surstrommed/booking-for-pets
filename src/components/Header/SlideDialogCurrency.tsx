@@ -104,7 +104,12 @@ function BasicTabs({ auth, currencyList, chooseCurrency }) {
               {currency.name} - {currency.sign}
             </Button>
           ))}
-        </span>
+        </div>
+      </TabPanel>
+      <TabPanel value={value} index={1}>
+        <Typography variant="h5" gutterBottom component="div">
+          Choose a language
+        </Typography>
       </TabPanel>
     </Box>
   );
