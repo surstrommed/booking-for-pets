@@ -1,32 +1,11 @@
 import { formatDate } from "./../../helpers/index";
-import { HotelModel } from "./../../server/api/api-models";
-import { HotelPageFormValues } from "./HotelPage";
+import {
+  IDisableUsersDates,
+  IDisableUserDates,
+  IFreeRooms,
+} from "./../../server/api/api-models";
 
 export const maxAnimals = 10;
-
-interface IDisableUserDates {
-  formattedDateArrival: number;
-  formattedDateDeparture: number;
-  currentHotel: HotelModel;
-  auth: object;
-  values: HotelPageFormValues;
-  disableUserDates: object;
-}
-
-interface IDisableUsersDates {
-  currentHotel: HotelModel;
-  values: HotelPageFormValues;
-  disableUsersDates: number[];
-}
-
-interface IFreeRooms {
-  formattedDateArrival: number;
-  formattedDateDeparture: number;
-  freeRooms: object;
-  currentHotel: HotelModel;
-  values: HotelPageFormValues;
-  auth: object;
-}
 
 const today = Date.parse(formatDate(new Date()));
 

@@ -34,7 +34,6 @@ export type RootState = ReturnType<typeof rootReducer>;
 
 export const store = createStore(rootReducer, applyMiddleware(thunk));
 export const getState = store.getState;
-store.subscribe(() => console.log(store.getState()));
 
 store.dispatch(actionGetHotels());
 

@@ -49,6 +49,7 @@ export const actionFullLogin =
           history.location.pathname.includes("signup")) &&
           history.push("/");
       }
+      history.push(0);
     }
   };
 

@@ -1,7 +1,6 @@
 import React, { useState } from "react";
 import { connect } from "react-redux";
 import { RootState } from "../App";
-import * as Yup from "yup";
 import { useFormik } from "formik";
 import {
   Button,
@@ -9,48 +8,14 @@ import {
   InputAdornment,
   IconButton,
   TextField,
+  Card,
 } from "@mui/material";
 import VisibilityIcon from "@mui/icons-material/Visibility";
 import VisibilityOffIcon from "@mui/icons-material/VisibilityOff";
 import { actionFullUserUpdate } from "../../actions/thunks";
 import { changeProfileStyles } from "./profileStyles";
-import Card from "@mui/material/Card";
-import {
-  validateLogin,
-  validateFirstName,
-  validateLastName,
-  validatePassword,
-} from "./../../helpers/index";
-
-const validationSchema = Yup.object().shape({
-  email: Yup.string().email("Enter a valid email"),
-  login: Yup.string().matches(
-    validateLogin,
-    "Login must be 3 to 8 characters long and must contain small letters and numbers"
-  ),
-  firstName: Yup.string().matches(
-    validateFirstName,
-    "First name must be 2 to 15 characters long and must start with a capital letter"
-  ),
-  lastName: Yup.string().matches(
-    validateLastName,
-    "Last name must be 2 to 20 characters long and must start with a capital letter"
-  ),
-  password: Yup.string()
-    .matches(
-      validatePassword,
-      "Password must contain at least 8 characters, one uppercase, one number and one special case character"
-    )
-    .required(),
-});
-
-interface PersonalDataValues {
-  email: string;
-  login: string;
-  firstName: string;
-  lastName: string;
-  password: string;
-}
+import { PersonalDataValues } from "../../server/api/api-models";
+import { changePersonalDataVS } from "./../../helpers/validationSchemes";
 
 const ChangePersonalData = ({ auth, onUpdate }) => {
   const [showPassword, setShowPassword] = useState(false);
@@ -65,12 +30,14 @@ const ChangePersonalData = ({ auth, onUpdate }) => {
 
   const formik = useFormik({
     initialValues: initialValues,
-    validationSchema: validationSchema,
+    validationSchema: changePersonalDataVS,
     onSubmit: (values) => {
       onUpdate({
         id: auth.payload.id,
         email: values.email,
         login: values.login,
+        firstName: values.firstName,
+        lastName: values.lastName,
         password: values.password,
       });
     },
@@ -183,7 +150,9 @@ const ChangePersonalData = ({ auth, onUpdate }) => {
             style={changeProfileStyles.saveButton}
             disabled={
               initialValues.email === values.email &&
-              initialValues.login === values.login
+              initialValues.login === values.login &&
+              initialValues.firstName === values.firstName &&
+              initialValues.lastName === values.lastName
             }
           >
             Save

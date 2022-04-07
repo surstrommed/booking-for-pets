@@ -20,14 +20,7 @@ import { CSignUp } from "./../Auth/Signup";
 import { Preloader } from "./../Auxiliary/Preloader";
 import { profileIconStyles } from "./headerStyles";
 import { noAvatar } from "../../helpers";
-
-type Logout = () => object;
-interface IProfile {
-  auth: object;
-  promise: object;
-  actionLogOut: Logout;
-  signed?: boolean;
-}
+import { IProfile } from "./../../server/api/api-models";
 
 type ButtonEvent = React.MouseEvent<HTMLButtonElement>;
 

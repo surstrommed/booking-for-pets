@@ -2,28 +2,19 @@ import React, { useState } from "react";
 import { connect } from "react-redux";
 import { RootState } from "../App";
 import { useFormik } from "formik";
-import * as Yup from "yup";
-import { Button, InputAdornment, IconButton, TextField } from "@mui/material";
+import {
+  Button,
+  InputAdornment,
+  IconButton,
+  TextField,
+  Card,
+  Typography,
+} from "@mui/material";
 import VisibilityIcon from "@mui/icons-material/Visibility";
 import VisibilityOffIcon from "@mui/icons-material/VisibilityOff";
 import { actionChangePassword } from "./../../actions/thunks";
 import { changeProfileStyles } from "./profileStyles";
-import Card from "@mui/material/Card";
-import { Typography } from "@mui/material";
-import { validatePassword } from "../../helpers";
-
-const validationSchema = Yup.object().shape({
-  password: Yup.string().required("Password is required"),
-  retryPassword: Yup.string()
-    .oneOf([Yup.ref("password")], "Passwords do not match")
-    .required("Password is required"),
-  newPassword: Yup.string()
-    .required()
-    .matches(
-      validatePassword,
-      "Password must contain at least 8 characters, one uppercase, one number and one special case character"
-    ),
-});
+import { changePasswordVS } from "../../helpers/validationSchemes";
 
 const ChangePassword = ({ changePassword }) => {
   const [showPassword, setShowPassword] = useState(false);
@@ -38,7 +29,7 @@ const ChangePassword = ({ changePassword }) => {
 
   const formik = useFormik({
     initialValues: initialValues,
-    validationSchema: validationSchema,
+    validationSchema: changePasswordVS,
     onSubmit: (values) => {
       changePassword(values.password, values.newPassword);
     },
