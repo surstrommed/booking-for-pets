@@ -11,18 +11,13 @@ import { connect, useSelector } from "react-redux";
 import { Preloader } from "./../Auxiliary/Preloader";
 import { actionChooseCurrency } from "./../../actions/thunks";
 import { dialogCurrencyStyles } from "./headerStyles";
+import { TabPanelProps } from "../../server/api/api-models";
 
 const Transition = forwardRef(function Transition(props, ref) {
   return <Slide direction="up" ref={ref} {...props} />;
 });
 
-interface TabPanelProps {
-  children?: React.ReactNode;
-  index: number;
-  value: number;
-}
-
-function tabsProps(index: number) {
+function setTabsProps(index: number) {
   return {
     id: `simple-tab-${index}`,
     "aria-controls": `simple-tabpanel-${index}`,
@@ -68,8 +63,8 @@ function BasicTabs({ auth, currencyList, chooseCurrency }) {
           textColor="secondary"
           indicatorColor="secondary"
         >
-          <Tab label="Currency" {...tabsProps(0)} />
-          <Tab label="Language" {...tabsProps(1)} />
+          <Tab label="Currency" {...setTabsProps(0)} />
+          <Tab label="Language" {...setTabsProps(1)} />
         </Tabs>
       </Box>
       <TabPanel value={value} index={0}>

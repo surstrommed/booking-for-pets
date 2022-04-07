@@ -1,6 +1,5 @@
 import React, { useState } from "react";
 import { useFormik } from "formik";
-import * as Yup from "yup";
 import {
   Button,
   Typography,
@@ -13,69 +12,10 @@ import VisibilityOffIcon from "@mui/icons-material/VisibilityOff";
 import { actionFullRegister } from "../../actions/thunks";
 import { connect } from "react-redux";
 import { RootState } from "../App";
-import {
-  validatePassword,
-  validateLogin,
-  validateFirstName,
-  validateLastName,
-} from "../../helpers";
 import { CustomTextField } from "./../Auxiliary/CustomTextField";
 import { authFormStyles, authModalStyles } from "./authStyles";
-interface IRegister {
-  promise?: object;
-  onRegister: (
-    email: string,
-    login: string,
-    firstName: string,
-    lastName: string,
-    password: string
-  ) => void;
-  modal?: boolean;
-  signInOpenState?: (value: boolean) => void;
-  signUpOpenState?: (value: boolean) => void;
-}
-
-interface RegisterFormValues {
-  email: string;
-  login: string;
-  firstName: string;
-  lastName: string;
-  password: string;
-  retryPassword: string;
-}
-
-const validationSchema = Yup.object().shape({
-  email: Yup.string()
-    .email("Enter a valid email")
-    .required("Email is required"),
-  login: Yup.string()
-    .matches(
-      validateLogin,
-      "Login must be 3 to 8 characters long and must contain small letters and numbers"
-    )
-    .required("Login is required"),
-  firstName: Yup.string()
-    .matches(
-      validateFirstName,
-      "First name must be 2 to 15 characters long and must start with a capital letter"
-    )
-    .required("First name is required"),
-  lastName: Yup.string()
-    .matches(
-      validateLastName,
-      "Last name must be 2 to 20 characters long and must start with a capital letter"
-    )
-    .required("Last name is required"),
-  password: Yup.string()
-    .matches(
-      validatePassword,
-      "Password must contain at least 8 characters, one uppercase, one number and one special case character"
-    )
-    .required("Password is required"),
-  retryPassword: Yup.string()
-    .oneOf([Yup.ref("password")], "Passwords do not match")
-    .required("Retry password is required"),
-});
+import { signUpVS } from "./../../helpers/validationSchemes";
+import { IRegister, RegisterFormValues } from "./../../server/api/api-models";
 
 const SignUp = ({
   onRegister,
@@ -85,6 +25,7 @@ const SignUp = ({
 }: IRegister) => {
   const [showPassword, setShowPassword] = useState(false);
   const [showRetryPassword, setShowRetryPassword] = useState(false);
+
   const initialValues: RegisterFormValues = {
     email: "",
     login: "",
@@ -93,9 +34,10 @@ const SignUp = ({
     password: "",
     retryPassword: "",
   };
+
   const formik = useFormik({
     initialValues: initialValues,
-    validationSchema: validationSchema,
+    validationSchema: signUpVS,
     onSubmit: (values) => {
       modal ? signUpOpenState(false) : null;
       onRegister(

@@ -32,16 +32,14 @@ const myFetch =
 const imageFetch = (url: string) => async (file: File) => {
   const payload = new FormData();
   payload.append("image", file);
-  const obj = await axios.post(url, payload).catch((error) => {
-    console.log("Error uploading image", error);
+  const obj = await axios.post(url, payload).catch(() => {
     throw new Error("Failed to connect to the server, please try again later.");
   });
   return obj?.["data"]?.["data"]?.["image"]?.["url"];
 };
 
 const exchangeRatesFetch = (url: string) => async () => {
-  const obj = await axios.get(url).catch((error) => {
-    console.log("Error getting exchange currency list", error);
+  const obj = await axios.get(url).catch(() => {
     throw new Error("Failed to connect to the server, please try again later.");
   });
   return obj?.["data"]?.["rates"];
