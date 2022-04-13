@@ -25,12 +25,19 @@ export interface HotelModel {
   photos?: string[];
   hotelRooms?: number;
   freeRooms?: object;
+  userRequests?: object[];
   disableUserDates?: object;
   disableUsersDates?: number[];
   dates?: number[][];
   price?: string;
   owner?: object;
   reviews?: object[];
+}
+
+export interface CurrencyModel {
+  id: number;
+  name?: string;
+  sign?: string;
 }
 
 export interface IRegister {
@@ -58,6 +65,7 @@ export interface RegisterFormValues {
 
 export interface ILogin {
   promise?: object;
+  auth?: object;
   onLogin: (email: string, password: string) => void;
   modal?: boolean;
   signInOpenState?: (value: boolean) => void;

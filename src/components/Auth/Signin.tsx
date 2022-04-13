@@ -1,6 +1,5 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useFormik } from "formik";
-import * as Yup from "yup";
 import {
   Button,
   Typography,
@@ -11,7 +10,7 @@ import {
 import VisibilityIcon from "@mui/icons-material/Visibility";
 import VisibilityOffIcon from "@mui/icons-material/VisibilityOff";
 import { connect } from "react-redux";
-import { RootState } from "../App";
+import { RootState, history } from "../App";
 import { actionFullLogin } from "../../actions/thunks";
 import { CustomTextField } from "./../Auxiliary/CustomTextField";
 import { authFormStyles, authModalStyles } from "./authStyles";
@@ -23,6 +22,7 @@ const SignIn = ({
   modal,
   signInOpenState,
   signUpOpenState,
+  auth,
 }: ILogin) => {
   const [showPassword, setShowPassword] = useState(false);
   const initialValues: LoginFormValues = { email: "", password: "" };
@@ -31,13 +31,27 @@ const SignIn = ({
     initialValues: initialValues,
     validationSchema: signInVS,
     onSubmit: (values) => {
-      modal ? signInOpenState(false) : null;
       const { email, password } = values;
       onLogin(email, password);
     },
   });
 
   const { handleSubmit, handleChange, values, touched, errors } = formik;
+
+  const showPass = () => setShowPassword(!showPassword);
+
+  const getSignUpModal = () => {
+    signInOpenState(false);
+    signUpOpenState(true);
+  };
+
+  const getSignUp = () => history.push("/signup");
+
+  useEffect(() => {
+    if (auth?.payload && modal) {
+      signInOpenState(false);
+    }
+  }, [auth?.payload]);
 
   return (
     <div style={modal ? authModalStyles.main : authFormStyles.main}>
@@ -87,8 +101,8 @@ const SignIn = ({
                   <InputAdornment position="end">
                     <IconButton
                       aria-label="toggle password visibility"
-                      onClick={() => setShowPassword(!showPassword)}
-                      onMouseDown={() => setShowPassword(!showPassword)}
+                      onClick={showPass}
+                      onMouseDown={showPass}
                     >
                       {showPassword ? (
                         <VisibilityIcon />
@@ -120,14 +134,7 @@ const SignIn = ({
             >
               Don&apos;t have an account yet?{" "}
               <Button
-                onClick={
-                  modal
-                    ? () => {
-                        signInOpenState(false);
-                        signUpOpenState(true);
-                      }
-                    : () => history.push("/signup")
-                }
+                onClick={modal ? getSignUpModal : getSignUp}
                 color="secondary"
               >
                 Sign Up
@@ -140,9 +147,6 @@ const SignIn = ({
   );
 };
 
-export const CSignIn = connect(
-  (state: RootState) => ({ promise: state.promise }),
-  {
-    onLogin: actionFullLogin,
-  }
-)(SignIn);
+export const CSignIn = connect((state: RootState) => ({ auth: state.auth }), {
+  onLogin: actionFullLogin,
+})(SignIn);

@@ -5,23 +5,18 @@ import AdapterDateFns from "@mui/lab/AdapterDateFns";
 import TextField from "@mui/material/TextField";
 
 export const DatePicker = ({ type, formik, disableFnc }) => {
+  const { handleBlur, values, setFieldValue } = formik;
   return (
     <LocalizationProvider
       dateAdapter={AdapterDateFns}
       name={type === "arrival" ? "dateArrival" : "dateDeparture"}
-      id={type === "arrival" ? "dateArrival" : "dateDeparture"}
     >
       <DesktopDatePicker
         label={type === "arrival" ? "Arrival" : "Departure"}
         inputFormat="dd/MM/yyyy"
-        value={
-          type === "arrival"
-            ? formik.values?.dateArrival
-            : formik.values?.dateDeparture
-        }
         shouldDisableDate={disableFnc}
         onChange={(value) => {
-          formik.setFieldValue(
+          setFieldValue(
             type === "arrival" ? "dateArrival" : "dateDeparture",
             value
           );
@@ -31,7 +26,10 @@ export const DatePicker = ({ type, formik, disableFnc }) => {
             ? new Date(new Date().getTime() + 24 * 60 * 60 * 1000)
             : new Date(new Date().getTime() + 48 * 60 * 60 * 1000)
         }
-        renderInput={(params) => <TextField {...params} color="secondary" />}
+        value={type === "arrival" ? values.dateArrival : values.dateDeparture}
+        renderInput={(params) => (
+          <TextField onBlur={handleBlur} {...params} color="secondary" />
+        )}
       />
     </LocalizationProvider>
   );

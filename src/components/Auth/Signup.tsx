@@ -11,7 +11,7 @@ import VisibilityIcon from "@mui/icons-material/Visibility";
 import VisibilityOffIcon from "@mui/icons-material/VisibilityOff";
 import { actionFullRegister } from "../../actions/thunks";
 import { connect } from "react-redux";
-import { RootState } from "../App";
+import { RootState, history } from "../App";
 import { CustomTextField } from "./../Auxiliary/CustomTextField";
 import { authFormStyles, authModalStyles } from "./authStyles";
 import { signUpVS } from "./../../helpers/validationSchemes";
@@ -39,13 +39,24 @@ const SignUp = ({
     initialValues: initialValues,
     validationSchema: signUpVS,
     onSubmit: (values) => {
-      modal ? signUpOpenState(false) : null;
+      modal && signUpOpenState(false);
       const { email, login, firstName, lastName, password } = values;
       onRegister({ email, login, firstName, lastName, password });
     },
   });
 
   const { handleSubmit, handleChange, values, touched, errors } = formik;
+
+  const showPass = () => setShowPassword(!showPassword);
+
+  const showRetryPass = () => setShowRetryPassword(!showRetryPassword);
+
+  const getSignInModal = () => {
+    signInOpenState(true);
+    signUpOpenState(false);
+  };
+
+  const getSignIn = () => history.push("/signin");
 
   return (
     <div style={modal ? authModalStyles.main : authFormStyles.main}>
@@ -134,8 +145,8 @@ const SignUp = ({
                   <InputAdornment position="end">
                     <IconButton
                       aria-label="toggle password visibility"
-                      onClick={() => setShowPassword(!showPassword)}
-                      onMouseDown={() => setShowPassword(!showPassword)}
+                      onClick={showPass}
+                      onMouseDown={showPass}
                     >
                       {showPassword ? (
                         <VisibilityIcon />
@@ -165,10 +176,8 @@ const SignUp = ({
                   <InputAdornment position="end">
                     <IconButton
                       aria-label="toggle retry password visibility"
-                      onClick={() => setShowRetryPassword(!showRetryPassword)}
-                      onMouseDown={() =>
-                        setShowRetryPassword(!showRetryPassword)
-                      }
+                      onClick={showRetryPass}
+                      onMouseDown={showRetryPass}
                     >
                       {showRetryPassword ? (
                         <VisibilityIcon />
@@ -198,14 +207,7 @@ const SignUp = ({
             >
               Already have an account?{" "}
               <Button
-                onClick={
-                  modal
-                    ? () => {
-                        signInOpenState(true);
-                        signUpOpenState(false);
-                      }
-                    : () => history.push("/signin")
-                }
+                onClick={modal ? getSignInModal : getSignIn}
                 color="secondary"
               >
                 Sign In

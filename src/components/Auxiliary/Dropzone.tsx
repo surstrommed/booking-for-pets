@@ -29,7 +29,7 @@ const Dropzone = ({ text, actionAvatar, type, limit }) => {
       {...getRootProps()}
     >
       <input {...getInputProps()} />
-      {isDragActive ? setTypeError(false) : null}
+      {isDragActive && setTypeError(false)}
       {isDragActive ? (
         <Typography variant="body1" gutterBottom>
           {text}

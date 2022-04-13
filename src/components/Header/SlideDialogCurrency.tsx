@@ -78,6 +78,10 @@ function BasicTabs({ auth, currencyList, chooseCurrency }) {
         </Typography>
       </TabPanel>
       <TabPanel value={value} index={1}>
+        <Typography variant="h5" gutterBottom component="span">
+          Choose a currency
+        </Typography>
+        <br />
         <Typography variant="body1" gutterBottom component="span">
           Selected: {currentCurrency?.sign}
         </Typography>
@@ -118,7 +122,7 @@ const CBasicTabs = connect(
 )(BasicTabs);
 
 export default function SlideDialogCurrency({ updateOpenDialogStatus }) {
-  const promise = useSelector((state) => state?.promise);
+  const promise = useSelector((state) => state.promise);
   const [open, setOpen] = useState(true);
 
   const handleClose = () => {

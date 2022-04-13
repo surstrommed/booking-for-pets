@@ -45,6 +45,16 @@ const ProfileIcon = ({ auth, promise, actionLogOut }: IProfile) => {
     setOpenSignUpModal(value);
   };
 
+  const getInbox = () => history.push("/inbox");
+
+  const getWishlist = () => history.push("/wishlist");
+
+  const getProfile = () => history.push("/profile");
+
+  const openSignIn = () => setOpenSignInModal(true);
+
+  const openSignUp = () => setOpenSignUpModal(true);
+
   return (
     <>
       {openSignInModal && (
@@ -128,7 +138,7 @@ const ProfileIcon = ({ auth, promise, actionLogOut }: IProfile) => {
         >
           {sessionStorage.authToken ? (
             <div>
-              <MenuItem onClick={() => history.push("/inbox")}>
+              <MenuItem onClick={getInbox}>
                 <Typography
                   sx={profileIconStyles.fontWeight}
                   textAlign="center"
@@ -136,7 +146,7 @@ const ProfileIcon = ({ auth, promise, actionLogOut }: IProfile) => {
                   Notifications
                 </Typography>
               </MenuItem>
-              <MenuItem onClick={() => history.push("/wishlist")}>
+              <MenuItem onClick={getWishlist}>
                 <Typography
                   sx={profileIconStyles.fontWeight}
                   textAlign="center"
@@ -145,20 +155,20 @@ const ProfileIcon = ({ auth, promise, actionLogOut }: IProfile) => {
                 </Typography>
               </MenuItem>
               <hr />
-              <MenuItem onClick={() => history.push("/profile")}>
+              <MenuItem onClick={getProfile}>
                 <Typography textAlign="center">Profile</Typography>
               </MenuItem>
               <hr />
-              <MenuItem onClick={() => actionLogOut()}>
+              <MenuItem onClick={actionLogOut}>
                 <Typography textAlign="center">Logout</Typography>
               </MenuItem>
             </div>
           ) : (
             <div>
-              <MenuItem onClick={() => setOpenSignInModal(true)}>
+              <MenuItem onClick={openSignIn}>
                 <Typography textAlign="center">Sign In</Typography>
               </MenuItem>
-              <MenuItem onClick={() => setOpenSignUpModal(true)}>
+              <MenuItem onClick={openSignUp}>
                 <Typography textAlign="center">Sign Up</Typography>
               </MenuItem>
             </div>

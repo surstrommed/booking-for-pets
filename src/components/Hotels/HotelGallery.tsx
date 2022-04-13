@@ -34,7 +34,7 @@ export const HotelGallery = ({ currentHotel, updateOpenDialogStatus }) => {
               alt={item.title}
               loading="lazy"
             />
-            {index === 4 ? (
+            {index === 4 && (
               <Button
                 type="submit"
                 color="primary"
@@ -44,7 +44,7 @@ export const HotelGallery = ({ currentHotel, updateOpenDialogStatus }) => {
               >
                 Show more
               </Button>
-            ) : null}
+            )}
           </ImageListItem>
         ))}
       </ImageList>

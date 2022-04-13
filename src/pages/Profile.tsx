@@ -70,14 +70,14 @@ export const Profile = connect((state: RootState) => ({
         </TabPanel>
         <TabPanel value={value} index={1}>
           <Preloader
-            promiseName={"userUpdate"}
+            promiseName={"signin"}
             promiseState={promise}
             sub={<CChangePersonalData />}
           />
         </TabPanel>
         <TabPanel value={value} index={2}>
           <Preloader
-            promiseName={"userUpdate"}
+            promiseName={"signin"}
             promiseState={promise}
             sub={<CChangePassword />}
           />

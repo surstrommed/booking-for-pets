@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from "react";
-import * as Yup from "yup";
 import { connect } from "react-redux";
 import { RootState } from "../App";
 import { hotelPageStyles } from "./hotelsStyle";
@@ -24,6 +23,8 @@ import {
 } from "./bookingFunctions";
 import { HotelPageFormValues } from "../../server/api/api-models";
 import { hotelPageVS } from "./../../helpers/validationSchemes";
+import useSnackBar from "./../Auxiliary/SnackBar";
+import { formatStringDate } from "./../../helpers/index";
 
 const HotelPage = ({ promise, auth, currencyList, onBooking }) => {
   const { hotelId } = useParams();
@@ -42,8 +43,8 @@ const HotelPage = ({ promise, auth, currencyList, onBooking }) => {
   ) || { name: "USD", sign: "$" };
 
   const initialValues: HotelPageFormValues = {
-    dateArrival: null,
-    dateDeparture: null,
+    dateArrival: new Date(new Date().getTime() + 24 * 60 * 60 * 1000),
+    dateDeparture: new Date(new Date().getTime() + 48 * 60 * 60 * 1000),
     numberAnimals: 1,
   };
 
@@ -51,11 +52,13 @@ const HotelPage = ({ promise, auth, currencyList, onBooking }) => {
   let disableUsersDates = [...(currentHotel?.disableUsersDates || [])];
   let freeRooms = { ...(currentHotel?.freeRooms || {}) };
 
+  const [, sendSnackbar] = useSnackBar();
+
   const formik = useFormik({
     initialValues: initialValues,
     validationSchema: hotelPageVS,
     validateOnChange: false,
-    validateOnBlur: false,
+    validateOnBlur: true,
 
     onSubmit: (values) => {
       const formattedDateArrival = Date.parse(formatDate(values.dateArrival));
@@ -63,12 +66,12 @@ const HotelPage = ({ promise, auth, currencyList, onBooking }) => {
         formatDate(values.dateDeparture)
       );
 
-      const userDates = [
-        formattedDateArrival,
-        formattedDateDeparture,
-        +values.numberAnimals,
-        auth.payload.id,
-      ];
+      const userDates = {
+        arrivalDate: formattedDateArrival,
+        departureDate: formattedDateDeparture,
+        animalsNumber: +values.numberAnimals,
+        usersId: auth.payload.id,
+      };
 
       freeRooms = clearPastFreeRooms(freeRooms);
 
@@ -100,6 +103,17 @@ const HotelPage = ({ promise, auth, currencyList, onBooking }) => {
         disableUsersDates,
       });
 
+      values.dateArrival &&
+        values.dateDeparture &&
+        values.numberAnimals &&
+        sendSnackbar({
+          msg: `You have booked ${
+            sessionStorage.usersAnimalsCount
+          } seats from ${formatStringDate(
+            Date.parse(values.dateArrival)
+          )} to ${formatStringDate(Date.parse(values.dateDeparture))}`,
+        });
+
       onBooking({
         id: currentHotel?.id,
         userRequests: [...currentHotel.userRequests, userDates],
@@ -123,7 +137,7 @@ const HotelPage = ({ promise, auth, currencyList, onBooking }) => {
     );
   };
 
-  const { errors, values } = formik;
+  const { errors, values, setFieldValue } = formik;
 
   useEffect(() => {
     if (values?.dateArrival && values?.dateDeparture) {
@@ -131,8 +145,9 @@ const HotelPage = ({ promise, auth, currencyList, onBooking }) => {
         Date.parse(formatDate(values.dateArrival)) >=
         Date.parse(formatDate(values.dateDeparture))
       ) {
-        values.dateDeparture = new Date(
-          values.dateArrival.getTime() + 24 * 60 * 60 * 1000
+        setFieldValue(
+          "dateDeparture",
+          new Date(values.dateArrival.getTime() + 24 * 60 * 60 * 1000)
         );
       }
     }
@@ -176,7 +191,7 @@ const HotelPage = ({ promise, auth, currencyList, onBooking }) => {
         updateOpenDialogStatus={updateOpenDialogStatus}
       />
       <HotelDescription
-        hotelDescriptionProps={{
+        hotelDescriptionData={{
           currentHotel,
           formik,
           currentCurrency,

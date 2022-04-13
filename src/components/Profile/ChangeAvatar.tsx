@@ -18,7 +18,7 @@ const ChangeAvatar = ({ auth, deleteAvatar }) => {
           sx={changeProfileStyles.avatarBadge}
           anchorOrigin={{ vertical: "top", horizontal: "right" }}
           badgeContent={
-            <IconButton onClick={() => deleteAvatar()}>
+            <IconButton onClick={deleteAvatar}>
               <CancelIcon />
             </IconButton>
           }
@@ -27,7 +27,7 @@ const ChangeAvatar = ({ auth, deleteAvatar }) => {
             component="img"
             sx={changeProfileStyles.avatarImage}
             alt="Avatar image"
-            src={auth.payload.pictureUrl}
+            src={auth?.payload?.pictureUrl}
           />
         </Badge>
       ) : (

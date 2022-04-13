@@ -42,7 +42,7 @@ export const searchBar = {
   buttonGroup: {
     backgroundColor: "#fff",
     borderRadius: 10,
-    padding: "1vh",
+    padding: "1vh 2vh",
     "& .MuiFilledInput-root": {
       borderRadius: 10,
     },

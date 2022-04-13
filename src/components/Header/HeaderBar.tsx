@@ -72,7 +72,7 @@ const ElevationScroll = (props: ElevationScrollProps) => {
       });
 };
 
-export default function HeaderBar(props: Props) {
+export default function HeaderBar(props) {
   const [anchorElNav, setAnchorElNav] = useState(null);
   const [openDialog, setOpenDialog] = useState(false);
   const [openSignInModal, setOpenSignInModal] = useState(false);
@@ -84,8 +84,8 @@ export default function HeaderBar(props: Props) {
     (state) => state.header.expandSmallHeader
   );
 
-  const currentUser = useSelector((state) => state?.auth?.payload);
-  const promise = useSelector((state) => state?.promise);
+  const currentUser = useSelector((state) => state.auth?.payload);
+  const promise = useSelector((state) => state.promise);
   const location = useLocation().pathname;
   const dispatch = useDispatch();
 
@@ -110,17 +110,13 @@ export default function HeaderBar(props: Props) {
     }
   });
 
-  const updateOpenDialogStatus = (value) => {
-    setOpenDialog(value);
-  };
+  const updateOpenDialogStatus = (value) => setOpenDialog(value);
 
-  const updateSignInModal = (value) => {
-    setOpenSignInModal(value);
-  };
+  const updateSignInModal = (value) => setOpenSignInModal(value);
 
-  const updateSignUpModal = (value) => {
-    setOpenSignUpModal(value);
-  };
+  const updateSignUpModal = (value) => setOpenSignUpModal(value);
+
+  const getPageTop = () => window.scrollTo(0, 0);
 
   return (
     <div className="Header">
@@ -181,11 +177,7 @@ export default function HeaderBar(props: Props) {
                 component="div"
                 sx={headerBar.typography}
               >
-                <Link
-                  className="Logo"
-                  to="/"
-                  onClick={() => window.scrollTo(0, 0)}
-                >
+                <Link className="Logo" to="/" onClick={getPageTop}>
                   <PetsIcon />
                   Shaggy tail
                 </Link>
@@ -229,11 +221,7 @@ export default function HeaderBar(props: Props) {
                 component="div"
                 sx={headerBar.logoXs}
               >
-                <Link
-                  className="Logo"
-                  to="/"
-                  onClick={() => window.scrollTo(0, 0)}
-                >
+                <Link className="Logo" to="/" onClick={getPageTop}>
                   <PetsIcon />
                   Shaggy tail
                 </Link>
@@ -245,7 +233,7 @@ export default function HeaderBar(props: Props) {
                       className="SearchField"
                       variant="contained"
                       endIcon={<SearchIcon id="SearchIcon" />}
-                      onClick={() => expandMenu()}
+                      onClick={expandMenu}
                     >
                       Start your search
                     </Button>
@@ -269,14 +257,16 @@ export default function HeaderBar(props: Props) {
                 )}
               </Box>
               <Button sx={headerBar.headerButtons}>
-                <Link to="/owners" onClick={() => window.scrollTo(0, 0)}>
+                <Link to="/owners" onClick={getPageTop}>
                   For owners
                 </Link>
               </Button>
               <Button
                 sx={headerBar.headerButtons}
                 onClick={() =>
-                  currentUser ? setOpenDialog(true) : setOpenSignInModal(true)
+                  currentUser
+                    ? updateOpenDialogStatus(true)
+                    : updateSignInModal(true)
                 }
               >
                 <LanguageOutlinedIcon />

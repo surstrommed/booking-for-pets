@@ -11,17 +11,18 @@ export default function ModalWindow({
   signUpOpenState,
 }: IModal) {
   const [open, setOpen] = useState(true);
+
   const handleClose = () => {
     setOpen(false);
   };
 
   useEffect(() => {
     if (open) {
-      type === "signin" ? signInOpenState(true) : null;
-      type === "signup" ? signUpOpenState(true) : null;
+      type === "signin" && signInOpenState(true);
+      type === "signup" && signUpOpenState(true);
     } else {
-      type === "signin" ? signInOpenState(false) : null;
-      type === "signup" ? signUpOpenState(false) : null;
+      type === "signin" && signInOpenState(false);
+      type === "signup" && signUpOpenState(false);
     }
   }, [open]);
 

@@ -8,14 +8,15 @@
       "createdAt": 1647206008510,
       "currencyId": 1,
       "id": 1,
-      "pictureUrl": "https://i.ibb.co/9y8jFmf/147144.png",
+      "pictureUrl": "https://i.ibb.co/VCvQLdD/147144.png",
       "wishlists": [
         {
           "name": "Test",
           "hotelsId": []
         }
       ],
-      "password": "$2a$10$Nnzcp2Gb3l4kpKzSzEZxUuvXmBrWqMVdKzCklfSfdTLi/RNP/qrIi"
+      "newPassword": "210500100Anton$",
+      "password": "$2a$10$SesLh7MlEB6v09xqHexfD.YH9taGNcawTgVv1tsJI8ofGn2xZizWS"
     },
     {
       "email": "user1231@ukr.net",
@@ -60,6 +61,17 @@
       "createdAt": 1649151893470,
       "pictureUrl": null,
       "id": 5
+    },
+    {
+      "email": "test1@ukr.net",
+      "password": "$2a$10$.RzSFPiWRSs5DVLdX.VswO01qoXwQWAKu46fuIDCCEgkUZAC/59bq",
+      "login": "test1",
+      "firstName": "Test",
+      "lastName": "Test",
+      "currencyId": 1,
+      "createdAt": 1649878527612,
+      "pictureUrl": null,
+      "id": 6
     }
   ],
   "hotels": [
@@ -82,47 +94,179 @@
       ],
       "hotelRooms": 40,
       "freeRooms": {
-        "1649192400000": {
-          "availableSeats": 29,
+        "1649883600000": {
+          "availableSeats": 24,
           "usersId": [
-            1,
-            1
+            6,
+            6
           ],
           "usersAnimalsCount": [
-            5,
-            6
+            8,
+            2
           ]
         },
-        "1649278800000": {
-          "availableSeats": 29,
+        "1649970000000": {
+          "availableSeats": 24,
           "usersId": [
-            1,
-            1
+            6,
+            6
           ],
           "usersAnimalsCount": [
-            5,
+            8,
+            2
+          ]
+        },
+        "1650056400000": {
+          "availableSeats": 30,
+          "usersId": [
+            6,
             6
+          ],
+          "usersAnimalsCount": [
+            8,
+            8
+          ]
+        },
+        "1650142800000": {
+          "availableSeats": 30,
+          "usersId": [
+            6,
+            6
+          ],
+          "usersAnimalsCount": [
+            8,
+            8
+          ]
+        },
+        "1650315600000": {
+          "availableSeats": 30,
+          "usersId": [
+            6,
+            6
+          ],
+          "usersAnimalsCount": [
+            8,
+            8
+          ]
+        },
+        "1650402000000": {
+          "availableSeats": 30,
+          "usersId": [
+            6,
+            6
+          ],
+          "usersAnimalsCount": [
+            8,
+            8
+          ]
+        },
+        "1651093200000": {
+          "availableSeats": 30,
+          "usersId": [
+            6,
+            6
+          ],
+          "usersAnimalsCount": [
+            8,
+            2
+          ]
+        },
+        "1651179600000": {
+          "availableSeats": 30,
+          "usersId": [
+            6,
+            6
+          ],
+          "usersAnimalsCount": [
+            8,
+            2
           ]
         }
       },
       "userRequests": [
-        [
-          1649192400000,
-          1649278800000,
-          5,
-          1
-        ],
-        [
-          1649192400000,
-          1649278800000,
-          6,
-          1
-        ]
+        {
+          "arrivalDate": 1649883600000,
+          "departureDate": 1649970000000,
+          "animalsNumber": 8,
+          "usersId": 6
+        },
+        {
+          "arrivalDate": 1649883600000,
+          "departureDate": 1649970000000,
+          "animalsNumber": 10,
+          "usersId": 6
+        },
+        {
+          "arrivalDate": 1650056400000,
+          "departureDate": 1650142800000,
+          "animalsNumber": 8,
+          "usersId": 6
+        },
+        {
+          "arrivalDate": 1650056400000,
+          "departureDate": 1650142800000,
+          "animalsNumber": 10,
+          "usersId": 6
+        },
+        {
+          "arrivalDate": 1650315600000,
+          "departureDate": 1650402000000,
+          "animalsNumber": 8,
+          "usersId": 6
+        },
+        {
+          "arrivalDate": 1650315600000,
+          "departureDate": 1650402000000,
+          "animalsNumber": 10,
+          "usersId": 6
+        },
+        {
+          "arrivalDate": 1651093200000,
+          "departureDate": 1651179600000,
+          "animalsNumber": 8,
+          "usersId": 6
+        },
+        {
+          "arrivalDate": 1651093200000,
+          "departureDate": 1651179600000,
+          "animalsNumber": 10,
+          "usersId": 6
+        }
       ],
       "disableUserDates": {
-        "1": [
-          1649192400000,
-          1649278800000
+        "6": [
+          1649883600000,
+          1649970000000,
+          1649883600000,
+          1649970000000,
+          1649883600000,
+          1649970000000,
+          1650056400000,
+          1650142800000,
+          1649883600000,
+          1649970000000,
+          1650056400000,
+          1650142800000,
+          1649883600000,
+          1649970000000,
+          1650056400000,
+          1650142800000,
+          1650315600000,
+          1650402000000,
+          1649883600000,
+          1649970000000,
+          1650056400000,
+          1650142800000,
+          1650315600000,
+          1650402000000,
+          1649883600000,
+          1649970000000,
+          1650056400000,
+          1650142800000,
+          1650315600000,
+          1650402000000,
+          1651093200000,
+          1651179600000
         ]
       },
       "disableUsersDates": [],

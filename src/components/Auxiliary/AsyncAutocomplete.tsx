@@ -36,18 +36,22 @@ export const AsyncAutocomplete = ({ updateLocation }) => {
     }
   }, [open]);
 
+  const handleOpen = () => {
+    setOpen(true);
+  };
+
+  const handleClose = () => {
+    setOpen(false);
+  };
+
   return (
     <Autocomplete
       id="asynchronous-demo"
       sx={autocompleteStyles.main}
       open={open}
       onSelect={updateLocation}
-      onOpen={() => {
-        setOpen(true);
-      }}
-      onClose={() => {
-        setOpen(false);
-      }}
+      onOpen={handleOpen}
+      onClose={handleClose}
       isOptionEqualToValue={(option, value) => option === value}
       getOptionLabel={(option) => option}
       options={options}
@@ -60,13 +64,13 @@ export const AsyncAutocomplete = ({ updateLocation }) => {
             ...params.InputProps,
             endAdornment: (
               <React.Fragment>
-                {loading ? (
+                {loading && (
                   <CircularProgress
                     color="inherit"
                     size={20}
                     sx={autocompleteStyles.loading}
                   />
-                ) : null}
+                )}
                 {params.InputProps.endAdornment}
               </React.Fragment>
             ),

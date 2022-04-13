@@ -37,6 +37,12 @@ const ChangePassword = ({ changePassword }) => {
 
   const { handleSubmit, handleChange, values, touched, errors } = formik;
 
+  const showPass = () => setShowPassword(!showPassword);
+
+  const showRetryPass = () => setShowRetryPassword(!showRetryPassword);
+
+  const showNewPass = () => setShowNewPassword(!showNewPassword);
+
   return (
     <Card sx={changeProfileStyles.passwordsCard}>
       <Typography variant="body2" gutterBottom>
@@ -61,8 +67,8 @@ const ChangePassword = ({ changePassword }) => {
               <InputAdornment position="end">
                 <IconButton
                   aria-label="toggle password visibility"
-                  onClick={() => setShowPassword(!showPassword)}
-                  onMouseDown={() => setShowPassword(!showPassword)}
+                  onClick={showPass}
+                  onMouseDown={showPass}
                 >
                   {showPassword ? <VisibilityIcon /> : <VisibilityOffIcon />}
                 </IconButton>
@@ -88,8 +94,8 @@ const ChangePassword = ({ changePassword }) => {
               <InputAdornment position="end">
                 <IconButton
                   aria-label="toggle retry password visibility"
-                  onClick={() => setShowRetryPassword(!showRetryPassword)}
-                  onMouseDown={() => setShowRetryPassword(!showRetryPassword)}
+                  onClick={showRetryPass}
+                  onMouseDown={showRetryPass}
                 >
                   {showRetryPassword ? (
                     <VisibilityIcon />
@@ -119,8 +125,8 @@ const ChangePassword = ({ changePassword }) => {
               <InputAdornment position="end">
                 <IconButton
                   aria-label="toggle new password visibility"
-                  onClick={() => setShowNewPassword(!showNewPassword)}
-                  onMouseDown={() => setShowNewPassword(!showNewPassword)}
+                  onClick={showNewPass}
+                  onMouseDown={showNewPass}
                 >
                   {showNewPassword ? <VisibilityIcon /> : <VisibilityOffIcon />}
                 </IconButton>

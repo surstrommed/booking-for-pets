@@ -45,6 +45,8 @@ const ChangePersonalData = ({ auth, onUpdate }) => {
 
   const { handleSubmit, handleChange, values, touched, errors } = formik;
 
+  const showPass = () => setShowPassword(!showPassword);
+
   return (
     <Card sx={changeProfileStyles.personalDataCard}>
       <Typography variant="body2" gutterBottom>
@@ -125,8 +127,8 @@ const ChangePersonalData = ({ auth, onUpdate }) => {
                 <InputAdornment position="end">
                   <IconButton
                     aria-label="toggle password visibility"
-                    onClick={() => setShowPassword(!showPassword)}
-                    onMouseDown={() => setShowPassword(!showPassword)}
+                    onClick={showPass}
+                    onMouseDown={showPass}
                   >
                     {showPassword ? <VisibilityIcon /> : <VisibilityOffIcon />}
                   </IconButton>
