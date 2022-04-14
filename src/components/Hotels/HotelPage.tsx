@@ -1,13 +1,12 @@
 import React, { useState, useEffect } from "react";
 import { connect } from "react-redux";
-import { RootState } from "../App";
+import { RootState, history } from "../App";
 import { hotelPageStyles } from "./hotelsStyle";
 import { useParams } from "react-router-dom";
 import { formatDate } from "../../helpers/index";
 import { useFormik } from "formik";
 import { actionFullHotelUpdate } from "./../../actions/thunks";
 import FullWindowGallery from "./FullWindowGallery";
-import { history } from "./../App";
 import { HotelReviews } from "./HotelReviews";
 import { HotelOnwer } from "./HotelOwner";
 import { HotelHeader } from "./HotelHeader";
@@ -123,6 +122,8 @@ const HotelPage = ({ promise, auth, currencyList, onBooking }) => {
         },
         disableUsersDates: [...disableUsersDates],
       });
+
+      history.go(0);
     },
   });
 

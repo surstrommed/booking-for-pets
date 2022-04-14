@@ -34,7 +34,6 @@ export function authReducer(state, { type, token }) {
   }
   if (type === "AUTH_LOGOUT") {
     sessionStorage.removeItem("authToken");
-    history.go(0);
     return {};
   }
   return state;

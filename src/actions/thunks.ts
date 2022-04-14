@@ -98,7 +98,6 @@ export const actionFullUserUpdate =
           )
         );
       }
-      history.go(0);
     }
   };
 
@@ -151,6 +150,5 @@ export const actionFullHotelUpdate =
 
     if (allHotels && Object.keys(allHotels).length !== 0) {
       await dispatch(actionHotelUpdate(hotelData));
-      history.go(0);
     }
   };

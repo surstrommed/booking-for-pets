@@ -8,7 +8,7 @@
       "createdAt": 1647206008510,
       "currencyId": 1,
       "id": 1,
-      "pictureUrl": "https://i.ibb.co/VCvQLdD/147144.png",
+      "pictureUrl": "https://i.ibb.co/v41JTMR/147144.png",
       "wishlists": [
         {
           "name": "Test",
@@ -16,7 +16,7 @@
         }
       ],
       "newPassword": "210500100Anton$",
-      "password": "$2a$10$SesLh7MlEB6v09xqHexfD.YH9taGNcawTgVv1tsJI8ofGn2xZizWS"
+      "password": "$2a$10$itIkl4sU2ySazKs7RU0hJOpiVGwSg9xHAhclHcZzl7pDAflC7lazC"
     },
     {
       "email": "user1231@ukr.net",
@@ -94,180 +94,10 @@
       ],
       "hotelRooms": 40,
       "freeRooms": {
-        "1649883600000": {
-          "availableSeats": 24,
-          "usersId": [
-            6,
-            6
-          ],
-          "usersAnimalsCount": [
-            8,
-            2
-          ]
-        },
-        "1649970000000": {
-          "availableSeats": 24,
-          "usersId": [
-            6,
-            6
-          ],
-          "usersAnimalsCount": [
-            8,
-            2
-          ]
-        },
-        "1650056400000": {
-          "availableSeats": 30,
-          "usersId": [
-            6,
-            6
-          ],
-          "usersAnimalsCount": [
-            8,
-            8
-          ]
-        },
-        "1650142800000": {
-          "availableSeats": 30,
-          "usersId": [
-            6,
-            6
-          ],
-          "usersAnimalsCount": [
-            8,
-            8
-          ]
-        },
-        "1650315600000": {
-          "availableSeats": 30,
-          "usersId": [
-            6,
-            6
-          ],
-          "usersAnimalsCount": [
-            8,
-            8
-          ]
-        },
-        "1650402000000": {
-          "availableSeats": 30,
-          "usersId": [
-            6,
-            6
-          ],
-          "usersAnimalsCount": [
-            8,
-            8
-          ]
-        },
-        "1651093200000": {
-          "availableSeats": 30,
-          "usersId": [
-            6,
-            6
-          ],
-          "usersAnimalsCount": [
-            8,
-            2
-          ]
-        },
-        "1651179600000": {
-          "availableSeats": 30,
-          "usersId": [
-            6,
-            6
-          ],
-          "usersAnimalsCount": [
-            8,
-            2
-          ]
-        }
       },
       "userRequests": [
-        {
-          "arrivalDate": 1649883600000,
-          "departureDate": 1649970000000,
-          "animalsNumber": 8,
-          "usersId": 6
-        },
-        {
-          "arrivalDate": 1649883600000,
-          "departureDate": 1649970000000,
-          "animalsNumber": 10,
-          "usersId": 6
-        },
-        {
-          "arrivalDate": 1650056400000,
-          "departureDate": 1650142800000,
-          "animalsNumber": 8,
-          "usersId": 6
-        },
-        {
-          "arrivalDate": 1650056400000,
-          "departureDate": 1650142800000,
-          "animalsNumber": 10,
-          "usersId": 6
-        },
-        {
-          "arrivalDate": 1650315600000,
-          "departureDate": 1650402000000,
-          "animalsNumber": 8,
-          "usersId": 6
-        },
-        {
-          "arrivalDate": 1650315600000,
-          "departureDate": 1650402000000,
-          "animalsNumber": 10,
-          "usersId": 6
-        },
-        {
-          "arrivalDate": 1651093200000,
-          "departureDate": 1651179600000,
-          "animalsNumber": 8,
-          "usersId": 6
-        },
-        {
-          "arrivalDate": 1651093200000,
-          "departureDate": 1651179600000,
-          "animalsNumber": 10,
-          "usersId": 6
-        }
       ],
       "disableUserDates": {
-        "6": [
-          1649883600000,
-          1649970000000,
-          1649883600000,
-          1649970000000,
-          1649883600000,
-          1649970000000,
-          1650056400000,
-          1650142800000,
-          1649883600000,
-          1649970000000,
-          1650056400000,
-          1650142800000,
-          1649883600000,
-          1649970000000,
-          1650056400000,
-          1650142800000,
-          1650315600000,
-          1650402000000,
-          1649883600000,
-          1649970000000,
-          1650056400000,
-          1650142800000,
-          1650315600000,
-          1650402000000,
-          1649883600000,
-          1649970000000,
-          1650056400000,
-          1650142800000,
-          1650315600000,
-          1650402000000,
-          1651093200000,
-          1651179600000
-        ]
       },
       "disableUsersDates": [],
       "price": "15",

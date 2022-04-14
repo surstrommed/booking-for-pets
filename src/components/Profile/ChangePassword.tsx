@@ -15,8 +15,9 @@ import VisibilityOffIcon from "@mui/icons-material/VisibilityOff";
 import { actionChangePassword } from "./../../actions/thunks";
 import { changeProfileStyles } from "./profileStyles";
 import { changePasswordVS } from "../../helpers/validationSchemes";
+import useSnackBar from "../Auxiliary/SnackBar";
 
-const ChangePassword = ({ changePassword }) => {
+const ChangePassword = ({ promise, changePassword }) => {
   const [showPassword, setShowPassword] = useState(false);
   const [showRetryPassword, setShowRetryPassword] = useState(false);
   const [showNewPassword, setShowNewPassword] = useState(false);
@@ -26,6 +27,8 @@ const ChangePassword = ({ changePassword }) => {
     retryPassword: "",
     newPassword: "",
   };
+
+  const [, sendSnackbar] = useSnackBar();
 
   const formik = useFormik({
     initialValues: initialValues,
@@ -42,6 +45,12 @@ const ChangePassword = ({ changePassword }) => {
   const showRetryPass = () => setShowRetryPassword(!showRetryPassword);
 
   const showNewPass = () => setShowNewPassword(!showNewPassword);
+
+  const showMessage = () =>
+    promise.signin.status === "RESOLVED" &&
+    sendSnackbar({
+      msg: "Your password has been changed",
+    });
 
   return (
     <Card sx={changeProfileStyles.passwordsCard}>
@@ -146,6 +155,7 @@ const ChangePassword = ({ changePassword }) => {
             !values.newPassword ||
             values.password === values.newPassword
           }
+          onClick={showMessage}
         >
           Save
         </Button>

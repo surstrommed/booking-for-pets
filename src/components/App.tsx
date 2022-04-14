@@ -35,10 +35,6 @@ export type RootState = ReturnType<typeof rootReducer>;
 export const store = createStore(rootReducer, applyMiddleware(thunk));
 export const getState = store.getState;
 
-console.log(getState());
-
-store.subscribe(() => console.log(getState()));
-
 store.dispatch(actionGetHotels());
 
 store.dispatch(actionFullGetCurrencyList());

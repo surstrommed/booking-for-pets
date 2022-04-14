@@ -37,9 +37,7 @@ function tabsProps(index: number) {
   };
 }
 
-export const Profile = connect((state: RootState) => ({
-  promise: state.promise,
-}))(({ promise }) => {
+const Profile = ({ promise }) => {
   const [value, setValue] = useState(0);
 
   const handleChange = (event: React.SyntheticEvent, newValue: number) => {
@@ -85,4 +83,8 @@ export const Profile = connect((state: RootState) => ({
       </div>
     </Box>
   );
-});
+};
+
+export const CProfile = connect((state: RootState) => ({
+  promise: state.promise,
+}))(Profile);

@@ -16,17 +16,21 @@ import { actionFullUserUpdate } from "../../actions/thunks";
 import { changeProfileStyles } from "./profileStyles";
 import { PersonalDataValues } from "../../server/api/api-models";
 import { changePersonalDataVS } from "./../../helpers/validationSchemes";
+import useSnackBar from "../Auxiliary/SnackBar";
 
-const ChangePersonalData = ({ auth, onUpdate }) => {
+const ChangePersonalData = ({ auth, promise, onUpdate }) => {
   const [showPassword, setShowPassword] = useState(false);
 
   const initialValues: PersonalDataValues = {
-    email: auth.payload.email,
-    login: auth.payload.login,
-    firstName: auth.payload.firstName,
-    lastName: auth.payload.lastName,
+    email: promise.signin.payload?.user?.email || auth.payload.email,
+    login: promise.signin.payload?.user?.login || auth.payload.login,
+    firstName:
+      promise.signin.payload?.user?.firstName || auth.payload.firstName,
+    lastName: promise.signin.payload?.user?.lastName || auth.payload.lastName,
     password: "",
   };
+
+  const [, sendSnackbar] = useSnackBar();
 
   const formik = useFormik({
     initialValues: initialValues,
@@ -46,6 +50,12 @@ const ChangePersonalData = ({ auth, onUpdate }) => {
   const { handleSubmit, handleChange, values, touched, errors } = formik;
 
   const showPass = () => setShowPassword(!showPassword);
+
+  const showMessage = () =>
+    promise.signin.status === "RESOLVED" &&
+    sendSnackbar({
+      msg: "Your personal date has been changed",
+    });
 
   return (
     <Card sx={changeProfileStyles.personalDataCard}>
@@ -156,6 +166,7 @@ const ChangePersonalData = ({ auth, onUpdate }) => {
               initialValues.firstName === values.firstName &&
               initialValues.lastName === values.lastName
             }
+            onClick={showMessage}
           >
             Save
           </Button>
