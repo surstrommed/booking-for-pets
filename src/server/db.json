@@ -8,14 +8,15 @@
       "createdAt": 1647206008510,
       "currencyId": 1,
       "id": 1,
-      "pictureUrl": "https://i.ibb.co/9y8jFmf/147144.png",
+      "pictureUrl": "https://i.ibb.co/v41JTMR/147144.png",
       "wishlists": [
         {
           "name": "Test",
           "hotelsId": []
         }
       ],
-      "password": "$2a$10$Nnzcp2Gb3l4kpKzSzEZxUuvXmBrWqMVdKzCklfSfdTLi/RNP/qrIi"
+      "newPassword": "210500100Anton$",
+      "password": "$2a$10$itIkl4sU2ySazKs7RU0hJOpiVGwSg9xHAhclHcZzl7pDAflC7lazC"
     },
     {
       "email": "user1231@ukr.net",
@@ -60,6 +61,17 @@
       "createdAt": 1649151893470,
       "pictureUrl": null,
       "id": 5
+    },
+    {
+      "email": "test1@ukr.net",
+      "password": "$2a$10$.RzSFPiWRSs5DVLdX.VswO01qoXwQWAKu46fuIDCCEgkUZAC/59bq",
+      "login": "test1",
+      "firstName": "Test",
+      "lastName": "Test",
+      "currencyId": 1,
+      "createdAt": 1649878527612,
+      "pictureUrl": null,
+      "id": 6
     }
   ],
   "hotels": [
@@ -82,48 +94,10 @@
       ],
       "hotelRooms": 40,
       "freeRooms": {
-        "1649192400000": {
-          "availableSeats": 29,
-          "usersId": [
-            1,
-            1
-          ],
-          "usersAnimalsCount": [
-            5,
-            6
-          ]
-        },
-        "1649278800000": {
-          "availableSeats": 29,
-          "usersId": [
-            1,
-            1
-          ],
-          "usersAnimalsCount": [
-            5,
-            6
-          ]
-        }
       },
       "userRequests": [
-        [
-          1649192400000,
-          1649278800000,
-          5,
-          1
-        ],
-        [
-          1649192400000,
-          1649278800000,
-          6,
-          1
-        ]
       ],
       "disableUserDates": {
-        "1": [
-          1649192400000,
-          1649278800000
-        ]
       },
       "disableUsersDates": [],
       "price": "15",

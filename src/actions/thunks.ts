@@ -20,6 +20,8 @@ import { getState, history } from "../components/App";
 import { UserModel, HotelModel } from "../server/api/api-models";
 import { checkError } from "./../helpers/index";
 
+type payloadTypes = { id: number; email: string };
+
 export const actionPromise = (name, promise) => async (dispatch) => {
   dispatch(actionPending(name));
   try {
@@ -102,7 +104,7 @@ export const actionFullUserUpdate =
 export const actionChangeAvatar = (image: File) => async (dispatch) => {
   const avatar: string = await dispatch(actionUploadPhoto(image));
   const { password } = jwtDecode(sessionStorage.authToken);
-  const { id, email }: { id: number; email: string } = getState().auth.payload;
+  const { id, email }: payloadTypes = getState().auth.payload;
 
   if (avatar && id && email && password) {
     await dispatch(
@@ -113,7 +115,7 @@ export const actionChangeAvatar = (image: File) => async (dispatch) => {
 
 export const actionDeleteAvatar = () => async (dispatch) => {
   const { password } = jwtDecode(sessionStorage.authToken);
-  const { id, email }: { id: number; email: string } = getState().auth.payload;
+  const { id, email }: payloadTypes = getState().auth.payload;
   if (id && email && password) {
     await dispatch(
       actionFullUserUpdate({ id, email, password, pictureUrl: null })
@@ -123,8 +125,7 @@ export const actionDeleteAvatar = () => async (dispatch) => {
 
 export const actionChangePassword =
   (password: string, newPassword: string) => async (dispatch) => {
-    const { id, email }: { id: number; email: string } =
-      getState().auth.payload;
+    const { id, email }: payloadTypes = getState().auth.payload;
 
     if (id && email) {
       await dispatch(
@@ -136,8 +137,7 @@ export const actionChangePassword =
 export const actionChooseCurrency =
   (currencyId: number) => async (dispatch) => {
     const { password } = jwtDecode(sessionStorage.authToken);
-    const { id, email }: { id: number; email: string } =
-      getState().auth.payload;
+    const { id, email }: payloadTypes = getState().auth.payload;
 
     if (id && email && password) {
       await dispatch(actionFullUserUpdate({ id, email, password, currencyId }));
@@ -150,6 +150,5 @@ export const actionFullHotelUpdate =
 
     if (allHotels && Object.keys(allHotels).length !== 0) {
       await dispatch(actionHotelUpdate(hotelData));
-      history.go(0);
     }
   };

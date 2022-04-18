@@ -13,9 +13,7 @@ import {
   Button,
 } from "@mui/material";
 import { Link as ScrollLink } from "react-scroll";
-import { maxAnimals } from "./bookingFunctions";
-import useSnackBar from "./../Auxiliary/SnackBar";
-import { formatStringDate } from "../../helpers";
+import { maxAnimals } from "../../helpers/index";
 
 const LeftBlockDescription = ({ currentHotel }) => {
   return (
@@ -44,10 +42,17 @@ const LeftBlockDescription = ({ currentHotel }) => {
   );
 };
 
-const RightBlockDescription = ({ rightBlockDescriptionProps }) => {
-  const { handleSubmit, values, handleChange, errors } =
-    rightBlockDescriptionProps.formik;
-  const [, sendSnackbar] = useSnackBar();
+const RightBlockDescription = ({ descriptionData }) => {
+  const {
+    currentHotel,
+    formik,
+    currentCurrency,
+    currencyExchangeList,
+    disableBookingDates,
+    auth,
+  } = descriptionData;
+  const { handleSubmit, handleBlur, values, handleChange, errors } = formik;
+
   return (
     <div style={hotelPageStyles.descriptionRightBlock}>
       <form onSubmit={handleSubmit}>
@@ -60,33 +65,28 @@ const RightBlockDescription = ({ rightBlockDescriptionProps }) => {
               sx={hotelPageStyles.blockInfo}
             >
               <div>
-                {rightBlockDescriptionProps.currentCurrency?.sign || "$"}
-                {(values?.dateArrival && values?.dateDeparture
+                {currentCurrency?.sign || "$"}
+                {(values.dateArrival && values.dateDeparture
                   ? Math.trunc(
                       (values.dateDeparture.getTime() -
                         values.dateArrival.getTime()) /
                         (24 * 60 * 60 * 1000)
                     )
                   : 1) *
-                  rightBlockDescriptionProps.currentHotel?.price *
-                  rightBlockDescriptionProps.currencyExchangeList[
-                    rightBlockDescriptionProps.currentCurrency.name
-                  ].toFixed(1) *
+                  currentHotel?.price *
+                  currencyExchangeList[currentCurrency.name].toFixed(1) *
                   (values?.numberAnimals || 1)}{" "}
                 <sup>
-                  {rightBlockDescriptionProps.currentCurrency?.sign}
-                  {rightBlockDescriptionProps.currentHotel?.price *
-                    rightBlockDescriptionProps.currencyExchangeList[
-                      rightBlockDescriptionProps.currentCurrency.name
-                    ].toFixed(1)}
+                  {currentCurrency?.sign}
+                  {currentHotel?.price *
+                    currencyExchangeList[currentCurrency.name].toFixed(1)}
                   /day
                 </sup>
               </div>
               <div>
                 <Typography variant="overline" display="block" gutterBottom>
                   <ScrollLink to="reviews" style={hotelPageStyles.link}>
-                    {rightBlockDescriptionProps.currentHotel?.reviews?.length}{" "}
-                    review(s)
+                    {currentHotel?.reviews?.length} review(s)
                   </ScrollLink>
                 </Typography>
               </div>
@@ -94,8 +94,8 @@ const RightBlockDescription = ({ rightBlockDescriptionProps }) => {
             <div style={hotelPageStyles.datePickerBlock}>
               <DatePicker
                 type="arrival"
-                formik={rightBlockDescriptionProps.formik}
-                disableFnc={rightBlockDescriptionProps.disableBookingDates}
+                formik={formik}
+                disableFnc={disableBookingDates}
               />
               <Divider
                 orientation="vertical"
@@ -104,8 +104,8 @@ const RightBlockDescription = ({ rightBlockDescriptionProps }) => {
               />
               <DatePicker
                 type="departure"
-                formik={rightBlockDescriptionProps.formik}
-                disableFnc={rightBlockDescriptionProps.disableBookingDates}
+                formik={formik}
+                disableFnc={disableBookingDates}
               />
             </div>
             <Box>
@@ -115,6 +115,7 @@ const RightBlockDescription = ({ rightBlockDescriptionProps }) => {
                 label="Number of animals"
                 value={values.numberAnimals}
                 onChange={handleChange}
+                onBlur={handleBlur}
                 type="number"
                 variant="standard"
                 color="secondary"
@@ -140,23 +141,13 @@ const RightBlockDescription = ({ rightBlockDescriptionProps }) => {
               color="secondary"
               variant="contained"
               fullWidth
-              disabled={!rightBlockDescriptionProps.auth?.token}
-              onClick={() =>
-                values.dateArrival &&
-                values.dateDeparture &&
-                values.numberAnimals &&
-                sendSnackbar({
-                  msg: `You have booked ${
-                    values.numberAnimals
-                  } seats from ${formatStringDate(
-                    Date.parse(values.dateArrival)
-                  )} to ${formatStringDate(Date.parse(values.dateDeparture))}`,
-                })
+              disabled={
+                !auth?.token ||
+                disableBookingDates(values.dateArrival) ||
+                disableBookingDates(values.dateDeparture)
               }
             >
-              {rightBlockDescriptionProps.auth?.token
-                ? "Book"
-                : "Login to book"}
+              {auth?.token ? "Book" : "Login to book"}
             </Button>
           </CardActions>
         </Card>
@@ -165,18 +156,18 @@ const RightBlockDescription = ({ rightBlockDescriptionProps }) => {
   );
 };
 
-export const HotelDescription = ({ hotelDescriptionProps }) => {
+export const HotelDescription = ({ hotelDescriptionData }) => {
   return (
     <div style={hotelPageStyles.descriptionBlock}>
-      <LeftBlockDescription currentHotel={hotelDescriptionProps.currentHotel} />
+      <LeftBlockDescription currentHotel={hotelDescriptionData.currentHotel} />
       <RightBlockDescription
-        rightBlockDescriptionProps={{
-          currentHotel: hotelDescriptionProps.currentHotel,
-          formik: hotelDescriptionProps.formik,
-          currentCurrency: hotelDescriptionProps.currentCurrency,
-          currencyExchangeList: hotelDescriptionProps.currencyExchangeList,
-          disableBookingDates: hotelDescriptionProps.disableBookingDates,
-          auth: hotelDescriptionProps.auth,
+        descriptionData={{
+          currentHotel: hotelDescriptionData.currentHotel,
+          formik: hotelDescriptionData.formik,
+          currentCurrency: hotelDescriptionData.currentCurrency,
+          currencyExchangeList: hotelDescriptionData.currencyExchangeList,
+          disableBookingDates: hotelDescriptionData.disableBookingDates,
+          auth: hotelDescriptionData.auth,
         }}
       />
     </div>

@@ -7,6 +7,7 @@ import { actionChangeAvatar } from "./../../actions/thunks";
 
 const Dropzone = ({ text, actionAvatar, type, limit }) => {
   const [typeError, setTypeError] = useState(false);
+
   const onDrop = useCallback(
     (acceptedFiles) => {
       if (
@@ -21,6 +22,7 @@ const Dropzone = ({ text, actionAvatar, type, limit }) => {
     },
     [actionAvatar]
   );
+
   const { getRootProps, getInputProps, isDragActive } = useDropzone({ onDrop });
 
   return (
@@ -29,7 +31,7 @@ const Dropzone = ({ text, actionAvatar, type, limit }) => {
       {...getRootProps()}
     >
       <input {...getInputProps()} />
-      {isDragActive ? setTypeError(false) : null}
+      {isDragActive && setTypeError(false)}
       {isDragActive ? (
         <Typography variant="body1" gutterBottom>
           {text}
@@ -53,6 +55,9 @@ const Dropzone = ({ text, actionAvatar, type, limit }) => {
   );
 };
 
-export const CDropzone = connect((state: RootState) => ({ auth: state.auth }), {
-  actionAvatar: actionChangeAvatar,
-})(Dropzone);
+export const CDropzone = connect(
+  (state: RootState) => ({ promise: state.promise }),
+  {
+    actionAvatar: actionChangeAvatar,
+  }
+)(Dropzone);

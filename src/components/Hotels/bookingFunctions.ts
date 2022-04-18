@@ -1,11 +1,9 @@
-import { formatDate } from "./../../helpers/index";
+import { formatDate, maxAnimals } from "./../../helpers/index";
 import {
   IDisableUsersDates,
   IDisableUserDates,
   IFreeRooms,
 } from "./../../server/api/api-models";
-
-export const maxAnimals = 10;
 
 const today = Date.parse(formatDate(new Date()));
 
@@ -45,21 +43,22 @@ export const completeDisableUserDates = (
         ];
       }
     }
-  } else {
-    if (disableUserDatesParams.values.numberAnimals === maxAnimals) {
-      disabledDates.push(disableUserDatesParams.formattedDateArrival);
-      disabledDates.push(disableUserDatesParams.formattedDateDeparture);
-
-      disableUserDatesParams.disableUserDates[
-        disableUserDatesParams.auth.payload.id
-      ] = [
-        ...(disableUserDatesParams.currentHotel.disableUserDates[
-          disableUserDatesParams.auth.payload.id
-        ] || []),
-        ...disabledDates,
-      ];
-    }
   }
+  // else {
+  //   if (disableUserDatesParams.values.numberAnimals === maxAnimals) {
+  //     disabledDates.push(disableUserDatesParams.formattedDateArrival);
+  //     disabledDates.push(disableUserDatesParams.formattedDateDeparture);
+
+  //     disableUserDatesParams.disableUserDates[
+  //       disableUserDatesParams.auth.payload.id
+  //     ] = [
+  //       ...(disableUserDatesParams.currentHotel.disableUserDates[
+  //         disableUserDatesParams.auth.payload.id
+  //       ] || []),
+  //       ...disabledDates,
+  //     ];
+  //   }
+  // }
   return disableUserDatesParams.disableUserDates;
 };
 
@@ -93,18 +92,33 @@ export const completeFreeRooms = (freeRoomsParams: IFreeRooms) => {
     dateRangeDecomposition.push(i);
   }
   for (const date of dateRangeDecomposition) {
-    let availableSeats =
-      (freeRoomsParams.currentHotel.freeRooms?.[date]?.availableSeats
-        ? freeRoomsParams.currentHotel.freeRooms[date].availableSeats
-        : freeRoomsParams.currentHotel.hotelRooms) -
-      freeRoomsParams.values.numberAnimals;
+    let availableSeats = freeRoomsParams.currentHotel.freeRooms?.[date]
+      ?.availableSeats
+      ? freeRoomsParams.currentHotel.freeRooms[date].availableSeats
+      : freeRoomsParams.currentHotel.hotelRooms;
 
     let availableDiff = 0;
 
-    if (availableSeats < 0) {
-      availableDiff -= availableSeats;
+    const currentAnimalsCount =
+      freeRoomsParams.currentHotel.freeRooms[date]?.usersAnimalsCount?.reduce(
+        (total, num) => total + num,
+        0
+      ) || 0;
+
+    if (availableSeats - freeRoomsParams.values.numberAnimals < 0) {
+      availableDiff = availableSeats;
       availableSeats = 0;
+    } else {
+      if (
+        currentAnimalsCount + freeRoomsParams.values.numberAnimals >
+        maxAnimals
+      ) {
+        availableDiff = maxAnimals - currentAnimalsCount;
+      }
     }
+
+    availableSeats -=
+      availableDiff > 0 ? availableDiff : freeRoomsParams.values.numberAnimals;
 
     freeRoomsParams.freeRooms[date] = {
       availableSeats: availableSeats,
@@ -116,11 +130,15 @@ export const completeFreeRooms = (freeRoomsParams: IFreeRooms) => {
         ...(freeRoomsParams.currentHotel?.freeRooms?.[date]
           ?.usersAnimalsCount || []),
         availableDiff > 0
-          ? freeRoomsParams.values.numberAnimals - availableDiff
+          ? availableDiff
           : freeRoomsParams.values.numberAnimals,
       ],
     };
+
+    sessionStorage.usersAnimalsCount =
+      availableDiff > 0 ? availableDiff : freeRoomsParams.values.numberAnimals;
   }
+
   return freeRoomsParams.freeRooms;
 };
 

@@ -15,8 +15,9 @@ import VisibilityOffIcon from "@mui/icons-material/VisibilityOff";
 import { actionChangePassword } from "./../../actions/thunks";
 import { changeProfileStyles } from "./profileStyles";
 import { changePasswordVS } from "../../helpers/validationSchemes";
+import useSnackBar from "../Auxiliary/SnackBar";
 
-const ChangePassword = ({ changePassword }) => {
+const ChangePassword = ({ promise, changePassword }) => {
   const [showPassword, setShowPassword] = useState(false);
   const [showRetryPassword, setShowRetryPassword] = useState(false);
   const [showNewPassword, setShowNewPassword] = useState(false);
@@ -27,6 +28,8 @@ const ChangePassword = ({ changePassword }) => {
     newPassword: "",
   };
 
+  const [, sendSnackbar] = useSnackBar();
+
   const formik = useFormik({
     initialValues: initialValues,
     validationSchema: changePasswordVS,
@@ -36,6 +39,18 @@ const ChangePassword = ({ changePassword }) => {
   });
 
   const { handleSubmit, handleChange, values, touched, errors } = formik;
+
+  const showPass = () => setShowPassword(!showPassword);
+
+  const showRetryPass = () => setShowRetryPassword(!showRetryPassword);
+
+  const showNewPass = () => setShowNewPassword(!showNewPassword);
+
+  const showMessage = () =>
+    promise.signin.status === "RESOLVED" &&
+    sendSnackbar({
+      msg: "Your password has been changed",
+    });
 
   return (
     <Card sx={changeProfileStyles.passwordsCard}>
@@ -61,8 +76,8 @@ const ChangePassword = ({ changePassword }) => {
               <InputAdornment position="end">
                 <IconButton
                   aria-label="toggle password visibility"
-                  onClick={() => setShowPassword(!showPassword)}
-                  onMouseDown={() => setShowPassword(!showPassword)}
+                  onClick={showPass}
+                  onMouseDown={showPass}
                 >
                   {showPassword ? <VisibilityIcon /> : <VisibilityOffIcon />}
                 </IconButton>
@@ -88,8 +103,8 @@ const ChangePassword = ({ changePassword }) => {
               <InputAdornment position="end">
                 <IconButton
                   aria-label="toggle retry password visibility"
-                  onClick={() => setShowRetryPassword(!showRetryPassword)}
-                  onMouseDown={() => setShowRetryPassword(!showRetryPassword)}
+                  onClick={showRetryPass}
+                  onMouseDown={showRetryPass}
                 >
                   {showRetryPassword ? (
                     <VisibilityIcon />
@@ -119,8 +134,8 @@ const ChangePassword = ({ changePassword }) => {
               <InputAdornment position="end">
                 <IconButton
                   aria-label="toggle new password visibility"
-                  onClick={() => setShowNewPassword(!showNewPassword)}
-                  onMouseDown={() => setShowNewPassword(!showNewPassword)}
+                  onClick={showNewPass}
+                  onMouseDown={showNewPass}
                 >
                   {showNewPassword ? <VisibilityIcon /> : <VisibilityOffIcon />}
                 </IconButton>
@@ -140,6 +155,7 @@ const ChangePassword = ({ changePassword }) => {
             !values.newPassword ||
             values.password === values.newPassword
           }
+          onClick={showMessage}
         >
           Save
         </Button>

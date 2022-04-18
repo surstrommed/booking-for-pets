@@ -37,9 +37,7 @@ function tabsProps(index: number) {
   };
 }
 
-export const Profile = connect((state: RootState) => ({
-  promise: state.promise,
-}))(({ promise }) => {
+const Profile = ({ promise }) => {
   const [value, setValue] = useState(0);
 
   const handleChange = (event: React.SyntheticEvent, newValue: number) => {
@@ -70,14 +68,14 @@ export const Profile = connect((state: RootState) => ({
         </TabPanel>
         <TabPanel value={value} index={1}>
           <Preloader
-            promiseName={"userUpdate"}
+            promiseName={"signin"}
             promiseState={promise}
             sub={<CChangePersonalData />}
           />
         </TabPanel>
         <TabPanel value={value} index={2}>
           <Preloader
-            promiseName={"userUpdate"}
+            promiseName={"signin"}
             promiseState={promise}
             sub={<CChangePassword />}
           />
@@ -85,4 +83,8 @@ export const Profile = connect((state: RootState) => ({
       </div>
     </Box>
   );
-});
+};
+
+export const CProfile = connect((state: RootState) => ({
+  promise: state.promise,
+}))(Profile);

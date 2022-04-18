@@ -7,17 +7,18 @@ const useSnackBar = () => {
   const [conf, setConf] = useState({});
   const { enqueueSnackbar, closeSnackbar } = useSnackbar();
 
-  const action = (key) => (
-    <Fragment>
-      <IconButton
-        onClick={() => {
-          closeSnackbar(key);
-        }}
-      >
-        <CloseIcon />
-      </IconButton>
-    </Fragment>
-  );
+  const action = (key) => {
+    const closeBar = () => {
+      closeSnackbar(key);
+    };
+    return (
+      <Fragment>
+        <IconButton onClick={closeBar}>
+          <CloseIcon />
+        </IconButton>
+      </Fragment>
+    );
+  };
 
   useEffect(() => {
     if (conf.msg) {

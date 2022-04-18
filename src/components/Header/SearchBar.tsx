@@ -6,7 +6,7 @@ import AdapterDateFns from "@mui/lab/AdapterDateFns";
 import SearchIcon from "@mui/icons-material/Search";
 import { searchBar } from "./headerStyles";
 import { AsyncAutocomplete } from "./../Auxiliary/AsyncAutocomplete";
-import { Link } from "react-router-dom";
+import { history } from "./../App";
 
 export default function SearchBar({ styles }) {
   const [location, setLocation] = useState("");
@@ -96,14 +96,15 @@ export default function SearchBar({ styles }) {
           variant="contained"
           sx={searchBar.searchButton}
           disabled={!location}
+          onClick={() =>
+            history.push(
+              `/hotels/${location.split(" ").join("")}/${Date.parse(
+                arrivalValue
+              )}/${Date.parse(departureValue)}/${numberValue}`
+            )
+          }
         >
-          <Link
-            to={`/hotels/${location.split(" ").join("")}/${Date.parse(
-              arrivalValue
-            )}/${Date.parse(departureValue)}/${numberValue}`}
-          >
-            <SearchIcon />
-          </Link>
+          <SearchIcon /> Search
         </Button>
       </ButtonGroup>
     </div>

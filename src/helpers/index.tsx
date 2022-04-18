@@ -31,6 +31,8 @@ export const noAvatar =
 
 export const defaultCurrencyId = 1;
 
+export const maxAnimals = 10;
+
 export const stringMonth = (monthNumber) => {
   return stringMonthsArray[monthNumber];
 };

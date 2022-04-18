@@ -32,6 +32,7 @@ export const Preloader = ({
               <AlertTitle>Error</AlertTitle>
               {promiseState[promiseName]?.error?.message}
             </Alert>
+            <br />
             {sub}
           </>
         ) : (

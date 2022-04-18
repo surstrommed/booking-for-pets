@@ -1,7 +1,7 @@
 import React from "react";
 import { Routes, Route } from "react-router-dom";
 import Page404 from "./Page404";
-import { Profile } from "./Profile";
+import { CProfile } from "./Profile";
 import Login from "./Login";
 import Register from "./Register";
 import { PrivateRoute } from "./../components/Auxiliary/PrivateRoute";
@@ -50,7 +50,7 @@ const Main = ({ promise }) => {
         path="/profile"
         element={
           <PrivateRoute>
-            <Profile />
+            <CProfile />
           </PrivateRoute>
         }
       />
