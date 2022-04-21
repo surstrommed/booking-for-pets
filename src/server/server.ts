@@ -4,6 +4,7 @@ const server = jsonServer.create();
 const router = jsonServer.router("./src/server/db.json");
 const middlewares = jsonServer.defaults();
 import { isSignupAuthenticated } from "./api/api";
+import { defaultCurrencyId } from "./../helpers/index";
 
 server.use(middlewares);
 
@@ -23,6 +24,8 @@ server.use((req, res, next) => {
     } else {
       req.body.createdAt = Date.now();
       req.body.pictureUrl = null;
+      req.body.currencyId = defaultCurrencyId;
+      req.body.wishlists = [];
     }
   }
   next();

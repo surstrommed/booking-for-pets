@@ -16,6 +16,7 @@ import { actionChangePassword } from "./../../actions/thunks";
 import { changeProfileStyles } from "./profileStyles";
 import { changePasswordVS } from "../../helpers/validationSchemes";
 import useSnackBar from "../Auxiliary/SnackBar";
+import { sendSnackBarMessages } from "../../helpers";
 
 const ChangePassword = ({ promise, changePassword }) => {
   const [showPassword, setShowPassword] = useState(false);
@@ -49,7 +50,7 @@ const ChangePassword = ({ promise, changePassword }) => {
   const showMessage = () =>
     promise.signin.status === "RESOLVED" &&
     sendSnackbar({
-      msg: "Your password has been changed",
+      msg: sendSnackBarMessages.changedPasswordMessage(),
     });
 
   return (

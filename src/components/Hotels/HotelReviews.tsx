@@ -6,9 +6,9 @@ import {
   Avatar,
   CardContent,
 } from "@mui/material";
-import { hotelPageStyles, hotelReviewStyles } from "./hotelsStyle";
+import { hotelPageStyles, hotelReviewStyles } from "./hotelsStyles";
 import { Link } from "react-router-dom";
-import { noAvatar, stringMonth } from "../../helpers";
+import { links, stringMonth } from "../../helpers";
 
 export const HotelReviews = ({ currentHotel }) => {
   return (
@@ -24,7 +24,7 @@ export const HotelReviews = ({ currentHotel }) => {
                 <Link to={`/users/${review.owner.id}`}>
                   <Avatar
                     alt={`${review.owner.firstName} ${review.owner.lastName}`}
-                    src={`${review.owner.pictureUrl || noAvatar}`}
+                    src={`${review.owner.pictureUrl || links.noAvatar}`}
                     sx={hotelReviewStyles.reviewAvatar}
                   />
                 </Link>

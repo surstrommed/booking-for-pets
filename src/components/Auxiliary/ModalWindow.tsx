@@ -9,6 +9,7 @@ export default function ModalWindow({
   type,
   signInOpenState,
   signUpOpenState,
+  modalWindowState,
 }: IModal) {
   const [open, setOpen] = useState(true);
 
@@ -20,9 +21,11 @@ export default function ModalWindow({
     if (open) {
       type === "signin" && signInOpenState(true);
       type === "signup" && signUpOpenState(true);
+      modalWindowState && modalWindowState(true);
     } else {
       type === "signin" && signInOpenState(false);
       type === "signup" && signUpOpenState(false);
+      modalWindowState && modalWindowState(false);
     }
   }, [open]);
 

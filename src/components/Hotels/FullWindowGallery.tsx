@@ -4,16 +4,12 @@ import {
   AppBar,
   Toolbar,
   Slide,
-  Typography,
   ImageList,
   ImageListItem,
   IconButton,
 } from "@mui/material";
 import ArrowBackIosNewOutlinedIcon from "@mui/icons-material/ArrowBackIosNewOutlined";
-import GradeOutlinedIcon from "@mui/icons-material/GradeOutlined";
-import IosShareOutlinedIcon from "@mui/icons-material/IosShareOutlined";
-import { Link } from "react-router-dom";
-import { fullWindowStyles } from "./hotelsStyle";
+import { fullWindowStyles } from "./hotelsStyles";
 
 function formatImageSrc(
   image: string,
@@ -67,29 +63,6 @@ export default function FullWindowGallery({ updateOpenDialogStatus, gallery }) {
             >
               <ArrowBackIosNewOutlinedIcon />
             </IconButton>
-            <Typography
-              sx={fullWindowStyles.space}
-              variant="h6"
-              component="div"
-            ></Typography>
-            <Link to="/share" style={fullWindowStyles.link}>
-              <Typography
-                variant="overline"
-                gutterBottom
-                style={fullWindowStyles.alignCenter}
-              >
-                <IosShareOutlinedIcon /> Share
-              </Typography>
-            </Link>
-            <Link to="/save" style={fullWindowStyles.link}>
-              <Typography
-                variant="overline"
-                gutterBottom
-                style={fullWindowStyles.alignCenter}
-              >
-                <GradeOutlinedIcon /> Save
-              </Typography>
-            </Link>
           </Toolbar>
         </AppBar>
         <ImageList sx={fullWindowStyles.imageList} rowHeight={200} gap={1}>

@@ -17,7 +17,7 @@ import {
 } from "./index";
 import { jwtCode, jwtDecode } from "../helpers/index";
 import { getState, history } from "../components/App";
-import { UserModel, HotelModel } from "../server/api/api-models";
+import { UserModel, HotelModel, Wishlists } from "../server/api/api-models";
 import { checkError } from "./../helpers/index";
 
 type payloadTypes = { id: number; email: string };
@@ -51,7 +51,7 @@ export const actionFullLogin =
           history.location.pathname.includes("signup")) &&
           history.push("/");
       }
-      history.push(0);
+      history.go(0);
     }
   };
 
@@ -150,5 +150,16 @@ export const actionFullHotelUpdate =
 
     if (allHotels && Object.keys(allHotels).length !== 0) {
       await dispatch(actionHotelUpdate(hotelData));
+    }
+  };
+
+export const actionUpdateWishlists =
+  (wishlists: Wishlists[]) => async (dispatch) => {
+    const { password } = jwtDecode(sessionStorage.authToken);
+    const { id, email }: { id: number; email: string } =
+      getState().auth.payload;
+
+    if (id && email && password) {
+      await dispatch(actionFullUserUpdate({ id, email, password, wishlists }));
     }
   };

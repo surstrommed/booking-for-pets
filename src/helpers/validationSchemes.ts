@@ -4,6 +4,7 @@ import {
   validateLogin,
   validateFirstName,
   validateLastName,
+  validateWishlistName,
 } from "./index";
 
 export const signUpVS = Yup.object().shape({
@@ -79,6 +80,14 @@ export const changePersonalDataVS = Yup.object().shape({
     validateLastName,
     "Last name must be 2 to 20 characters long and must start with a capital letter"
   ),
-  password: Yup.string()
-  .required("Password is required"),
+  password: Yup.string().required("Password is required"),
+});
+
+export const wishlistVS = Yup.object().shape({
+  wishlistName: Yup.string()
+    .matches(
+      validateWishlistName,
+      "Wishlist name can be from 2 to 20 characters"
+    )
+    .required("Wishlist name is required"),
 });

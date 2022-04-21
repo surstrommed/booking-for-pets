@@ -24,11 +24,6 @@ const stringMonthsArray = [
   "December",
 ];
 
-export const apiUrl = "http://localhost:3000/";
-
-export const noAvatar =
-  "https://upload.wikimedia.org/wikipedia/commons/9/99/Sample_User_Icon.png";
-
 export const defaultCurrencyId = 1;
 
 export const maxAnimals = 10;
@@ -75,6 +70,8 @@ export const validateLogin = /^[a-z0-9]{3,8}$/;
 export const validateFirstName = /^([A-Z]{1}[a-z]{2,14})$/;
 
 export const validateLastName = /^([A-Z]{1}[a-z]{2,19})$/;
+
+export const validateWishlistName = /^([a-zA-Z0-9]{2,20})$/;
 
 export function checkError(checkString: string) {
   return apiErrors.includes(checkString);
@@ -124,3 +121,37 @@ export function formatStringDate(date) {
     date
   ).getDate()}, ${new Date(date).getFullYear()}`;
 }
+
+export const sendSnackBarMessages = {
+  selectedCurrencyMessage: (currencyName) =>
+    `You have selected currency: ${currencyName}`,
+  hotelRemovedMessage: (savedHotelName) =>
+    `Hotel removed from ${savedHotelName} wishlist`,
+  hotelBookedMessage: (animalsCount, arrivalDate, departureDate) =>
+    `You have booked ${animalsCount} seats from ${formatStringDate(
+      Date.parse(arrivalDate)
+    )} to ${formatStringDate(Date.parse(departureDate))}`,
+  changedAvatarMessage: () => "Your avatar has been changed",
+  changedPasswordMessage: () => "Your password has been changed",
+  changedPersonalDataMessage: () => "Your personal date has been changed",
+  copiedMessage: () => "The hotel link has been copied!",
+  createdWishlistMessage: (wishlistName) =>
+    `Wishlist named ${wishlistName} has been created and the hotel has been added to it`,
+  addedToWishlistMessage: (wishlistName) =>
+    `The hotel has been added to the ${wishlistName} wishlist`,
+  removedFromWishlistMessage: (wishlistName) =>
+    `Hotel removed from ${wishlistName} wishlist`,
+};
+
+export const links = {
+  serverUrl: "http://localhost:8080/",
+  apiUrl: "http://localhost:3000/",
+  noAvatar:
+    "https://upload.wikimedia.org/wikipedia/commons/9/99/Sample_User_Icon.png",
+  noBackground: "https://www.tascsoftware.co.uk/wiki/PARS/images/8/8f/Grey.jpg",
+  facebookLink: "https://www.facebook.com/",
+  telegramLink: (url, path) => `tg://msg?text=${url}${path}`,
+  whatsAppLink: (url, path) =>
+    `whatsapp://send?abid=phonenumber&text=${url}${path}`,
+  twitterLink: "https://twitter.com/intent/tweet?url=link_to_be_shared",
+};

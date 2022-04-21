@@ -4,7 +4,7 @@ import { RootState } from "../App";
 import { Box } from "@mui/material";
 import { CDropzone } from "./../Auxiliary/Dropzone";
 import { changeProfileStyles } from "./profileStyles";
-import { noAvatar } from "../../helpers/index";
+import { links, sendSnackBarMessages } from "../../helpers/index";
 import { Badge, IconButton, Card, CardActions } from "@mui/material";
 import CancelIcon from "@mui/icons-material/Cancel";
 import { actionDeleteAvatar } from "../../actions/thunks";
@@ -25,7 +25,7 @@ const ChangeAvatar = ({ auth, deleteAvatar }) => {
   useEffect(() => {
     if (state.prevState !== state.currentState && state.currentState !== "") {
       sendSnackbar({
-        msg: "Your avatar has been changed",
+        msg: sendSnackBarMessages.changedAvatarMessage(),
       });
     }
   }, [state]);
@@ -55,7 +55,7 @@ const ChangeAvatar = ({ auth, deleteAvatar }) => {
           component="img"
           sx={changeProfileStyles.avatarImage}
           alt="Avatar image"
-          src={noAvatar}
+          src={links.noAvatar}
         />
       )}
       <CardActions>
