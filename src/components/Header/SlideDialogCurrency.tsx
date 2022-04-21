@@ -15,6 +15,7 @@ import { actionChooseCurrency } from "./../../actions/thunks";
 import { dialogCurrencyStyles } from "./headerStyles";
 import { TabPanelProps } from "../../server/api/api-models";
 import useSnackBar from "./../Auxiliary/SnackBar";
+import { sendSnackBarMessages } from "../../helpers";
 
 const Transition = forwardRef(function Transition(props, ref) {
   return <Slide direction="up" ref={ref} {...props} />;
@@ -97,7 +98,9 @@ function BasicTabs({ auth, currencyList, chooseCurrency }) {
               onClick={() => {
                 chooseCurrency(currency.id);
                 sendSnackbar({
-                  msg: `You have selected currency: ${currency?.name}`,
+                  msg: sendSnackBarMessages.selectedCurrencyMessage(
+                    currency?.name
+                  ),
                 });
               }}
             >

@@ -18,8 +18,6 @@ export const hotelPageStyles = {
     width: "30%",
   },
   link: {
-    textDecoration: "underline",
-    cursor: "pointer",
     marginLeft: "3vh",
   },
   gallery: {
@@ -80,8 +78,8 @@ export const fullWindowStyles = {
 export const hotelCardStyles = {
   main: {
     width: 245,
-    height: 300,
   },
+  rightAlign: { marginLeft: "auto" },
 };
 
 export const hotelReviewStyles = {

@@ -1,15 +1,18 @@
 import React, { useState, useEffect } from "react";
 import { connect } from "react-redux";
 import { RootState, history } from "../App";
-import { hotelPageStyles } from "./hotelsStyle";
 import { useParams } from "react-router-dom";
-import { formatDate } from "../../helpers/index";
+import {
+  formatDate,
+  sendSnackBarMessages,
+  formatStringDate,
+} from "../../helpers/index";
 import { useFormik } from "formik";
 import { actionFullHotelUpdate } from "./../../actions/thunks";
 import FullWindowGallery from "./FullWindowGallery";
 import { HotelReviews } from "./HotelReviews";
 import { HotelOnwer } from "./HotelOwner";
-import { HotelHeader } from "./HotelHeader";
+import { CHotelHeader } from "./HotelHeader";
 import { HotelGallery } from "./HotelGallery";
 import { HotelDescription } from "./HotelDescription";
 import {
@@ -23,7 +26,7 @@ import {
 import { HotelPageFormValues } from "../../server/api/api-models";
 import { hotelPageVS } from "./../../helpers/validationSchemes";
 import useSnackBar from "./../Auxiliary/SnackBar";
-import { formatStringDate } from "./../../helpers/index";
+import { hotelPageStyles } from "./hotelsStyles";
 
 const HotelPage = ({ promise, auth, currencyList, onBooking }) => {
   const { hotelId } = useParams();
@@ -106,11 +109,11 @@ const HotelPage = ({ promise, auth, currencyList, onBooking }) => {
         values.dateDeparture &&
         values.numberAnimals &&
         sendSnackbar({
-          msg: `You have booked ${
-            sessionStorage.usersAnimalsCount
-          } seats from ${formatStringDate(
-            Date.parse(values.dateArrival)
-          )} to ${formatStringDate(Date.parse(values.dateDeparture))}`,
+          msg: sendSnackBarMessages.hotelBookedMessage(
+            sessionStorage.usersAnimalsCount,
+            formatStringDate(Date.parse(values.dateArrival)),
+            formatStringDate(Date.parse(values.dateDeparture))
+          ),
         });
 
       onBooking({
@@ -186,7 +189,7 @@ const HotelPage = ({ promise, auth, currencyList, onBooking }) => {
           gallery={galleryHotelPhotos}
         />
       )}
-      <HotelHeader currentHotel={currentHotel} />
+      <CHotelHeader currentHotel={currentHotel} />
       <HotelGallery
         currentHotel={currentHotel}
         updateOpenDialogStatus={updateOpenDialogStatus}

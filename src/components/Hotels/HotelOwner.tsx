@@ -1,8 +1,8 @@
 import React from "react";
 import { Card, CardHeader, Avatar } from "@mui/material";
-import { hotelPageStyles } from "./hotelsStyle";
+import { hotelPageStyles } from "./hotelsStyles";
 import { Link } from "react-router-dom";
-import { noAvatar, stringMonth } from "../../helpers";
+import { links, stringMonth } from "../../helpers";
 
 export const HotelOnwer = ({ currentHotel }) => {
   return (
@@ -13,7 +13,7 @@ export const HotelOnwer = ({ currentHotel }) => {
             <Link to={`/users/${currentHotel?.owner?.id}`}>
               <Avatar
                 alt={`${currentHotel?.owner?.firstName} ${currentHotel?.owner?.lastName}`}
-                src={`${currentHotel?.owner?.pictureUrl || noAvatar}`}
+                src={`${currentHotel?.owner?.pictureUrl || links.noAvatar}`}
                 sx={{ width: 56, height: 56 }}
               />
             </Link>

@@ -17,6 +17,7 @@ const HotelsList = ({ promise }) => {
 
   const dateAvailabilityCheck = (freeRooms) => {
     let checkFlag = true;
+
     if (Object.keys(freeRooms).length > 0) {
       const freeRoomsKeys = Object.keys(freeRooms);
 

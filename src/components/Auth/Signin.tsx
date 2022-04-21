@@ -31,6 +31,7 @@ const SignIn = ({
     initialValues: initialValues,
     validationSchema: signInVS,
     onSubmit: (values) => {
+      modal && signInOpenState(false);
       const { email, password } = values;
       onLogin(email, password);
     },

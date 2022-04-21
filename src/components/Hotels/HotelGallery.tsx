@@ -1,5 +1,5 @@
 import React from "react";
-import { hotelPageStyles } from "./hotelsStyle";
+import { hotelPageStyles } from "./hotelsStyles";
 import { ImageList, ImageListItem, Button } from "@mui/material";
 
 export const HotelGallery = ({ currentHotel, updateOpenDialogStatus }) => {

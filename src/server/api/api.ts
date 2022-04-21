@@ -1,7 +1,7 @@
 import { JsonModel, UserModel } from "./api-models";
 import axios from "axios";
 import jsonData from "../db.json";
-import { apiUrl } from "../../helpers/index";
+import { links } from "../../helpers/index";
 
 const myFetch =
   (url: string) =>
@@ -49,15 +49,15 @@ export const uploadImage = imageFetch(
   "https://api.imgbb.com/1/upload?key=478a8e5dc3d296b8693734b3983d5902"
 );
 
-export const userRegister = myFetch(apiUrl + "register");
+export const userRegister = myFetch(links.apiUrl + "register");
 
-export const userLogin = myFetch(apiUrl + "login");
+export const userLogin = myFetch(links.apiUrl + "login");
 
-export const userUpdate = myFetch(apiUrl + "users");
+export const userUpdate = myFetch(links.apiUrl + "users");
 
-export const getHotels = myFetch(apiUrl + "hotels");
+export const getHotels = myFetch(links.apiUrl + "hotels");
 
-export const getCurrency = myFetch(apiUrl + "currency");
+export const getCurrency = myFetch(links.apiUrl + "currency");
 
 export const getExchangeRates = exchangeRatesFetch(
   "https://openexchangerates.org/api/latest.json?app_id=68546b0af6d145a7a1f7260446e53927"

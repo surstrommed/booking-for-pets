@@ -5,7 +5,12 @@ export const preloaderStyles = {
     marginLeft: "auto",
     marginRight: "auto",
   },
-  loader: { width: "50%", marginLeft: "25%", marginTop: "10%" },
+  loader: {
+    width: "50%",
+    marginLeft: "auto",
+    marginRight: "auto",
+    marginTop: "10%",
+  },
 };
 
 export const modalWindowStyles = {

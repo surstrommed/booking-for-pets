@@ -10,6 +10,8 @@ import { CHotelPage } from "./../components/Hotels/HotelPage";
 import { Preloader } from "./../components/Auxiliary/Preloader";
 import { connect } from "react-redux";
 import { RootState } from "../components/App";
+import { CWishlists } from "./Wishlists";
+import { CWishlistPage } from "./../components/Wishlist/WishlistPage";
 
 function MainPage() {
   return (
@@ -66,6 +68,22 @@ const Main = ({ promise }) => {
             promiseState={promise}
             sub={<CHotelPage />}
           />
+        }
+      />
+      <Route
+        path="/wishlists"
+        element={
+          <PrivateRoute>
+            <CWishlists />
+          </PrivateRoute>
+        }
+      />
+      <Route
+        path="/wishlists/wishlist/:wishlistName"
+        element={
+          <PrivateRoute>
+            <CWishlistPage />
+          </PrivateRoute>
         }
       />
       <Route path="*" element={<Page404 />} />

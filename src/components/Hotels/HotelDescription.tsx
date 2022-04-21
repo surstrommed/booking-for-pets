@@ -1,5 +1,5 @@
 import React from "react";
-import { hotelPageStyles } from "./hotelsStyle";
+import { hotelPageStyles } from "./hotelsStyles";
 import { DatePicker } from "./../Auxiliary/DatePicker";
 import { CustomTextField } from "./../Auxiliary/CustomTextField";
 import {
@@ -51,7 +51,8 @@ const RightBlockDescription = ({ descriptionData }) => {
     disableBookingDates,
     auth,
   } = descriptionData;
-  const { handleSubmit, handleBlur, values, handleChange, errors } = formik;
+
+  const { handleSubmit, values, handleChange, errors, handleBlur } = formik;
 
   return (
     <div style={hotelPageStyles.descriptionRightBlock}>

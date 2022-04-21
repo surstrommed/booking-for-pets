@@ -17,6 +17,7 @@ import { changeProfileStyles } from "./profileStyles";
 import { PersonalDataValues } from "../../server/api/api-models";
 import { changePersonalDataVS } from "./../../helpers/validationSchemes";
 import useSnackBar from "../Auxiliary/SnackBar";
+import { sendSnackBarMessages } from "../../helpers";
 
 const ChangePersonalData = ({ auth, promise, onUpdate }) => {
   const [showPassword, setShowPassword] = useState(false);
@@ -54,7 +55,7 @@ const ChangePersonalData = ({ auth, promise, onUpdate }) => {
   const showMessage = () =>
     promise.signin.status === "RESOLVED" &&
     sendSnackbar({
-      msg: "Your personal date has been changed",
+      msg: sendSnackBarMessages.changedPersonalDataMessage(),
     });
 
   return (

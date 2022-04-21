@@ -19,7 +19,7 @@ import { CSignIn } from "./../Auth/Signin";
 import { CSignUp } from "./../Auth/Signup";
 import { Preloader } from "./../Auxiliary/Preloader";
 import { profileIconStyles } from "./headerStyles";
-import { noAvatar } from "../../helpers";
+import { links } from "../../helpers";
 import { IProfile } from "./../../server/api/api-models";
 
 type ButtonEvent = React.MouseEvent<HTMLButtonElement>;
@@ -47,7 +47,7 @@ const ProfileIcon = ({ auth, promise, actionLogOut }: IProfile) => {
 
   const getInbox = () => history.push("/inbox");
 
-  const getWishlist = () => history.push("/wishlist");
+  const getWishlist = () => history.push("/wishlists");
 
   const getProfile = () => history.push("/profile");
 
@@ -103,16 +103,14 @@ const ProfileIcon = ({ auth, promise, actionLogOut }: IProfile) => {
         <Tooltip title="Open profile">
           <IconButton onClick={handleOpenUserMenu} sx={profileIconStyles.main}>
             {auth?.token ? (
-              // <Badge badgeContent={3} color="error">
-              <>
+              <Badge badgeContent={3} color="error">
                 <MenuIcon sx={profileIconStyles.menuIcon} />
                 <Avatar
-                  src={auth?.payload?.pictureUrl || noAvatar}
+                  src={auth?.payload?.pictureUrl || links.noAvatar}
                   sx={profileIconStyles.avatarIcon}
                 />
-              </>
+              </Badge>
             ) : (
-              // </Badge>
               <>
                 <MenuIcon sx={profileIconStyles.menuIcon} />
                 <AccountCircleIcon />
@@ -151,7 +149,7 @@ const ProfileIcon = ({ auth, promise, actionLogOut }: IProfile) => {
                   sx={profileIconStyles.fontWeight}
                   textAlign="center"
                 >
-                  Wishlist
+                  Wishlists
                 </Typography>
               </MenuItem>
               <hr />

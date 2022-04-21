@@ -14,4 +14,13 @@ export const pagesStyles = {
     },
     tabPanel: { marginLeft: "auto", marginRight: "auto" },
   },
+  wishlists: {
+    main: { padding: "5vh 0 5vh 5vh" },
+    cards: {
+      display: "flex",
+      flexWrap: "wrap",
+      justifyContent: "flex-start",
+    },
+    card: { flexBasis: "30%", margin: "2vh" },
+  },
 };

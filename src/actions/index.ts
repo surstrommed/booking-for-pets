@@ -10,7 +10,6 @@ import {
 } from "../server/api/api";
 import { actionPromise } from "./thunks";
 import { UserModel, HotelModel } from "../server/api/api-models";
-import { defaultCurrencyId } from "./../helpers/index";
 
 export const actionLogin = (email: string, password: string) => {
   return actionPromise("signin", userLogin({ email, password }));
@@ -21,7 +20,6 @@ export const actionRegister = (userData: UserModel) => {
     "signup",
     userRegister({
       ...userData,
-      currencyId: defaultCurrencyId,
     })
   );
 };

@@ -3,6 +3,11 @@ export interface JsonModel {
   hotels: HotelModel[];
   currency: CurrencyModel[];
 }
+
+export interface Wishlists {
+  name: string;
+  hotelsId: number[];
+}
 export interface UserModel {
   id: number;
   email?: string;
@@ -14,6 +19,7 @@ export interface UserModel {
   createdAt?: number;
   pictureUrl?: string | null;
   currencyId?: number;
+  wishlists?: Wishlists[];
 }
 
 export interface HotelModel {
@@ -80,9 +86,10 @@ export interface LoginFormValues {
 export interface IModal {
   title: string;
   body: string | React.ReactElement;
-  type: string;
+  type?: string;
   signInOpenState?: (value: boolean) => void;
   signUpOpenState?: (value: boolean) => void;
+  modalWindowState?: (value: boolean) => void;
 }
 
 export interface IPreloader {
