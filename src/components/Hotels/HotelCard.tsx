@@ -138,11 +138,11 @@ const HotelCard = ({
           <>
             <Typography variant="body1" color="text.secondary">
               <b>
-                {currentCurrency?.sign}
+                {currentCurrency?.sign || "$"}
                 {hotelData.price *
                   currencyList?.exchangeList[currentCurrency?.name]?.toFixed(
                     1
-                  )}{" "}
+                  ) || hotelData.price}{" "}
                 / day
               </b>
             </Typography>

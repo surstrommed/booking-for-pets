@@ -10,7 +10,7 @@ import useSnackBar from "./../Auxiliary/SnackBar";
 import { sendSnackBarMessages } from "../../helpers/consts";
 import { Transition } from "../Auxiliary/Transition";
 import { CurrencyModel } from "../../server/api/api-models";
-import { setTabsProps } from "src/helpers/functions";
+import { setTabsProps } from "../../helpers/functions";
 
 function TabPanel(props: TabPanelProps) {
   const { children, value, index, ...other } = props;
