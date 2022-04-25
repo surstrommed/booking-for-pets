@@ -7,13 +7,9 @@ import { CChangeAvatar } from "./../components/Profile/ChangeAvatar";
 import { CChangePersonalData } from "./../components/Profile/ChangePersonalData";
 import { Preloader } from "./../components/Auxiliary/Preloader";
 import { connect } from "react-redux";
-import { RootState } from "../components/App";
+import { RootState } from "../helpers/types";
 import { pagesStyles } from "./pagesStyles";
-interface TabPanelProps {
-  children?: React.ReactNode;
-  index: number;
-  value: number;
-}
+import { TabPanelProps } from "../server/api/api-models";
 
 function TabPanel(props: TabPanelProps) {
   const { children, value, index, ...other } = props;

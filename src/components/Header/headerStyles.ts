@@ -76,6 +76,7 @@ export const searchBar = {
     backgroundColor: "rgb(236, 130, 148);",
     height: "8vh",
     margin: "0 2vh",
+    overflow: "hidden",
   },
 };
 

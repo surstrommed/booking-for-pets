@@ -3,20 +3,18 @@ import Box from "@mui/material/Box";
 import { CSignIn } from "./../components/Auth/Signin";
 import { Preloader } from "./../components/Auxiliary/Preloader";
 import { connect } from "react-redux";
-import { RootState } from "../components/App";
+import { RootState } from "../helpers/types";
 
-const Login = connect((state: RootState) => ({
+const Login = ({ promise }) => (
+  <Box>
+    <Preloader
+      promiseName={"signin"}
+      promiseState={promise}
+      sub={<CSignIn />}
+    />
+  </Box>
+);
+
+export const CLogin = connect((state: RootState) => ({
   promise: state.promise,
-}))(({ promise }) => {
-  return (
-    <Box>
-      <Preloader
-        promiseName={"signin"}
-        promiseState={promise}
-        sub={<CSignIn />}
-      />
-    </Box>
-  );
-});
-
-export default Login;
+}))(Login);

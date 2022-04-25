@@ -8,38 +8,39 @@ import GradeIcon from "@mui/icons-material/Grade";
 import ModalWindow from "./../Auxiliary/ModalWindow";
 import { CSelectWishlist } from "../Wishlist/SelectWishlist";
 import { connect } from "react-redux";
-import { RootState } from "../App";
+import { RootState } from "../../helpers/types";
 import { actionUpdateWishlists } from "../../actions/thunks";
 import useSnackBar from "./../Auxiliary/SnackBar";
 import { ShareWindow } from "./../Share/ShareWindow";
-import { sendSnackBarMessages } from "../../helpers";
+import { sendSnackBarMessages } from "../../helpers/consts";
+import { WishlistModel } from "../../server/api/api-models";
 
 const HotelHeader = ({ auth, currentHotel, onUnsave }) => {
   const [openWishlistWindow, setOpenWishlistWindow] = useState(false);
   const [openShareWindow, setOpenShareWindow] = useState(false);
   const [, sendSnackbar] = useSnackBar();
 
-  const updateWishlistWindow = (value) => {
+  const updateWishlistWindow = (value: boolean) => {
     setOpenWishlistWindow(value);
   };
 
-  const updateShareWindow = (value) => {
+  const updateShareWindow = (value: boolean) => {
     setOpenShareWindow(value);
   };
 
   const currentUserWishlists = auth?.payload?.wishlists;
 
-  const isSaved = (currentUserWishlists || []).find((wishlist) =>
+  const isSaved = (currentUserWishlists || []).find((wishlist: WishlistModel) =>
     wishlist.hotelsId.includes(currentHotel.id)
   );
 
   function handleUnsave() {
-    const isSavedIndex = (currentUserWishlists || []).findIndex((wishlist) =>
-      wishlist.hotelsId.includes(currentHotel.id)
+    const isSavedIndex = (currentUserWishlists || []).findIndex(
+      (wishlist: WishlistModel) => wishlist.hotelsId.includes(currentHotel.id)
     );
 
     const filteredHotelsId = isSaved.hotelsId.filter(
-      (hotelId) => hotelId !== currentHotel.id
+      (hotelId: string) => hotelId !== currentHotel.id
     );
 
     const filteredUserWishlists = [...currentUserWishlists];
@@ -53,9 +54,12 @@ const HotelHeader = ({ auth, currentHotel, onUnsave }) => {
 
     filteredUserWishlists.push(filteredCurrentUserWishlist);
 
-    sendSnackbar({
-      msg: sendSnackBarMessages.hotelRemovedMessage(isSaved?.name),
-    });
+    if (typeof sendSnackbar === "function") {
+      sendSnackbar({
+        msg: sendSnackBarMessages.removedFromWishlistMessage(isSaved?.name),
+        variant: "error",
+      });
+    }
 
     onUnsave(filteredUserWishlists);
   }

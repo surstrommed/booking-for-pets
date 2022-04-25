@@ -32,9 +32,10 @@ import { Preloader } from "./../Auxiliary/Preloader";
 import { CSignIn } from "./../Auth/Signin";
 import { CSignUp } from "./../Auth/Signup";
 import { ElevationScrollProps } from "../../server/api/api-models";
+import { history } from "../App";
+import { ButtonEvent, RootState } from "../../helpers/types";
 
-const pages = ["Products", "Pricing", "Blog"];
-type ButtonEvent = React.MouseEvent<HTMLButtonElement>;
+const pages = ["For owners"];
 
 const ElevationScroll = (props: ElevationScrollProps) => {
   const location = useLocation().pathname;
@@ -73,18 +74,21 @@ const ElevationScroll = (props: ElevationScrollProps) => {
 
 export default function HeaderBar(props) {
   const [anchorElNav, setAnchorElNav] = useState(null);
-  const [openDialog, setOpenDialog] = useState(false);
+  const [openCurrencyModal, setOpenCurrencyModal] = useState(false);
   const [openSignInModal, setOpenSignInModal] = useState(false);
   const [openSignUpModal, setOpenSignUpModal] = useState(false);
 
-  const smallHeader = useSelector((state) => state.header.smallHeader);
-  const bigHeader = useSelector((state) => state.header.bigHeader);
+  const smallHeader = useSelector(
+    (state: RootState) => state.header.smallHeader
+  );
+  const bigHeader = useSelector((state: RootState) => state.header.bigHeader);
   const expandSmallHeader = useSelector(
-    (state) => state.header.expandSmallHeader
+    (state: RootState) => state.header.expandSmallHeader
   );
 
-  const currentUser = useSelector((state) => state.auth?.payload);
-  const promise = useSelector((state) => state.promise);
+  const currentUser = useSelector((state: RootState) => state.auth?.payload);
+  const promise = useSelector((state: RootState) => state.promise);
+
   const location = useLocation().pathname;
   const dispatch = useDispatch();
 
@@ -102,18 +106,22 @@ export default function HeaderBar(props) {
   };
 
   document.body.addEventListener("click", (e) => {
-    if (!e.target.classList[0]?.toLowerCase()?.includes("mui")) {
+    if (
+      !(e.target as HTMLHeadingElement).classList[0]
+        ?.toLowerCase()
+        ?.includes("mui")
+    ) {
       const headerBar = document.getElementsByClassName("Header");
       headerBar[0].children[0].classList.remove("WhiteBigHeader");
       dispatch(actionSmallHeader());
     }
   });
 
-  const updateOpenDialogStatus = (value) => setOpenDialog(value);
+  const updateCurrencyModal = (value: boolean) => setOpenCurrencyModal(value);
 
-  const updateSignInModal = (value) => setOpenSignInModal(value);
+  const updateSignInModal = (value: boolean) => setOpenSignInModal(value);
 
-  const updateSignUpModal = (value) => setOpenSignUpModal(value);
+  const updateSignUpModal = (value: boolean) => setOpenSignUpModal(value);
 
   const getPageTop = () => window.scrollTo(0, 0);
 
@@ -121,10 +129,8 @@ export default function HeaderBar(props) {
     <div className="Header">
       <ElevationScroll {...props}>
         <AppBar>
-          {openDialog && (
-            <SlideDialogCurrency
-              updateOpenDialogStatus={updateOpenDialogStatus}
-            />
+          {openCurrencyModal && (
+            <SlideDialogCurrency updateOpenDialogStatus={updateCurrencyModal} />
           )}
           {openSignInModal && (
             <ModalWindow
@@ -255,16 +261,21 @@ export default function HeaderBar(props) {
                   />
                 )}
               </Box>
-              <Button sx={headerBar.headerButtons}>
-                <Link to="/owners" onClick={getPageTop}>
-                  For owners
-                </Link>
+              <Button
+                sx={headerBar.headerButtons}
+                onClick={() =>
+                  currentUser
+                    ? history.push("/for-owners")
+                    : updateSignInModal(true)
+                }
+              >
+                For owners
               </Button>
               <Button
                 sx={headerBar.headerButtons}
                 onClick={() =>
                   currentUser
-                    ? updateOpenDialogStatus(true)
+                    ? updateCurrencyModal(true)
                     : updateSignInModal(true)
                 }
               >

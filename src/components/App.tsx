@@ -15,7 +15,11 @@ import thunk from "redux-thunk";
 import { BrowserRouter } from "./Auxiliary/BrowserRouter";
 import { ThemeProvider } from "@mui/material";
 import { theme } from "./../assets/theme";
-import { actionGetHotels } from "./../actions/index";
+import {
+  actionGetHotels,
+  actionGetUsers,
+  actionGetNotifications,
+} from "./../actions/index";
 import {
   actionFullGetCurrencyExchange,
   actionFullGetCurrencyList,
@@ -23,23 +27,21 @@ import {
 
 export const history = createBrowserHistory();
 
-const rootReducer = combineReducers({
+export const rootReducer = combineReducers({
   promise: sessionStoredReducer(promiseReducer, "promise"),
   header: headerReducer,
   auth: sessionStoredReducer(authReducer, "auth"),
   currencyList: sessionStoredReducer(currencyReducer, "currencyList"),
 });
 
-export type RootState = ReturnType<typeof rootReducer>;
-
 export const store = createStore(rootReducer, applyMiddleware(thunk));
 export const getState = store.getState;
 
-store.dispatch(actionGetHotels());
-
-store.dispatch(actionFullGetCurrencyList());
-
-store.dispatch(actionFullGetCurrencyExchange());
+store.dispatch(actionGetNotifications() as never);
+store.dispatch(actionGetUsers() as never);
+store.dispatch(actionGetHotels() as never);
+store.dispatch(actionFullGetCurrencyList() as never);
+store.dispatch(actionFullGetCurrencyExchange() as never);
 
 export default function App() {
   return (

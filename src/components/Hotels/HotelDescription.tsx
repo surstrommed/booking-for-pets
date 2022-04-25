@@ -13,22 +13,11 @@ import {
   Button,
 } from "@mui/material";
 import { Link as ScrollLink } from "react-scroll";
-import { maxAnimals } from "../../helpers/index";
+import { MAX_ANIMALS } from "../../helpers/consts";
 
 const LeftBlockDescription = ({ currentHotel }) => {
   return (
     <div style={hotelPageStyles.descriptionLeftBlock}>
-      <hr />
-      <div>
-        <Typography variant="h5" gutterBottom component="div">
-          Lorem ipsum dolor sit amet consectetur adipisicing elit. Totam sunt id
-          explicabo reiciendis nobis aliquam adipisci eos temporibus ipsa,
-          quidem fuga cum sint earum blanditiis natus nulla nisi reprehenderit
-          distinctio nihil libero perferendis sequi assumenda? Corrupti, laborum
-          in voluptates, velit animi fugiat similique eum dolorum nobis
-          cupiditate minus, a quas?
-        </Typography>
-      </div>
       <hr />
       <div>
         <Typography variant="h5" gutterBottom component="div">
@@ -54,6 +43,19 @@ const RightBlockDescription = ({ descriptionData }) => {
 
   const { handleSubmit, values, handleChange, errors, handleBlur } = formik;
 
+  const disableBookingButton =
+    currentHotel.owner === auth?.payload?.id ||
+    !auth?.token ||
+    disableBookingDates(values.dateArrival) ||
+    disableBookingDates(values.dateDeparture);
+
+  const textBookingButton =
+    currentHotel.owner === auth?.payload?.id
+      ? "You are the owner"
+      : auth?.token
+      ? "Book"
+      : "Login to book";
+
   return (
     <div style={hotelPageStyles.descriptionRightBlock}>
       <form onSubmit={handleSubmit}>
@@ -67,20 +69,24 @@ const RightBlockDescription = ({ descriptionData }) => {
             >
               <div>
                 {currentCurrency?.sign || "$"}
-                {(values.dateArrival && values.dateDeparture
-                  ? Math.trunc(
-                      (values.dateDeparture.getTime() -
-                        values.dateArrival.getTime()) /
-                        (24 * 60 * 60 * 1000)
-                    )
-                  : 1) *
-                  currentHotel?.price *
-                  currencyExchangeList[currentCurrency.name].toFixed(1) *
-                  (values?.numberAnimals || 1)}{" "}
+                {Math.round(
+                  (values.dateArrival && values.dateDeparture
+                    ? Math.trunc(
+                        (values.dateDeparture.getTime() -
+                          values.dateArrival.getTime()) /
+                          (24 * 60 * 60 * 1000)
+                      )
+                    : 1) *
+                    currentHotel?.price *
+                    currencyExchangeList[currentCurrency.name].toFixed(1) *
+                    (values?.numberAnimals || 1)
+                )}{" "}
                 <sup>
                   {currentCurrency?.sign}
-                  {currentHotel?.price *
-                    currencyExchangeList[currentCurrency.name].toFixed(1)}
+                  {Math.round(
+                    currentHotel?.price *
+                      currencyExchangeList[currentCurrency.name].toFixed(1)
+                  )}
                   /day
                 </sup>
               </div>
@@ -123,18 +129,42 @@ const RightBlockDescription = ({ descriptionData }) => {
                 fullWidth
                 InputProps={{
                   inputProps: {
-                    max: maxAnimals,
+                    max: MAX_ANIMALS,
                     min: 1,
                   },
                 }}
               />
-              {Object.keys(errors).length > 0 &&
-                Object.values(errors).map((error, index) => (
-                  <Alert severity="error" key={index}>
-                    {error}
-                  </Alert>
-                ))}
             </Box>
+            <Box
+              sx={{
+                margin: `${
+                  Object.keys(errors).length > 0 ? "5vh 0" : "5vh 0 0 0"
+                }`,
+              }}
+            >
+              <CustomTextField
+                id="message"
+                name="message"
+                label="Additional message for booking (optional)"
+                value={values.message}
+                onChange={handleChange}
+                onBlur={handleBlur}
+                rows={3}
+                color="secondary"
+                fullWidth
+                multiline
+              />
+            </Box>
+            {Object.keys(errors).length > 0 &&
+              Object.values(errors).map((error, index) => (
+                <Alert
+                  severity="error"
+                  key={index}
+                  sx={hotelPageStyles.alertStyle}
+                >
+                  {error}
+                </Alert>
+              ))}
           </CardContent>
           <CardActions>
             <Button
@@ -142,13 +172,9 @@ const RightBlockDescription = ({ descriptionData }) => {
               color="secondary"
               variant="contained"
               fullWidth
-              disabled={
-                !auth?.token ||
-                disableBookingDates(values.dateArrival) ||
-                disableBookingDates(values.dateDeparture)
-              }
+              disabled={disableBookingButton}
             >
-              {auth?.token ? "Book" : "Login to book"}
+              {textBookingButton}
             </Button>
           </CardActions>
         </Card>

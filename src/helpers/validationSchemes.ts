@@ -5,7 +5,7 @@ import {
   validateFirstName,
   validateLastName,
   validateWishlistName,
-} from "./index";
+} from "./regexps";
 
 export const signUpVS = Yup.object().shape({
   email: Yup.string()
@@ -51,6 +51,7 @@ export const hotelPageVS = Yup.object().shape({
   dateArrival: Yup.date().required("Arrival date is required"),
   dateDeparture: Yup.date().required("Departure date is required"),
   numberAnimals: Yup.number().required("Animals number is required"),
+  message: Yup.string(),
 });
 
 export const changePasswordVS = Yup.object().shape({
@@ -81,6 +82,15 @@ export const changePersonalDataVS = Yup.object().shape({
     "Last name must be 2 to 20 characters long and must start with a capital letter"
   ),
   password: Yup.string().required("Password is required"),
+});
+
+export const editingHotelVS = Yup.object().shape({
+  name: Yup.string().required("Hotel name is required"),
+  location: Yup.string().required("Hotel location is required"),
+  address: Yup.string().required("Hotel address is required"),
+  description: Yup.string().required("Hotel description is required"),
+  hotelRooms: Yup.number().required("Hotel rooms are required"),
+  price: Yup.number().required("Hotel price is required"),
 });
 
 export const wishlistVS = Yup.object().shape({

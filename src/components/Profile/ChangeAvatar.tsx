@@ -1,10 +1,10 @@
 import React, { useState, useEffect } from "react";
 import { connect } from "react-redux";
-import { RootState } from "../App";
+import { RootState } from "../../helpers/types";
 import { Box } from "@mui/material";
 import { CDropzone } from "./../Auxiliary/Dropzone";
 import { changeProfileStyles } from "./profileStyles";
-import { links, sendSnackBarMessages } from "../../helpers/index";
+import { links, sendSnackBarMessages } from "../../helpers/consts";
 import { Badge, IconButton, Card, CardActions } from "@mui/material";
 import CancelIcon from "@mui/icons-material/Cancel";
 import { actionDeleteAvatar } from "../../actions/thunks";
@@ -23,9 +23,14 @@ const ChangeAvatar = ({ auth, deleteAvatar }) => {
   }, [auth.payload.pictureUrl]);
 
   useEffect(() => {
-    if (state.prevState !== state.currentState && state.currentState !== "") {
+    if (
+      state.prevState !== state.currentState &&
+      state.currentState !== "" &&
+      typeof sendSnackbar === "function"
+    ) {
       sendSnackbar({
         msg: sendSnackBarMessages.changedAvatarMessage(),
+        variant: "success",
       });
     }
   }, [state]);

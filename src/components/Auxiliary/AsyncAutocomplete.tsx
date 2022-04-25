@@ -3,8 +3,9 @@ import TextField from "@mui/material/TextField";
 import Autocomplete from "@mui/material/Autocomplete";
 import CircularProgress from "@mui/material/CircularProgress";
 import { getHotels } from "./../../server/api/api";
-import { uniqueArray } from "../../helpers";
+import { uniqueArray } from "../../helpers/functions";
 import { autocompleteStyles } from "./auxiliaryStyles";
+import { HotelModel } from "src/server/api/api-models";
 
 export const AsyncAutocomplete = ({ updateLocation }) => {
   const [open, setOpen] = useState(false);
@@ -19,7 +20,7 @@ export const AsyncAutocomplete = ({ updateLocation }) => {
 
     (async () => {
       const citiesCountries = ((await getHotels()) || []).map(
-        (hotel) => hotel.location
+        (hotel: HotelModel) => hotel.location
       );
       if (active) {
         setOptions([...uniqueArray(citiesCountries)]);
@@ -63,7 +64,7 @@ export const AsyncAutocomplete = ({ updateLocation }) => {
           InputProps={{
             ...params.InputProps,
             endAdornment: (
-              <React.Fragment>
+              <>
                 {loading && (
                   <CircularProgress
                     color="inherit"
@@ -72,7 +73,7 @@ export const AsyncAutocomplete = ({ updateLocation }) => {
                   />
                 )}
                 {params.InputProps.endAdornment}
-              </React.Fragment>
+              </>
             ),
           }}
         />

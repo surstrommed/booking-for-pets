@@ -10,12 +10,13 @@ import {
 import VisibilityIcon from "@mui/icons-material/Visibility";
 import VisibilityOffIcon from "@mui/icons-material/VisibilityOff";
 import { connect } from "react-redux";
-import { RootState, history } from "../App";
+import { history } from "../App";
 import { actionFullLogin } from "../../actions/thunks";
 import { CustomTextField } from "./../Auxiliary/CustomTextField";
 import { authFormStyles, authModalStyles } from "./authStyles";
 import { ILogin, LoginFormValues } from "./../../server/api/api-models";
 import { signInVS } from "../../helpers/validationSchemes";
+import { RootState } from "../../helpers/types";
 
 const SignIn = ({
   onLogin,
@@ -49,10 +50,10 @@ const SignIn = ({
   const getSignUp = () => history.push("/signup");
 
   useEffect(() => {
-    if (auth?.payload && modal) {
+    if (auth?.["payload"] && modal) {
       signInOpenState(false);
     }
-  }, [auth?.payload]);
+  }, [auth?.["payload"]]);
 
   return (
     <div style={modal ? authModalStyles.main : authFormStyles.main}>

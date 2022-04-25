@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { connect } from "react-redux";
-import { RootState } from "../App";
+import { RootState } from "../../helpers/types";
 import { useFormik } from "formik";
 import {
   Button,
@@ -16,7 +16,8 @@ import { actionChangePassword } from "./../../actions/thunks";
 import { changeProfileStyles } from "./profileStyles";
 import { changePasswordVS } from "../../helpers/validationSchemes";
 import useSnackBar from "../Auxiliary/SnackBar";
-import { sendSnackBarMessages } from "../../helpers";
+import { sendSnackBarMessages } from "../../helpers/consts";
+import { RESOLVED_PROMISE_STATUS } from "../../helpers/consts";
 
 const ChangePassword = ({ promise, changePassword }) => {
   const [showPassword, setShowPassword] = useState(false);
@@ -48,10 +49,18 @@ const ChangePassword = ({ promise, changePassword }) => {
   const showNewPass = () => setShowNewPassword(!showNewPassword);
 
   const showMessage = () =>
-    promise.signin.status === "RESOLVED" &&
+    promise.signin.status === RESOLVED_PROMISE_STATUS &&
+    typeof sendSnackbar === "function" &&
     sendSnackbar({
       msg: sendSnackBarMessages.changedPasswordMessage(),
+      variant: "success",
     });
+
+  const disableSavePasswordButton =
+    !values.password ||
+    !values.retryPassword ||
+    !values.newPassword ||
+    values.password === values.newPassword;
 
   return (
     <Card sx={changeProfileStyles.passwordsCard}>
@@ -150,12 +159,7 @@ const ChangePassword = ({ promise, changePassword }) => {
           variant="contained"
           color="secondary"
           style={changeProfileStyles.saveButton}
-          disabled={
-            !values.password ||
-            !values.retryPassword ||
-            !values.newPassword ||
-            values.password === values.newPassword
-          }
+          disabled={disableSavePasswordButton}
           onClick={showMessage}
         >
           Save

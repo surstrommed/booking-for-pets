@@ -1,6 +1,6 @@
 import React, { useCallback, useState } from "react";
 import { connect } from "react-redux";
-import { RootState } from "../App";
+import { RootState } from "../../helpers/types";
 import { useDropzone } from "react-dropzone";
 import { Typography } from "@mui/material";
 import { actionChangeAvatar } from "./../../actions/thunks";

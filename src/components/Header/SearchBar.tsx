@@ -10,28 +10,28 @@ import { history } from "./../App";
 
 export default function SearchBar({ styles }) {
   const [location, setLocation] = useState("");
-  const [arrivalValue, setArrivalValue] = useState<Date | null>(
-    new Date(new Date().getTime() + 24 * 60 * 60 * 1000)
+  const [arrivalValue, setArrivalValue] = useState<string | null>(
+    new Date(new Date().getTime() + 24 * 60 * 60 * 1000).toString()
   );
-  const [departureValue, setDepartureValue] = useState<Date | null>(
-    new Date(new Date().getTime() + 48 * 60 * 60 * 1000)
+  const [departureValue, setDepartureValue] = useState<string | null>(
+    new Date(new Date().getTime() + 48 * 60 * 60 * 1000).toString()
   );
   const [numberValue, setNumberValue] = useState(1);
 
-  const handleChangeLocation = (e) => {
+  const handleChangeLocation = (e: React.ChangeEvent<HTMLInputElement>) => {
     setLocation(e.target.value);
   };
 
   const handleChangeArrival = (newValue: Date | null) => {
-    setArrivalValue(newValue);
+    setArrivalValue(newValue.toString());
   };
 
   const handleChangeDeparture = (newValue: Date | null) => {
-    setDepartureValue(newValue);
+    setDepartureValue(newValue.toString());
   };
 
-  const handleChangeNumber = (e) => {
-    setNumberValue(e.target.value);
+  const handleChangeNumber = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setNumberValue(+e.target.value);
   };
 
   return (
@@ -98,9 +98,9 @@ export default function SearchBar({ styles }) {
           disabled={!location}
           onClick={() =>
             history.push(
-              `/hotels/${location.split(" ").join("")}/${Date.parse(
-                arrivalValue
-              )}/${Date.parse(departureValue)}/${numberValue}`
+              `/hotels/${location}/${Date.parse(arrivalValue)}/${Date.parse(
+                departureValue
+              )}/${numberValue}`
             )
           }
         >

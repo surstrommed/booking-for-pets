@@ -1,5 +1,4 @@
-import { jwtDecode } from "../helpers";
-import { history } from "./../components/App";
+import { jwtDecode } from "../helpers/functions";
 
 export function promiseReducer(
   state = {},
@@ -60,7 +59,7 @@ export function currencyReducer(state = {}, { type, currency, exchangeList }) {
 }
 
 export const sessionStoredReducer =
-  (reducer, sessionStorageName) => (state, action) => {
+  (reducer, sessionStorageName: string) => (state, action) => {
     if (!state && sessionStorage[sessionStorageName]) {
       return JSON.parse(sessionStorage[sessionStorageName]);
     } else {

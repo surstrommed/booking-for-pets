@@ -9,12 +9,17 @@ import {
 import AddBoxOutlinedIcon from "@mui/icons-material/AddBoxOutlined";
 import { wishlistStyles } from "./wishlistStyles";
 import ModalWindow from "../Auxiliary/ModalWindow";
-import { links, sendSnackBarMessages } from "../../helpers";
+import {
+  links,
+  NEW_WISHLIST_MODAL_TITLE,
+  sendSnackBarMessages,
+} from "../../helpers/consts";
 import { connect } from "react-redux";
-import { RootState } from "../App";
+import { RootState } from "../../helpers/types";
 import { actionUpdateWishlists } from "../../actions/thunks";
 import { CCreateWishlist } from "./CreateWishlist";
 import useSnackBar from "./../Auxiliary/SnackBar";
+import { HotelModel, WishlistModel } from "src/server/api/api-models";
 
 const SelectWishlist = ({
   auth,
@@ -29,7 +34,7 @@ const SelectWishlist = ({
   const [openCreateWishlistWindow, setOpenCreateWishlistWindow] =
     useState(false);
 
-  const updateCreateWishlistWindow = (value) => {
+  const updateCreateWishlistWindow = (value: boolean) => {
     setOpenCreateWishlistWindow(value);
     modalWindowState(value);
   };
@@ -38,7 +43,7 @@ const SelectWishlist = ({
 
   function handleSave(wishlistName: string) {
     const isSavedIndex = (currentUserWishlists || []).findIndex(
-      (wishlist) => wishlist.name === wishlistName
+      (wishlist: WishlistModel) => wishlist.name === wishlistName
     );
 
     const filteredUserWishlists = [...currentUserWishlists];
@@ -55,9 +60,12 @@ const SelectWishlist = ({
 
     filteredUserWishlists.push(filteredCurrentUserWishlist);
 
-    sendSnackbar({
-      msg: sendSnackBarMessages.addedToWishlistMessage(wishlistName),
-    });
+    if (typeof sendSnackbar === "function") {
+      sendSnackbar({
+        msg: sendSnackBarMessages.addedToWishlistMessage(wishlistName),
+        variant: "success",
+      });
+    }
 
     onSelect(filteredUserWishlists);
   }
@@ -66,7 +74,7 @@ const SelectWishlist = ({
     <div>
       {openCreateWishlistWindow && (
         <ModalWindow
-          title={"Name your new wishlist"}
+          title={NEW_WISHLIST_MODAL_TITLE}
           body={
             <CCreateWishlist
               modalWindowState={updateCreateWishlistWindow}
@@ -86,25 +94,27 @@ const SelectWishlist = ({
         &nbsp;&nbsp;Create wishlist
       </Button>
       <div>
-        {(currentUserWishlists || []).map((wishlist, index) => (
-          <Card key={index} sx={wishlistStyles.wishlistCard}>
-            <CardMedia
-              component="img"
-              sx={wishlistStyles.width100}
-              image={
-                (allHotels || []).find(
-                  (hotel) => hotel.id === wishlist?.hotelsId?.[0]
-                )?.photos?.[0] || links.noBackground
-              }
-              alt={wishlist.name}
-            />
-            <CardActionArea onClick={() => handleSave(wishlist.name)}>
-              <Typography variant="h6" display="block" gutterBottom>
-                &nbsp;&nbsp;&nbsp;{wishlist.name}
-              </Typography>
-            </CardActionArea>
-          </Card>
-        ))}
+        {(currentUserWishlists || []).map(
+          (wishlist: WishlistModel, index: number) => (
+            <Card key={index} sx={wishlistStyles.wishlistCard}>
+              <CardMedia
+                component="img"
+                sx={wishlistStyles.width100}
+                image={
+                  (allHotels || []).find(
+                    (hotel: HotelModel) => hotel.id === wishlist?.hotelsId?.[0]
+                  )?.photos?.[0] || links.noBackground
+                }
+                alt={wishlist.name}
+              />
+              <CardActionArea onClick={() => handleSave(wishlist.name)}>
+                <Typography variant="h6" display="block" gutterBottom>
+                  &nbsp;&nbsp;&nbsp;{wishlist.name}
+                </Typography>
+              </CardActionArea>
+            </Card>
+          )
+        )}
       </div>
     </div>
   );

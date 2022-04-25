@@ -1,7 +1,16 @@
+import React from "react";
+import { RootState } from "../../helpers/types";
+
 export interface JsonModel {
   users: UserModel[];
   hotels: HotelModel[];
   currency: CurrencyModel[];
+  notifications: NotificationModel[];
+}
+
+export interface WishlistModel {
+  name: string;
+  hotelsId: string[];
 }
 
 export interface Wishlists {
@@ -15,28 +24,28 @@ export interface UserModel {
   firstName?: string;
   lastName?: string;
   password?: string;
-  newPassword?: string;
   createdAt?: number;
   pictureUrl?: string | null;
   currencyId?: number;
-  wishlists?: Wishlists[];
+  notifications?: NotificationModel[];
+  wishlists?: WishlistModel[];
 }
 
 export interface HotelModel {
-  id: number;
+  id: string;
   name?: string;
   location?: string;
   address?: string;
   description?: string;
   photos?: string[];
   hotelRooms?: number;
-  freeRooms?: object;
-  userRequests?: object[];
+  freeRooms?: FreeRoomsModel;
+  userRequests?: UserRequestModel[];
   disableUserDates?: object;
   disableUsersDates?: number[];
   dates?: number[][];
-  price?: string;
-  owner?: object;
+  price?: number;
+  owner?: number;
   reviews?: object[];
 }
 
@@ -46,8 +55,34 @@ export interface CurrencyModel {
   sign?: string;
 }
 
+export interface NotificationModel {
+  id: number;
+  text: string;
+  status: string;
+  fromId: number | null;
+  toId: number;
+}
+
+export interface FreeRoomsModel {
+  [date: string]: {
+    availableSeats: number;
+    usersId: number[];
+    usersAnimalsCount: number[];
+  };
+}
+
+export interface UserRequestModel {
+  arrivalDate: Date;
+  departureDate: Date;
+  animalsNumber: number;
+  usersId: number;
+  message: string;
+  status: string;
+  id: string;
+}
+
 export interface IRegister {
-  promise?: object;
+  promise?: RootState;
   onRegister: (
     email: string,
     login: string,
@@ -70,8 +105,8 @@ export interface RegisterFormValues {
 }
 
 export interface ILogin {
-  promise?: object;
-  auth?: object;
+  promise?: RootState;
+  auth?: RootState;
   onLogin: (email: string, password: string) => void;
   modal?: boolean;
   signInOpenState?: (value: boolean) => void;
@@ -104,13 +139,6 @@ export interface ElevationScrollProps {
   children: React.ReactElement;
 }
 
-export interface IProfile {
-  auth: object;
-  promise: object;
-  actionLogOut: () => object;
-  signed?: boolean;
-}
-
 export interface TabPanelProps {
   children?: React.ReactNode;
   index: number;
@@ -121,20 +149,21 @@ export interface HotelPageFormValues {
   dateArrival: Date | null;
   dateDeparture: Date | null;
   numberAnimals: number;
+  message: string;
 }
 
 export interface IDisableUserDates {
   formattedDateArrival: number;
   formattedDateDeparture: number;
   currentHotel: HotelModel;
-  auth: object;
-  values: HotelPageFormValues;
+  userId: number;
+  numberAnimals: number;
   disableUserDates: object;
 }
 
 export interface IDisableUsersDates {
   currentHotel: HotelModel;
-  values: HotelPageFormValues;
+  numberAnimals: number;
   disableUsersDates: number[];
 }
 
@@ -143,8 +172,8 @@ export interface IFreeRooms {
   formattedDateDeparture: number;
   freeRooms: object;
   currentHotel: HotelModel;
-  values: HotelPageFormValues;
-  auth: object;
+  numberAnimals: number;
+  userId: number;
 }
 
 export interface PersonalDataValues {
@@ -153,4 +182,32 @@ export interface PersonalDataValues {
   firstName: string;
   lastName: string;
   password: string;
+}
+
+export interface EditingHotelDataValues {
+  name: string;
+  location: string;
+  address: string;
+  description: string;
+  hotelRooms: number;
+  price: number;
+  // photos: string[];
+}
+
+export interface IOwner {
+  id: number;
+  email: string;
+  login: string;
+  firstName: string;
+  lastName: string;
+  createdAt: Date;
+  pictureUrl: string | null;
+}
+
+export interface IReview {
+  id: number;
+  rating?: number;
+  text?: string;
+  createdAt?: Date;
+  owner: IOwner;
 }

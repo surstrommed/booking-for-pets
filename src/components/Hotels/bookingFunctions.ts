@@ -1,9 +1,10 @@
-import { formatDate, maxAnimals } from "./../../helpers/index";
+import { formatDate } from "../../helpers/functions";
+import { MAX_ANIMALS } from "../../helpers/consts";
 import {
-  IDisableUsersDates,
   IDisableUserDates,
+  IDisableUsersDates,
   IFreeRooms,
-} from "./../../server/api/api-models";
+} from "../../server/api/api-models";
 
 const today = Date.parse(formatDate(new Date()));
 
@@ -21,44 +22,23 @@ export const completeDisableUserDates = (
       const dateFreeRoom = disableUserDatesParams.currentHotel.freeRooms[date];
 
       for (let i = 0; i < dateFreeRoom.usersId.length; i++) {
-        if (
-          disableUserDatesParams.auth.payload.id === dateFreeRoom.usersId[i]
-        ) {
+        if (disableUserDatesParams.userId === dateFreeRoom.usersId[i]) {
           totalAnimals += dateFreeRoom.usersAnimalsCount[i];
         }
       }
 
-      if (
-        totalAnimals + disableUserDatesParams.values.numberAnimals >=
-        maxAnimals
-      ) {
+      if (totalAnimals + disableUserDatesParams.numberAnimals >= MAX_ANIMALS) {
         disabledDates.push(+date);
-        disableUserDatesParams.disableUserDates[
-          disableUserDatesParams.auth.payload.id
-        ] = [
-          ...(disableUserDatesParams.currentHotel.disableUserDates[
-            disableUserDatesParams.auth.payload.id
-          ] || []),
-          ...disabledDates,
-        ];
+        disableUserDatesParams.disableUserDates[disableUserDatesParams.userId] =
+          [
+            ...(disableUserDatesParams.currentHotel.disableUserDates[
+              disableUserDatesParams.userId
+            ] || []),
+            ...disabledDates,
+          ];
       }
     }
   }
-  // else {
-  //   if (disableUserDatesParams.values.numberAnimals === maxAnimals) {
-  //     disabledDates.push(disableUserDatesParams.formattedDateArrival);
-  //     disabledDates.push(disableUserDatesParams.formattedDateDeparture);
-
-  //     disableUserDatesParams.disableUserDates[
-  //       disableUserDatesParams.auth.payload.id
-  //     ] = [
-  //       ...(disableUserDatesParams.currentHotel.disableUserDates[
-  //         disableUserDatesParams.auth.payload.id
-  //       ] || []),
-  //       ...disabledDates,
-  //     ];
-  //   }
-  // }
   return disableUserDatesParams.disableUserDates;
 };
 
@@ -72,8 +52,7 @@ export const completeDisableUsersDates = (
   for (const date of bookedDates) {
     const dateFreeRoom = disableUsersDatesParams.currentHotel.freeRooms[date];
     if (
-      dateFreeRoom.availableSeats -
-        disableUsersDatesParams.values.numberAnimals <=
+      dateFreeRoom.availableSeats - disableUsersDatesParams.numberAnimals <=
       0
     ) {
       disableUsersDatesParams.disableUsersDates.push(+date);
@@ -99,44 +78,46 @@ export const completeFreeRooms = (freeRoomsParams: IFreeRooms) => {
 
     let availableDiff = 0;
 
+    const userIdIndexes = (
+      freeRoomsParams.currentHotel.freeRooms?.[date]?.usersId || []
+    ).filter((userId: number) => userId === freeRoomsParams.userId);
+
     const currentAnimalsCount =
       freeRoomsParams.currentHotel.freeRooms[date]?.usersAnimalsCount?.reduce(
-        (total, num) => total + num,
+        (total: number, num: number, index: number) =>
+          userIdIndexes.some((userIndex) => userIndex === index)
+            ? total + num
+            : total + 0,
         0
       ) || 0;
 
-    if (availableSeats - freeRoomsParams.values.numberAnimals < 0) {
+    if (availableSeats - freeRoomsParams.numberAnimals < 0) {
       availableDiff = availableSeats;
       availableSeats = 0;
     } else {
-      if (
-        currentAnimalsCount + freeRoomsParams.values.numberAnimals >
-        maxAnimals
-      ) {
-        availableDiff = maxAnimals - currentAnimalsCount;
+      if (currentAnimalsCount + freeRoomsParams.numberAnimals >= MAX_ANIMALS) {
+        availableDiff = MAX_ANIMALS - currentAnimalsCount;
       }
     }
 
     availableSeats -=
-      availableDiff > 0 ? availableDiff : freeRoomsParams.values.numberAnimals;
+      availableDiff > 0 ? availableDiff : freeRoomsParams.numberAnimals;
 
     freeRoomsParams.freeRooms[date] = {
       availableSeats: availableSeats,
       usersId: [
         ...(freeRoomsParams.currentHotel?.freeRooms?.[date]?.usersId || []),
-        freeRoomsParams.auth.payload.id,
+        freeRoomsParams.userId,
       ],
       usersAnimalsCount: [
         ...(freeRoomsParams.currentHotel?.freeRooms?.[date]
           ?.usersAnimalsCount || []),
-        availableDiff > 0
-          ? availableDiff
-          : freeRoomsParams.values.numberAnimals,
+        availableDiff > 0 ? availableDiff : freeRoomsParams.numberAnimals,
       ],
     };
 
     sessionStorage.usersAnimalsCount =
-      availableDiff > 0 ? availableDiff : freeRoomsParams.values.numberAnimals;
+      availableDiff > 0 ? availableDiff : freeRoomsParams.numberAnimals;
   }
 
   return freeRoomsParams.freeRooms;
