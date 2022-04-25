@@ -8,10 +8,11 @@ import {
   CardContent,
 } from "@mui/material";
 import { connect } from "react-redux";
-import { RootState } from "./../components/App";
-import { links } from "./../helpers/index";
+import { RootState } from "../helpers/types";
+import { links } from "../helpers/consts";
 import { pagesStyles } from "./pagesStyles";
 import { history } from "./../components/App";
+import { WishlistModel, HotelModel } from "src/server/api/api-models";
 
 const Wishlists = ({ auth, promise }) => {
   const currentUserWishlists = auth?.payload.wishlists;
@@ -28,31 +29,34 @@ const Wishlists = ({ auth, promise }) => {
             You currently have no wishlists
           </Typography>
         ) : (
-          (currentUserWishlists || []).map((wishlist, index) => (
-            <Card key={index} sx={pagesStyles.wishlists.card}>
-              <CardActionArea
-                onClick={() =>
-                  history.push(`/wishlists/wishlist/${wishlist.name}`)
-                }
-              >
-                <CardMedia
-                  component="img"
-                  height="140"
-                  image={
-                    (allHotels || []).find(
-                      (hotel) => hotel.id === wishlist?.hotelsId?.[0]
-                    )?.photos?.[0] || links.noBackground
+          (currentUserWishlists || []).map(
+            (wishlist: WishlistModel, index: number) => (
+              <Card key={index} sx={pagesStyles.wishlists.card}>
+                <CardActionArea
+                  onClick={() =>
+                    history.push(`/wishlists/wishlist/${wishlist.name}`)
                   }
-                  alt={`Wishlist ${index + 1}`}
-                />
-                <CardContent>
-                  <Typography gutterBottom variant="h5" component="div">
-                    {wishlist.name}
-                  </Typography>
-                </CardContent>
-              </CardActionArea>
-            </Card>
-          ))
+                >
+                  <CardMedia
+                    component="img"
+                    height="140"
+                    image={
+                      (allHotels || []).find(
+                        (hotel: HotelModel) =>
+                          hotel.id === wishlist?.hotelsId?.[0]
+                      )?.photos?.[0] || links.noBackground
+                    }
+                    alt={`Wishlist ${index + 1}`}
+                  />
+                  <CardContent>
+                    <Typography gutterBottom variant="h5" component="div">
+                      {wishlist.name}
+                    </Typography>
+                  </CardContent>
+                </CardActionArea>
+              </Card>
+            )
+          )
         )}
       </Box>
     </Box>

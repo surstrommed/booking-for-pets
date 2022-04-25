@@ -4,10 +4,12 @@ import { CustomTextField } from "../Auxiliary/CustomTextField";
 import { Button, Typography } from "@mui/material";
 import { connect } from "react-redux";
 import { actionUpdateWishlists } from "../../actions/thunks";
-import { RootState } from "../App";
 import useSnackBar from "./../Auxiliary/SnackBar";
 import { wishlistVS } from "../../helpers/validationSchemes";
-import { sendSnackBarMessages } from "../../helpers";
+import { sendSnackBarMessages } from "../../helpers/consts";
+import { WishlistModel } from "../../server/api/api-models";
+import { ALREADY_EXIST_WISHLIST } from "../../helpers/consts";
+import { wishlistName, RootState } from "../../helpers/types";
 
 const CreateWishlist = ({
   auth,
@@ -15,8 +17,8 @@ const CreateWishlist = ({
   modalWindowState,
   hotelData,
 }) => {
-  const currentUserWishlists = auth?.payload.wishlists;
-  const initialValues: { wishlistName: string } = { wishlistName: "" };
+  const currentUserWishlists = auth?.payload?.wishlists;
+  const initialValues: wishlistName = { wishlistName: "" };
 
   const formik = useFormik({
     initialValues: initialValues,
@@ -37,10 +39,10 @@ const CreateWishlist = ({
 
   if (
     (currentUserWishlists || []).find(
-      (wishlist) => wishlist.name === values.wishlistName
+      (wishlist: WishlistModel) => wishlist.name === values.wishlistName
     )
   ) {
-    errors.wishlistName = "Wishlist with the same name already exists";
+    errors.wishlistName = ALREADY_EXIST_WISHLIST;
   }
 
   const [, sendSnackbar] = useSnackBar();
@@ -48,8 +50,10 @@ const CreateWishlist = ({
   function sendSnackBar() {
     values.wishlistName &&
       !errors.wishlistName &&
+      typeof sendSnackbar === "function" &&
       sendSnackbar({
         msg: sendSnackBarMessages.createdWishlistMessage(values.wishlistName),
+        variant: "success",
       });
   }
 

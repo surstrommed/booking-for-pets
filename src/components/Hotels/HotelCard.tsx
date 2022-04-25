@@ -8,19 +8,21 @@ import {
 } from "@mui/material";
 import { CardActionArea, IconButton } from "@mui/material";
 import { Link } from "react-router-dom";
-import { RootState } from "../App";
+import { RootState } from "../../helpers/types";
 import { connect } from "react-redux";
+import { hotelCardStyles } from "./hotelsStyles";
 import {
   actionFullHotelUpdate,
   actionUpdateWishlists,
 } from "./../../actions/thunks";
-import { sendSnackBarMessages, truncText } from "../../helpers/index";
-import { hotelCardStyles } from "./hotelsStyles";
+import { truncText } from "../../helpers/functions";
+import { links, sendSnackBarMessages } from "../../helpers/consts";
 import FavoriteBorderIcon from "@mui/icons-material/FavoriteBorder";
 import FavoriteIcon from "@mui/icons-material/Favorite";
 import ModalWindow from "./../Auxiliary/ModalWindow";
 import { CSelectWishlist } from "./../Wishlist/SelectWishlist";
 import useSnackBar from "./../Auxiliary/SnackBar";
+import { CurrencyModel, WishlistModel } from "src/server/api/api-models";
 
 const HotelCard = ({
   auth,
@@ -33,26 +35,26 @@ const HotelCard = ({
   const [, sendSnackbar] = useSnackBar();
 
   const currentCurrency = (currencyList?.currency || []).find(
-    (currency) => auth?.payload?.currencyId === currency?.id
+    (currency: CurrencyModel) => auth?.payload?.currencyId === currency?.id
   );
 
-  const updateWishlistWindow = (value) => {
+  const updateWishlistWindow = (value: boolean) => {
     setOpenWishlistsWindow(value);
   };
 
   const currentUserWishlists = auth?.payload?.wishlists;
 
-  const isSaved = (currentUserWishlists || []).find((wishlist) =>
+  const isSaved = (currentUserWishlists || []).find((wishlist: WishlistModel) =>
     wishlist.hotelsId.includes(hotelData.id)
   );
 
   function handleUnsave() {
-    const isSavedIndex = (currentUserWishlists || []).findIndex((wishlist) =>
-      wishlist.hotelsId.includes(hotelData.id)
+    const isSavedIndex = (currentUserWishlists || []).findIndex(
+      (wishlist: WishlistModel) => wishlist.hotelsId.includes(hotelData.id)
     );
 
     const filteredHotelsId = isSaved.hotelsId.filter(
-      (hotelId) => hotelId !== hotelData.id
+      (hotelId: string) => hotelId !== hotelData.id
     );
 
     const filteredUserWishlists = [...currentUserWishlists];
@@ -66,9 +68,12 @@ const HotelCard = ({
 
     filteredUserWishlists.push(filteredCurrentUserWishlist);
 
-    sendSnackbar({
-      msg: sendSnackBarMessages.hotelRemovedMessage(isSaved?.name),
-    });
+    if (typeof sendSnackbar === "function") {
+      sendSnackbar({
+        msg: sendSnackBarMessages.removedFromWishlistMessage(isSaved?.name),
+        variant: "error",
+      });
+    }
 
     onUnsave(filteredUserWishlists);
   }
@@ -94,19 +99,15 @@ const HotelCard = ({
           <CardMedia
             component="img"
             height="140"
-            image={`${hotelData.image}`}
+            image={hotelData.image || links.noImage}
             alt={`Hotel ${hotelData.index + 1}`}
           />
-          <CardContent>
-            <Typography gutterBottom variant="h5" component="div">
+          <CardContent sx={{ height: "20vh" }}>
+            <Typography gutterBottom variant="h6" component="div">
               {hotelData.title}
             </Typography>
-            <Typography variant="body2" color="text.secondary">
-              {truncText(hotelData.description)}
-              <br />
-              {currentCurrency?.sign}
-              {hotelData.price *
-                currencyList.exchangeList[currentCurrency.name].toFixed(1)}
+            <Typography variant="body1" color="text.secondary">
+              {truncText(hotelData.description, 70)}
             </Typography>
           </CardContent>
         </CardActionArea>
@@ -114,6 +115,16 @@ const HotelCard = ({
       <CardActions>
         {saved ? (
           <>
+            <Typography variant="body1" color="text.secondary">
+              <b>
+                {currentCurrency?.sign}
+                {hotelData.price *
+                  currencyList?.exchangeList[currentCurrency?.name]?.toFixed(
+                    1
+                  )}{" "}
+                / day
+              </b>
+            </Typography>
             <IconButton
               color="secondary"
               sx={hotelCardStyles.rightAlign}
@@ -125,6 +136,16 @@ const HotelCard = ({
           </>
         ) : (
           <>
+            <Typography variant="body1" color="text.secondary">
+              <b>
+                {currentCurrency?.sign}
+                {hotelData.price *
+                  currencyList?.exchangeList[currentCurrency?.name]?.toFixed(
+                    1
+                  )}{" "}
+                / day
+              </b>
+            </Typography>
             <IconButton
               color="secondary"
               sx={hotelCardStyles.rightAlign}
@@ -142,8 +163,8 @@ const HotelCard = ({
 
 export const CHotelCard = connect(
   (state: RootState) => ({
-    promise: state.promise,
     auth: state.auth,
+    promise: state.promise,
     currencyList: state.currencyList,
   }),
   {

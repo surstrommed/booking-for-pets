@@ -30,4 +30,5 @@ export const wishlistStyles = {
   },
   wishlistPageCard: { display: "flex", width: "45%", marginRight: "10vh" },
   width100: { width: 100 },
+  wishlistAppBar: { position: "relative", boxShadow: "none" },
 };

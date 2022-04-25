@@ -1,15 +1,15 @@
-import React, { useState, forwardRef, useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import {
   Dialog,
   AppBar,
   Toolbar,
-  Slide,
   ImageList,
   ImageListItem,
   IconButton,
 } from "@mui/material";
 import ArrowBackIosNewOutlinedIcon from "@mui/icons-material/ArrowBackIosNewOutlined";
 import { fullWindowStyles } from "./hotelsStyles";
+import { Transition } from "../Auxiliary/Transition";
 
 function formatImageSrc(
   image: string,
@@ -26,11 +26,13 @@ function formatImageSrc(
   };
 }
 
-const Transition = forwardRef(function Transition(props, ref) {
-  return <Slide direction="up" ref={ref} {...props} />;
-});
-
 export default function FullWindowGallery({ updateOpenDialogStatus, gallery }) {
+  interface IGallerryItem {
+    featured: boolean;
+    img: string;
+    title: string;
+  }
+
   const [open, setOpen] = useState(true);
 
   const handleClose = () => {
@@ -66,7 +68,7 @@ export default function FullWindowGallery({ updateOpenDialogStatus, gallery }) {
           </Toolbar>
         </AppBar>
         <ImageList sx={fullWindowStyles.imageList} rowHeight={200} gap={1}>
-          {gallery.map((item, index) => {
+          {gallery.map((item: IGallerryItem, index: number) => {
             const cols = item.featured ? 2 : 1;
             const rows = item.featured ? 2 : 1;
             return (

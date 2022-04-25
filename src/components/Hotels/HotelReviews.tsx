@@ -8,7 +8,9 @@ import {
 } from "@mui/material";
 import { hotelPageStyles, hotelReviewStyles } from "./hotelsStyles";
 import { Link } from "react-router-dom";
-import { links, stringMonth } from "../../helpers";
+import { formatStringDate } from "../../helpers/functions";
+import { links } from "../../helpers/consts";
+import { IReview } from "../../server/api/api-models";
 
 export const HotelReviews = ({ currentHotel }) => {
   return (
@@ -17,7 +19,7 @@ export const HotelReviews = ({ currentHotel }) => {
         {currentHotel?.reviews?.length} review(s)
       </Typography>
       <div style={hotelPageStyles.dFlex} id="reviews">
-        {(currentHotel?.reviews || []).map((review, index) => (
+        {(currentHotel?.reviews || []).map((review: IReview, index: number) => (
           <Card sx={hotelReviewStyles.review} key={index}>
             <CardHeader
               avatar={
@@ -30,11 +32,7 @@ export const HotelReviews = ({ currentHotel }) => {
                 </Link>
               }
               title={`${review.owner.firstName} ${review.owner.lastName}`}
-              subheader={`${stringMonth(
-                new Date(review.createdAt).getMonth()
-              )} ${new Date(review.createdAt).getDate()}, ${new Date(
-                review.createdAt
-              ).getFullYear()}`}
+              subheader={formatStringDate(review.createdAt)}
             />
             <CardContent>
               <Typography variant="body2" color="text.secondary">

@@ -1,8 +1,11 @@
 import React from "react";
+import { useSelector } from "react-redux";
 import { Navigate, useLocation } from "react-router-dom";
+import { RootState } from "../../helpers/types";
 
 const useAuth = () => {
-  return sessionStorage?.authToken ? true : false;
+  const auth = useSelector((state: RootState) => state.auth);
+  return auth?.payload ? true : false;
 };
 
 export const PrivateRoute = ({ children }) => {

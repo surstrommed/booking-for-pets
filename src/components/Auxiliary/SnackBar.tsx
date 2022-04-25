@@ -1,13 +1,13 @@
 import React, { Fragment, useEffect, useState } from "react";
-import { useSnackbar } from "notistack";
+import { SnackbarKey, useSnackbar, VariantType } from "notistack";
 import IconButton from "@mui/material/IconButton";
 import CloseIcon from "@mui/icons-material/Close";
 
 const useSnackBar = () => {
-  const [conf, setConf] = useState({});
+  const [conf, setConf] = useState({ msg: "", variant: "" });
   const { enqueueSnackbar, closeSnackbar } = useSnackbar();
 
-  const action = (key) => {
+  const action = (key: SnackbarKey) => {
     const closeBar = () => {
       closeSnackbar(key);
     };
@@ -22,12 +22,12 @@ const useSnackBar = () => {
 
   useEffect(() => {
     if (conf.msg) {
-      let variant = "success";
+      let variant: VariantType = "success";
       if (conf.variant) {
-        variant = conf.variant;
+        variant = conf.variant as VariantType;
       }
       enqueueSnackbar(conf.msg, {
-        variant: variant,
+        variant,
         autoHideDuration: 3000,
         action,
       });

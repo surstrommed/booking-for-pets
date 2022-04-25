@@ -2,16 +2,20 @@ import React from "react";
 import { Routes, Route } from "react-router-dom";
 import Page404 from "./Page404";
 import { CProfile } from "./Profile";
-import Login from "./Login";
-import Register from "./Register";
 import { PrivateRoute } from "./../components/Auxiliary/PrivateRoute";
 import { CHotels } from "./Hotels";
 import { CHotelPage } from "./../components/Hotels/HotelPage";
 import { Preloader } from "./../components/Auxiliary/Preloader";
 import { connect } from "react-redux";
-import { RootState } from "../components/App";
+import { RootState } from "../helpers/types";
+import { CForOwners } from "./ForOwners";
+import { COwnersHotels } from "./OwnersHotels";
+import { CHotelRequests } from "../components/ForOwners/HotelRequests";
+import { CUserNotifications } from "../components/Notifications/UserNotifications";
 import { CWishlists } from "./Wishlists";
 import { CWishlistPage } from "./../components/Wishlist/WishlistPage";
+import { CRegister } from "../pages/Register";
+import { CLogin } from "../pages/Login";
 
 function MainPage() {
   return (
@@ -36,7 +40,7 @@ const Main = ({ promise }) => {
         path="/signup"
         element={
           <PrivateRoute>
-            <Register />
+            <CRegister />
           </PrivateRoute>
         }
       />
@@ -44,7 +48,7 @@ const Main = ({ promise }) => {
         path="/signin"
         element={
           <PrivateRoute>
-            <Login />
+            <CLogin />
           </PrivateRoute>
         }
       />
@@ -53,6 +57,14 @@ const Main = ({ promise }) => {
         element={
           <PrivateRoute>
             <CProfile />
+          </PrivateRoute>
+        }
+      />
+      <Route
+        path="/hotels"
+        element={
+          <PrivateRoute>
+            <CHotels />
           </PrivateRoute>
         }
       />
@@ -71,6 +83,62 @@ const Main = ({ promise }) => {
         }
       />
       <Route
+        path="/for-owners"
+        element={
+          <Preloader
+            promiseName={"getHotels"}
+            promiseState={promise}
+            sub={
+              <PrivateRoute>
+                <CForOwners />
+              </PrivateRoute>
+            }
+          />
+        }
+      />
+      <Route
+        path="/for-owners/hotels"
+        element={
+          <Preloader
+            promiseName={"getHotels"}
+            promiseState={promise}
+            sub={
+              <PrivateRoute>
+                <COwnersHotels />
+              </PrivateRoute>
+            }
+          />
+        }
+      />
+      <Route
+        path="/for-owners/hotels/:hotelId/requests"
+        element={
+          <Preloader
+            promiseName={"getHotels"}
+            promiseState={promise}
+            sub={
+              <PrivateRoute>
+                <CHotelRequests />
+              </PrivateRoute>
+            }
+          />
+        }
+      />
+      <Route
+        path="/notifications"
+        element={
+          <Preloader
+            promiseName={"getNotifications"}
+            promiseState={promise}
+            sub={
+              <PrivateRoute>
+                <CUserNotifications />
+              </PrivateRoute>
+            }
+          />
+        }
+      />
+      <Route
         path="/wishlists"
         element={
           <PrivateRoute>
@@ -81,9 +149,15 @@ const Main = ({ promise }) => {
       <Route
         path="/wishlists/wishlist/:wishlistName"
         element={
-          <PrivateRoute>
-            <CWishlistPage />
-          </PrivateRoute>
+          <Preloader
+            promiseName={"signin"}
+            promiseState={promise}
+            sub={
+              <PrivateRoute>
+                <CWishlistPage />
+              </PrivateRoute>
+            }
+          />
         }
       />
       <Route path="*" element={<Page404 />} />

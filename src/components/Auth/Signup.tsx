@@ -11,11 +11,12 @@ import VisibilityIcon from "@mui/icons-material/Visibility";
 import VisibilityOffIcon from "@mui/icons-material/VisibilityOff";
 import { actionFullRegister } from "../../actions/thunks";
 import { connect } from "react-redux";
-import { RootState, history } from "../App";
+import { history } from "../App";
 import { CustomTextField } from "./../Auxiliary/CustomTextField";
 import { authFormStyles, authModalStyles } from "./authStyles";
 import { signUpVS } from "./../../helpers/validationSchemes";
 import { IRegister, RegisterFormValues } from "./../../server/api/api-models";
+import { RootState } from "../../helpers/types";
 
 const SignUp = ({
   onRegister,

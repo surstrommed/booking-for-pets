@@ -1,6 +1,6 @@
 import React from "react";
 import { connect } from "react-redux";
-import { RootState } from "../components/App";
+import { RootState } from "../helpers/types";
 import { Preloader } from "../components/Auxiliary/Preloader";
 import { CHotelsList } from "./../components/Hotels/HotelsList";
 

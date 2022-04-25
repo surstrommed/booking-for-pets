@@ -10,7 +10,7 @@ import { CopyToClipboard } from "react-copy-to-clipboard";
 import useSnackBar from "./../Auxiliary/SnackBar";
 import { history } from "../App";
 import { shareStyles } from "./shareStyles";
-import { sendSnackBarMessages, links } from "../../helpers";
+import { sendSnackBarMessages, links } from "../../helpers/consts";
 
 export const ShareWindow = () => {
   const [, sendSnackbar] = useSnackBar();
@@ -23,8 +23,10 @@ export const ShareWindow = () => {
           color="secondary"
           sx={shareStyles.button}
           onClick={() =>
+            typeof sendSnackbar === "function" &&
             sendSnackbar({
               msg: sendSnackBarMessages.copiedMessage(),
+              variant: "success",
             })
           }
         >

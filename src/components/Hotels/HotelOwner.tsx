@@ -2,26 +2,32 @@ import React from "react";
 import { Card, CardHeader, Avatar } from "@mui/material";
 import { hotelPageStyles } from "./hotelsStyles";
 import { Link } from "react-router-dom";
-import { links, stringMonth } from "../../helpers";
+import { stringMonth } from "../../helpers/functions";
+import { links } from "../../helpers/consts";
+import { UserModel } from "src/server/api/api-models";
 
-export const HotelOnwer = ({ currentHotel }) => {
+export const HotelOwner = ({ currentHotel, users }) => {
+  const hotelOwner = (users || []).find(
+    (user: UserModel) =>
+      currentHotel.owner !== 0 && user.id === currentHotel.owner
+  );
   return (
     <div style={hotelPageStyles.dFlex}>
       <Card sx={hotelPageStyles.owner}>
         <CardHeader
           avatar={
-            <Link to={`/users/${currentHotel?.owner?.id}`}>
+            <Link to={`/users/${hotelOwner?.id}`}>
               <Avatar
-                alt={`${currentHotel?.owner?.firstName} ${currentHotel?.owner?.lastName}`}
-                src={`${currentHotel?.owner?.pictureUrl || links.noAvatar}`}
+                alt={`${hotelOwner?.firstName} ${hotelOwner?.lastName}`}
+                src={`${hotelOwner?.pictureUrl || links.noAvatar}`}
                 sx={{ width: 56, height: 56 }}
               />
             </Link>
           }
-          title={`Onwer: ${currentHotel?.owner?.firstName} ${currentHotel?.owner?.lastName}`}
+          title={`Owner: ${hotelOwner?.firstName} ${hotelOwner?.lastName}`}
           subheader={`On Shaggy tail since ${stringMonth(
-            new Date(currentHotel?.owner?.createdAt).getMonth()
-          )} ${new Date(currentHotel?.owner?.createdAt).getFullYear()}`}
+            new Date(hotelOwner?.createdAt).getMonth()
+          )} ${new Date(hotelOwner?.createdAt).getFullYear()}`}
         />
       </Card>
     </div>

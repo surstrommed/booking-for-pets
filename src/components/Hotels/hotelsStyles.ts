@@ -50,6 +50,7 @@ export const hotelPageStyles = {
     display: "flex",
     marginBottom: 10,
   },
+  alertStyle: { margin: "1vh 0 0 0" },
 };
 
 export const fullWindowStyles = {
@@ -78,6 +79,7 @@ export const fullWindowStyles = {
 export const hotelCardStyles = {
   main: {
     width: 245,
+    margin: 4,
   },
   rightAlign: { marginLeft: "auto" },
 };

@@ -5,7 +5,7 @@ export const authFormStyles = {
     width: "50%",
     margin: "5% auto",
     padding: "3%",
-    boxSizing: "border-box",
+    boxSizing: "border-box" as const,
   },
   inputsBox: {
     width: 500,
@@ -28,7 +28,7 @@ export const authModalStyles = {
   main: {
     borderRadius: 20,
     margin: "3% auto",
-    boxSizing: "border-box",
+    boxSizing: "border-box" as const,
   },
   inputsBox: {
     width: 500,

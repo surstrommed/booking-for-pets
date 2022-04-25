@@ -6,16 +6,16 @@
       "firstName": "Anton",
       "lastName": "Zadorozhnyi",
       "createdAt": 1647206008510,
-      "currencyId": 2,
+      "currencyId": 3,
       "id": 1,
-      "pictureUrl": "https://i.ibb.co/v41JTMR/147144.png",
+      "pictureUrl": "https://i.ibb.co/nCCFKTp/147144.png",
       "wishlists": [
         {
-          "name": "Test1",
+          "name": "Wishlist",
           "hotelsId": []
         }
       ],
-      "password": "$2a$10$1RNK0chDeueS.AtZ5lXUYOal4Sc7NOZS6v/9TG8Yq0I8Tf0m39.iK"
+      "password": "$2a$10$N.z/PKeXkQ.xAIFcRjZCb.bpGWa9BgWxF7VdiZXiOtSUyOZBivrBu"
     },
     {
       "email": "user1231@ukr.net",
@@ -67,20 +67,48 @@
     },
     {
       "email": "test1@ukr.net",
-      "password": "$2a$10$DdsLiS.G7ttVDRnZHO8one/QEeNyv09SPNwSH3KYtX4ZQ.vZZCU0e",
       "login": "test1",
       "firstName": "Test",
       "lastName": "Test",
       "createdAt": 1649446759768,
       "pictureUrl": null,
       "currencyId": 1,
+      "id": 6,
       "wishlists": [],
-      "id": 6
+      "password": "$2a$10$faZMBn7qqG4lisYNp9fP6.Ylh1LIACUk1XV5h6p/YI9PwHSCojLX6"
+    },
+    {
+      "email": "test2@ukr.net",
+      "password": "$2a$10$fkWhOLU74Yekqp5t26Y.tOK1SjdXH9y6B93SqgEh2XYViXeOuAdgi",
+      "login": "test2",
+      "firstName": "Secondtest",
+      "lastName": "Secondtest",
+      "currencyId": 1,
+      "createdAt": 1650544111820,
+      "pictureUrl": null,
+      "id": 7,
+      "wishlists": []
     }
   ],
   "hotels": [
     {
-      "id": 1,
+      "id": "lKRS7",
+      "name": "",
+      "location": "",
+      "address": "",
+      "description": "",
+      "photos": [],
+      "hotelRooms": 0,
+      "freeRooms": {},
+      "userRequests": [],
+      "disableUserDates": {},
+      "disableUsersDates": [],
+      "price": 0,
+      "owner": 0,
+      "reviews": []
+    },
+    {
+      "id": "w0ebO",
       "name": "True friend",
       "location": "Kiev, Ukraine",
       "address": "Sofievskaya street, 31",
@@ -97,20 +125,70 @@
         "https://besplatka.ua/aws/746x-/49/71/74/19/veterinarnyi-centr-zveropolis---gostinica-dlya-kotov-i-photo-7a4d.jpg"
       ],
       "hotelRooms": 40,
-      "freeRooms": {},
-      "userRequests": [],
+      "freeRooms": {
+        "1650661200000": {
+          "availableSeats": 39,
+          "usersId": [
+            6
+          ],
+          "usersAnimalsCount": [
+            1
+          ]
+        },
+        "1650747600000": {
+          "availableSeats": 38,
+          "usersId": [
+            6,
+            6
+          ],
+          "usersAnimalsCount": [
+            1,
+            1
+          ]
+        },
+        "1650834000000": {
+          "availableSeats": 39,
+          "usersId": [
+            6
+          ],
+          "usersAnimalsCount": [
+            1
+          ]
+        }
+      },
+      "userRequests": [
+        {
+          "arrivalDate": 1650661200000,
+          "departureDate": 1650747600000,
+          "animalsNumber": 1,
+          "usersId": 6,
+          "message": "Empty",
+          "status": "Confirmed",
+          "id": "ukjs7"
+        },
+        {
+          "arrivalDate": 1650747600000,
+          "departureDate": 1650834000000,
+          "animalsNumber": 1,
+          "usersId": 6,
+          "message": "Empty",
+          "status": "Confirmed",
+          "id": "VeNGH"
+        },
+        {
+          "arrivalDate": 1650747600000,
+          "departureDate": 1650834000000,
+          "animalsNumber": 1,
+          "usersId": 6,
+          "message": "Empty",
+          "status": "Rejected",
+          "id": "tAEsi"
+        }
+      ],
       "disableUserDates": {},
       "disableUsersDates": [],
-      "price": "15",
-      "owner": {
-        "id": 3,
-        "email": "asdasd@ukr.net",
-        "login": "asdasda",
-        "firstName": "Andriy",
-        "lastName": "Yarovy",
-        "createdAt": 1647351949978,
-        "pictureUrl": "https://i.ibb.co/Drqmh80/557d644f-12f3-49e1-bb66-23c16400540d.png"
-      },
+      "price": 15,
+      "owner": 1,
       "reviews": [
         {
           "id": 1,
@@ -145,7 +223,7 @@
       ]
     },
     {
-      "id": 2,
+      "id": "lZKL7",
       "name": "Chotyrokhlapyy druh",
       "location": "Kharkiv, Ukraine",
       "address": "Sumskaya street, 40",
@@ -161,21 +239,13 @@
         "https://talant.shop/static/items/2019/December/5de924e88c52ab7d0ef8a6a7-medium.jpg",
         "https://besplatka.ua/aws/746x-/49/71/74/19/veterinarnyi-centr-zveropolis---gostinica-dlya-kotov-i-photo-7a4d.jpg"
       ],
-      "hotelRooms": 30,
+      "hotelRooms": 25,
       "freeRooms": {},
       "userRequests": [],
       "disableUserDates": {},
       "disableUsersDates": [],
-      "price": "10",
-      "owner": {
-        "id": 3,
-        "email": "asdasd@ukr.net",
-        "login": "asdasda",
-        "firstName": "Andriy",
-        "lastName": "Yarovy",
-        "createdAt": 1647351949978,
-        "pictureUrl": "https://i.ibb.co/Drqmh80/557d644f-12f3-49e1-bb66-23c16400540d.png"
-      },
+      "price": 10,
+      "owner": 1,
       "reviews": [
         {
           "id": 3,
@@ -193,6 +263,54 @@
           }
         }
       ]
+    },
+    {
+      "id": "lZTW7",
+      "name": "",
+      "location": "",
+      "address": "",
+      "description": "",
+      "photos": [],
+      "hotelRooms": 0,
+      "freeRooms": {},
+      "userRequests": [],
+      "disableUserDates": {},
+      "disableUsersDates": [],
+      "price": 0,
+      "owner": 0,
+      "reviews": []
+    },
+    {
+      "id": "2IYn2",
+      "name": "",
+      "location": "",
+      "address": "",
+      "description": "",
+      "photos": [],
+      "hotelRooms": 0,
+      "freeRooms": {},
+      "userRequests": [],
+      "disableUserDates": {},
+      "disableUsersDates": [],
+      "price": 0,
+      "owner": 0,
+      "reviews": []
+    },
+    {
+      "name": "",
+      "location": "",
+      "address": "",
+      "description": "",
+      "photos": [],
+      "hotelRooms": 0,
+      "freeRooms": {},
+      "userRequests": [],
+      "disableUserDates": {},
+      "disableUsersDates": [],
+      "price": 0,
+      "owner": 0,
+      "reviews": [],
+      "id": "TBoHVML"
     }
   ],
   "currency": [
@@ -210,6 +328,57 @@
       "id": 3,
       "name": "UAH",
       "sign": "₴"
+    }
+  ],
+  "notifications": [
+    {
+      "id": "TB12VML",
+      "text": "Welcome",
+      "status": "Read",
+      "fromId": null,
+      "toId": 1
+    },
+    {
+      "id": "LnVm9",
+      "text": "Empty",
+      "status": "Read",
+      "fromId": 6,
+      "toId": 1
+    },
+    {
+      "id": "NwGJZ",
+      "text": "Good",
+      "status": "Read",
+      "fromId": 1,
+      "toId": 6
+    },
+    {
+      "id": "ncW76",
+      "text": "Empty",
+      "status": "Read",
+      "fromId": 6,
+      "toId": 1
+    },
+    {
+      "id": "XYc4O",
+      "text": "Empty",
+      "status": "Read",
+      "fromId": 6,
+      "toId": 1
+    },
+    {
+      "id": "LLOQX",
+      "text": "Good",
+      "status": "Unread",
+      "fromId": 1,
+      "toId": 6
+    },
+    {
+      "id": "rJo4V",
+      "text": "Bad",
+      "status": "Unread",
+      "fromId": 1,
+      "toId": 6
     }
   ]
 }

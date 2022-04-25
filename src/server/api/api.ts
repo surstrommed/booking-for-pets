@@ -1,7 +1,7 @@
 import { JsonModel, UserModel } from "./api-models";
 import axios from "axios";
 import jsonData from "../db.json";
-import { links } from "../../helpers/index";
+import { links } from "../../helpers/consts";
 
 const myFetch =
   (url: string) =>
@@ -63,7 +63,9 @@ export const getExchangeRates = exchangeRatesFetch(
   "https://openexchangerates.org/api/latest.json?app_id=68546b0af6d145a7a1f7260446e53927"
 );
 
-const db: JsonModel = JSON.parse(JSON.stringify(jsonData));
+export const getNotifications = myFetch(links.apiUrl + "notifications");
+
+export const db: JsonModel = JSON.parse(JSON.stringify(jsonData));
 
 export const isExisted = (email: string, login: string) =>
   db.users.find(

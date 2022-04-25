@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { connect } from "react-redux";
-import { RootState } from "../App";
+import { RootState } from "../../helpers/types";
 import { useFormik } from "formik";
 import {
   Button,
@@ -17,7 +17,8 @@ import { changeProfileStyles } from "./profileStyles";
 import { PersonalDataValues } from "../../server/api/api-models";
 import { changePersonalDataVS } from "./../../helpers/validationSchemes";
 import useSnackBar from "../Auxiliary/SnackBar";
-import { sendSnackBarMessages } from "../../helpers";
+import { sendSnackBarMessages } from "../../helpers/consts";
+import { RESOLVED_PROMISE_STATUS } from "../../helpers/consts";
 
 const ChangePersonalData = ({ auth, promise, onUpdate }) => {
   const [showPassword, setShowPassword] = useState(false);
@@ -53,10 +54,18 @@ const ChangePersonalData = ({ auth, promise, onUpdate }) => {
   const showPass = () => setShowPassword(!showPassword);
 
   const showMessage = () =>
-    promise.signin.status === "RESOLVED" &&
+    promise.signin.status === RESOLVED_PROMISE_STATUS &&
+    typeof sendSnackbar === "function" &&
     sendSnackbar({
       msg: sendSnackBarMessages.changedPersonalDataMessage(),
+      variant: "success",
     });
+
+  const disableSavePDButton =
+    initialValues.email === values.email &&
+    initialValues.login === values.login &&
+    initialValues.firstName === values.firstName &&
+    initialValues.lastName === values.lastName;
 
   return (
     <Card sx={changeProfileStyles.personalDataCard}>
@@ -161,12 +170,7 @@ const ChangePersonalData = ({ auth, promise, onUpdate }) => {
             variant="contained"
             color="secondary"
             style={changeProfileStyles.saveButton}
-            disabled={
-              initialValues.email === values.email &&
-              initialValues.login === values.login &&
-              initialValues.firstName === values.firstName &&
-              initialValues.lastName === values.lastName
-            }
+            disabled={disableSavePDButton}
             onClick={showMessage}
           >
             Save

@@ -12,9 +12,13 @@ import {
 import CloseIcon from "@mui/icons-material/Close";
 import { wishlistVS } from "../../helpers/validationSchemes";
 import { connect } from "react-redux";
-import { RootState } from "../App";
+import { RootState } from "../../helpers/types";
 import { actionUpdateWishlists } from "../../actions/thunks";
 import { history } from "./../App";
+import { WishlistModel } from "../../server/api/api-models";
+import { RENAME_ERROR_WISHLIST } from "../../helpers/consts";
+import { wishlistStyles } from "./wishlistStyles";
+import { wishlistName } from "../../helpers/types";
 
 const WishlistSettings = ({
   handleClose,
@@ -23,13 +27,14 @@ const WishlistSettings = ({
   onDelete,
   onRename,
 }) => {
-  const initialValues: { wishlistName: string } = { wishlistName: "" };
+  const initialValues: wishlistName = { wishlistName: "" };
+
   const formik = useFormik({
     initialValues: initialValues,
     validationSchema: wishlistVS,
     onSubmit: (values) => {
       const currentWishlistIndex = (currentWishlists || []).findIndex(
-        (wishlist) => wishlist.name === currentWishlist.name
+        (wishlist: WishlistModel) => wishlist.name === currentWishlist.name
       );
 
       const filteredUserWishlists = [...currentWishlists];
@@ -52,12 +57,12 @@ const WishlistSettings = ({
   const { handleSubmit, handleChange, values, touched, errors } = formik;
 
   if (currentWishlist.name === values.wishlistName) {
-    errors.wishlistName = "You cannot rename a wishlist to its current name";
+    errors.wishlistName = RENAME_ERROR_WISHLIST;
   }
 
   function deleteWishlist() {
     const filteredCurrentWishlists = (currentWishlists || []).filter(
-      (wishlist) => wishlist.name !== currentWishlist.name
+      (wishlist: WishlistModel) => wishlist.name !== currentWishlist.name
     );
 
     onDelete(filteredCurrentWishlists);
@@ -67,7 +72,7 @@ const WishlistSettings = ({
 
   return (
     <div>
-      <AppBar sx={{ position: "relative", boxShadow: "none" }}>
+      <AppBar sx={wishlistStyles.wishlistAppBar}>
         <Toolbar>
           <IconButton
             edge="start"

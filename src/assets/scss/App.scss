@@ -8,6 +8,9 @@ a {
   height: 0;
 }
 
+html,body{margin:0;padding:0;}
+
+
 .App {
   .Header {
     .SearchBar {
@@ -76,7 +79,8 @@ a {
   .HotelsList {
     display: flex;
     flex-direction: row;
-    justify-content: space-around;
+    justify-content: flex-start;
+    flex-wrap: wrap;
   }
   .alertError {
     width: 50%;

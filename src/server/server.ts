@@ -4,7 +4,6 @@ const server = jsonServer.create();
 const router = jsonServer.router("./src/server/db.json");
 const middlewares = jsonServer.defaults();
 import { isSignupAuthenticated } from "./api/api";
-import { defaultCurrencyId } from "./../helpers/index";
 
 server.use(middlewares);
 
@@ -21,11 +20,6 @@ server.use((req, res, next) => {
       const status = 400;
       const message = "This email or login already exists";
       res.status(status).json(message);
-    } else {
-      req.body.createdAt = Date.now();
-      req.body.pictureUrl = null;
-      req.body.currencyId = defaultCurrencyId;
-      req.body.wishlists = [];
     }
   }
   next();
@@ -33,6 +27,6 @@ server.use((req, res, next) => {
 
 server.use(auth);
 server.use(router);
-server.listen(3000, () => {
+server.listen(3001, () => {
   console.warn("JSON Server is running");
 });

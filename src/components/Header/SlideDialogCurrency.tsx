@@ -1,32 +1,16 @@
-import React, { useState, useEffect, forwardRef } from "react";
-import {
-  Dialog,
-  Slide,
-  Tabs,
-  Tab,
-  Typography,
-  Box,
-  Button,
-} from "@mui/material";
-import { RootState } from "../App";
+import React, { useState, useEffect } from "react";
+import { Dialog, Tabs, Tab, Typography, Box, Button } from "@mui/material";
+import { RootState } from "../../helpers/types";
 import { connect, useSelector } from "react-redux";
 import { Preloader } from "./../Auxiliary/Preloader";
 import { actionChooseCurrency } from "./../../actions/thunks";
 import { dialogCurrencyStyles } from "./headerStyles";
 import { TabPanelProps } from "../../server/api/api-models";
 import useSnackBar from "./../Auxiliary/SnackBar";
-import { sendSnackBarMessages } from "../../helpers";
-
-const Transition = forwardRef(function Transition(props, ref) {
-  return <Slide direction="up" ref={ref} {...props} />;
-});
-
-function setTabsProps(index: number) {
-  return {
-    id: `simple-tab-${index}`,
-    "aria-controls": `simple-tabpanel-${index}`,
-  };
-}
+import { sendSnackBarMessages } from "../../helpers/consts";
+import { Transition } from "../Auxiliary/Transition";
+import { CurrencyModel } from "../../server/api/api-models";
+import { setTabsProps } from "src/helpers/functions";
 
 function TabPanel(props: TabPanelProps) {
   const { children, value, index, ...other } = props;
@@ -87,26 +71,30 @@ function BasicTabs({ auth, currencyList, chooseCurrency }) {
           Selected: {currentCurrency?.sign}
         </Typography>
         <span style={dialogCurrencyStyles.tabs}>
-          {(currencySiteList || []).map((currency, index) => (
-            <Button
-              key={index}
-              variant="outlined"
-              color="secondary"
-              size="large"
-              disabled={currentCurrency.id === currency.id}
-              sx={{ margin: "0 2vh" }}
-              onClick={() => {
-                chooseCurrency(currency.id);
-                sendSnackbar({
-                  msg: sendSnackBarMessages.selectedCurrencyMessage(
-                    currency?.name
-                  ),
-                });
-              }}
-            >
-              {currency.name} - {currency.sign}
-            </Button>
-          ))}
+          {(currencySiteList || []).map(
+            (currency: CurrencyModel, index: number) => (
+              <Button
+                key={index}
+                variant="outlined"
+                color="secondary"
+                size="large"
+                disabled={currentCurrency.id === currency.id}
+                sx={{ margin: "0 2vh" }}
+                onClick={() => {
+                  chooseCurrency(currency.id);
+                  typeof sendSnackbar === "function" &&
+                    sendSnackbar({
+                      msg: sendSnackBarMessages.selectedCurrencyMessage(
+                        currency?.name
+                      ),
+                      variant: "success",
+                    });
+                }}
+              >
+                {currency.name} - {currency.sign}
+              </Button>
+            )
+          )}
         </span>
       </TabPanel>
     </Box>
@@ -125,7 +113,7 @@ const CBasicTabs = connect(
 )(BasicTabs);
 
 export default function SlideDialogCurrency({ updateOpenDialogStatus }) {
-  const promise = useSelector((state) => state.promise);
+  const promise = useSelector((state: RootState) => state.promise);
   const [open, setOpen] = useState(true);
 
   const handleClose = () => {
