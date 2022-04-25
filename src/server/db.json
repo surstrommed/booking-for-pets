@@ -6,16 +6,16 @@
       "firstName": "Anton",
       "lastName": "Zadorozhnyi",
       "createdAt": 1647206008510,
-      "currencyId": 3,
+      "currencyId": 2,
       "id": 1,
-      "pictureUrl": "https://i.ibb.co/nCCFKTp/147144.png",
+      "pictureUrl": "https://i.ibb.co/v41JTMR/147144.png",
       "wishlists": [
         {
-          "name": "Wishlist",
+          "name": "Test",
           "hotelsId": []
         }
       ],
-      "password": "$2a$10$N.z/PKeXkQ.xAIFcRjZCb.bpGWa9BgWxF7VdiZXiOtSUyOZBivrBu"
+      "password": "$2a$10$/DYfGMN0AgP.fMP3NNrXf.FjY3SIgI0NihSnBKWM1s2MVEdT2ZWY6"
     },
     {
       "email": "user1231@ukr.net",
