@@ -17,6 +17,7 @@ import { authFormStyles, authModalStyles } from "./authStyles";
 import { ILogin, LoginFormValues } from "./../../server/api/api-models";
 import { signInVS } from "../../helpers/validationSchemes";
 import { RootState } from "../../helpers/types";
+import { RESOLVED_PROMISE_STATUS } from "../../helpers/consts";
 
 const SignIn = ({
   onLogin,
@@ -24,6 +25,7 @@ const SignIn = ({
   signInOpenState,
   signUpOpenState,
   auth,
+  promise,
 }: ILogin) => {
   const [showPassword, setShowPassword] = useState(false);
   const initialValues: LoginFormValues = { email: "", password: "" };
@@ -32,7 +34,9 @@ const SignIn = ({
     initialValues: initialValues,
     validationSchema: signInVS,
     onSubmit: (values) => {
-      modal && signInOpenState(false);
+      const signInStatus =
+        promise?.["signin"]?.["status"] === RESOLVED_PROMISE_STATUS;
+      modal && signInStatus && signInOpenState(false);
       const { email, password } = values;
       onLogin(email, password);
     },
@@ -149,6 +153,9 @@ const SignIn = ({
   );
 };
 
-export const CSignIn = connect((state: RootState) => ({ auth: state.auth }), {
-  onLogin: actionFullLogin,
-})(SignIn);
+export const CSignIn = connect(
+  (state: RootState) => ({ auth: state.auth, promise: state.promise }),
+  {
+    onLogin: actionFullLogin,
+  }
+)(SignIn);

@@ -189,7 +189,7 @@ export interface EditingHotelDataValues {
 }
 
 export interface IOwner {
-  id: number;
+  id: string;
   email: string;
   login: string;
   firstName: string;
@@ -199,9 +199,13 @@ export interface IOwner {
 }
 
 export interface IReview {
-  id: number;
+  id: string;
   rating?: number;
   text?: string;
   createdAt?: Date;
   owner: IOwner;
+}
+
+export interface FetchDataModel {
+  id?: string;
 }
