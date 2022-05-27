@@ -2,14 +2,14 @@ import React, { useState } from "react";
 import Tabs from "@mui/material/Tabs";
 import Tab from "@mui/material/Tab";
 import Box from "@mui/material/Box";
-import { CChangePassword } from "./../components/Profile/ChangePassword";
-import { CChangeAvatar } from "./../components/Profile/ChangeAvatar";
-import { CChangePersonalData } from "./../components/Profile/ChangePersonalData";
+import { ChangePassword } from "./../components/Profile/ChangePassword";
+import { ChangeAvatar } from "./../components/Profile/ChangeAvatar";
+import { ChangePersonalData } from "./../components/Profile/ChangePersonalData";
 import { Preloader } from "./../components/Auxiliary/Preloader";
-import { connect } from "react-redux";
 import { RootState } from "../helpers/types";
 import { pagesStyles } from "./pagesStyles";
 import { TabPanelProps } from "../server/api/api-models";
+import { useSelector } from "react-redux";
 
 function TabPanel(props: TabPanelProps) {
   const { children, value, index, ...other } = props;
@@ -33,7 +33,9 @@ function tabsProps(index: number) {
   };
 }
 
-const Profile = ({ promise }) => {
+export const Profile = () => {
+  const promise = useSelector((state: RootState) => state.promise);
+
   const [value, setValue] = useState(0);
 
   const handleChange = (event: React.SyntheticEvent, newValue: number) => {
@@ -59,28 +61,24 @@ const Profile = ({ promise }) => {
           <Preloader
             promiseName={"uploadAvatar"}
             promiseState={promise}
-            sub={<CChangeAvatar />}
+            sub={<ChangeAvatar />}
           />
         </TabPanel>
         <TabPanel value={value} index={1}>
           <Preloader
             promiseName={"signin"}
             promiseState={promise}
-            sub={<CChangePersonalData />}
+            sub={<ChangePersonalData />}
           />
         </TabPanel>
         <TabPanel value={value} index={2}>
           <Preloader
             promiseName={"signin"}
             promiseState={promise}
-            sub={<CChangePassword />}
+            sub={<ChangePassword />}
           />
         </TabPanel>
       </div>
     </Box>
   );
 };
-
-export const CProfile = connect((state: RootState) => ({
-  promise: state.promise,
-}))(Profile);

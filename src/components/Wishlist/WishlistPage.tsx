@@ -1,7 +1,6 @@
 import React, { useState } from "react";
-import { useParams } from "react-router-dom";
-import { connect } from "react-redux";
-import { history } from "./../App";
+import { useNavigate, useParams } from "react-router-dom";
+import { useSelector } from "react-redux";
 import { RootState } from "../../helpers/types";
 import ArrowBackIosNewOutlinedIcon from "@mui/icons-material/ArrowBackIosNewOutlined";
 import FavoriteIcon from "@mui/icons-material/Favorite";
@@ -21,9 +20,9 @@ import {
 import { wishlistStyles } from "./wishlistStyles";
 import { truncText } from "../../helpers/functions";
 import { sendSnackBarMessages } from "../../helpers/consts";
-import { actionUpdateWishlists } from "../../actions/thunks";
+import { actionUpdateWishlists as onUnsave } from "../../actions/thunks";
 import useSnackBar from "./../Auxiliary/SnackBar";
-import { CWishlistSettings } from "./WishlistSettings";
+import { WishlistSettings } from "./WishlistSettings";
 import {
   CurrencyModel,
   WishlistModel,
@@ -32,7 +31,12 @@ import {
 import { ButtonEvent } from "../../helpers/types";
 import { Loader } from "../Auxiliary/Preloader";
 
-const WishlistPage = ({ auth, promise, currencyList, onUnsave }) => {
+export const WishlistPage = () => {
+  const promise = useSelector((state: RootState) => state.promise);
+  const auth = useSelector((state: RootState) => state.auth);
+  const currencyList = useSelector((state: RootState) => state.currencyList);
+  const navigate = useNavigate();
+
   const { wishlistName } = useParams();
   const [, sendSnackbar] = useSnackBar();
   const currentUserWishlists = auth?.payload.wishlists;
@@ -108,7 +112,7 @@ const WishlistPage = ({ auth, promise, currencyList, onUnsave }) => {
               <IconButton
                 edge="start"
                 color="inherit"
-                onClick={() => history.push("/wishlists")}
+                onClick={() => navigate("/wishlists")}
                 aria-label="close"
               >
                 <ArrowBackIosNewOutlinedIcon />
@@ -139,7 +143,7 @@ const WishlistPage = ({ auth, promise, currencyList, onUnsave }) => {
                 open={Boolean(anchorElUser)}
                 onClose={handleCloseUserMenu}
               >
-                <CWishlistSettings
+                <WishlistSettings
                   currentWishlist={currentWishlist}
                   currentWishlists={currentUserWishlists}
                   handleClose={handleCloseUserMenu}
@@ -166,7 +170,7 @@ const WishlistPage = ({ auth, promise, currencyList, onUnsave }) => {
                       alt={hotel.name}
                     />
                     <CardActionArea
-                      onClick={() => history.push(`/hotels/hotel/${hotel.id}`)}
+                      onClick={() => navigate(`/hotels/hotel/${hotel.id}`)}
                     >
                       <Typography variant="h6" display="block" gutterBottom>
                         &nbsp;&nbsp;&nbsp;{hotel.name}
@@ -202,14 +206,3 @@ const WishlistPage = ({ auth, promise, currencyList, onUnsave }) => {
     </>
   );
 };
-
-export const CWishlistPage = connect(
-  (state: RootState) => ({
-    promise: state.promise,
-    auth: state.auth,
-    currencyList: state.currencyList,
-  }),
-  {
-    onUnsave: actionUpdateWishlists,
-  }
-)(WishlistPage);

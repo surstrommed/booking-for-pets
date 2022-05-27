@@ -10,7 +10,7 @@ const myFetch =
       type = "GET";
     }
     const obj = await fetch(
-      type === "PUT" ? `${url}/${data["id"]}` : url,
+      type === "PUT" ? `${url}/${data?.["id"]}` : url,
       type !== "GET"
         ? {
             method: type,

@@ -6,16 +6,18 @@ import IosShareOutlinedIcon from "@mui/icons-material/IosShareOutlined";
 import GradeOutlinedIcon from "@mui/icons-material/GradeOutlined";
 import GradeIcon from "@mui/icons-material/Grade";
 import ModalWindow from "./../Auxiliary/ModalWindow";
-import { CSelectWishlist } from "../Wishlist/SelectWishlist";
-import { connect } from "react-redux";
+import { SelectWishlist } from "../Wishlist/SelectWishlist";
+import { useSelector } from "react-redux";
 import { RootState } from "../../helpers/types";
-import { actionUpdateWishlists } from "../../actions/thunks";
+import { actionUpdateWishlists as onUnsave } from "../../actions/thunks";
 import useSnackBar from "./../Auxiliary/SnackBar";
 import { ShareWindow } from "./../Share/ShareWindow";
 import { sendSnackBarMessages } from "../../helpers/consts";
 import { WishlistModel } from "../../server/api/api-models";
 
-const HotelHeader = ({ auth, currentHotel, onUnsave }) => {
+export const HotelHeader = ({ currentHotel }) => {
+  const auth = useSelector((state: RootState) => state.auth);
+
   const [openWishlistWindow, setOpenWishlistWindow] = useState(false);
   const [openShareWindow, setOpenShareWindow] = useState(false);
   const [, sendSnackbar] = useSnackBar();
@@ -72,7 +74,7 @@ const HotelHeader = ({ auth, currentHotel, onUnsave }) => {
         <ModalWindow
           title={"Your choice"}
           body={
-            <CSelectWishlist
+            <SelectWishlist
               modalWindowState={updateWishlistWindow}
               currentHotel={currentHotel}
             />
@@ -139,13 +141,3 @@ const HotelHeader = ({ auth, currentHotel, onUnsave }) => {
     </div>
   );
 };
-
-export const CHotelHeader = connect(
-  (state: RootState) => ({
-    auth: state.auth,
-    promise: state.promise,
-  }),
-  {
-    onUnsave: actionUpdateWishlists,
-  }
-)(HotelHeader);

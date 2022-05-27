@@ -1,21 +1,20 @@
 import React from "react";
-import { connect } from "react-redux";
+import { useSelector } from "react-redux";
 import { RootState } from "../helpers/types";
 import { Preloader } from "../components/Auxiliary/Preloader";
-import { CHotelsList } from "./../components/Hotels/HotelsList";
+import { HotelsList } from "./../components/Hotels/HotelsList";
+import { Box } from "@mui/material";
 
-const Hotels = ({ promise }) => {
+export const Hotels = () => {
+  const promise = useSelector((state: RootState) => state.promise);
+
   return (
-    <div>
+    <Box>
       <Preloader
         promiseName={"getHotels"}
         promiseState={promise}
-        sub={<CHotelsList />}
+        sub={<HotelsList />}
       />
-    </div>
+    </Box>
   );
 };
-
-export const CHotels = connect((state: RootState) => ({
-  promise: state.promise,
-}))(Hotels);

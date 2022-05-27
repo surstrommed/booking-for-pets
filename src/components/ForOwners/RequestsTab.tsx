@@ -12,7 +12,6 @@ import {
   Box,
   Tooltip,
 } from "@mui/material";
-import { history } from "../App";
 import { RootState } from "../../helpers/types";
 import { UserRequestModel, UserModel } from "../../server/api/api-models";
 import { useSelector } from "react-redux";
@@ -24,6 +23,7 @@ import {
   CONFIRMED_REQUEST_MESSAGE,
   REJECTED_REQUEST_MESSAGE,
 } from "../../helpers/consts";
+import { useNavigate } from "react-router-dom";
 
 export const RequestsTab = ({
   type,
@@ -32,6 +32,8 @@ export const RequestsTab = ({
 }) => {
   const promise = useSelector((state: RootState) => state.promise);
   const { payload: allUsers } = promise.getUsers || [];
+
+  const navigate = useNavigate();
 
   return (
     <>
@@ -48,7 +50,7 @@ export const RequestsTab = ({
               return (
                 <Card sx={forOwnersStyles.requestCard} key={index}>
                   <CardActionArea
-                    onClick={() => history.push(`/users/${request.usersId}`)}
+                    onClick={() => navigate(`/users/${request.usersId}`)}
                   >
                     <CardMedia
                       component="img"

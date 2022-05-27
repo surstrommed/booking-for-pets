@@ -9,22 +9,21 @@ import {
 } from "@mui/material";
 import VisibilityIcon from "@mui/icons-material/Visibility";
 import VisibilityOffIcon from "@mui/icons-material/VisibilityOff";
-import { connect } from "react-redux";
-import { history } from "../App";
-import { actionFullLogin } from "../../actions/thunks";
+import { useSelector } from "react-redux";
+import { actionFullLogin as onLogin } from "../../actions/thunks";
 import { CustomTextField } from "./../Auxiliary/CustomTextField";
 import { authFormStyles, authModalStyles } from "./authStyles";
 import { ILogin, LoginFormValues } from "./../../server/api/api-models";
 import { signInVS } from "../../helpers/validationSchemes";
 import { RootState } from "../../helpers/types";
+import { RESOLVED_PROMISE_STATUS } from "../../helpers/consts";
+import { useNavigate } from "react-router-dom";
 
-const SignIn = ({
-  onLogin,
-  modal,
-  signInOpenState,
-  signUpOpenState,
-  auth,
-}: ILogin) => {
+export const SignIn = ({ modal, signInOpenState, signUpOpenState }: ILogin) => {
+  const promise = useSelector((state: RootState) => state.promise);
+  const auth = useSelector((state: RootState) => state.auth);
+  const navigate = useNavigate();
+
   const [showPassword, setShowPassword] = useState(false);
   const initialValues: LoginFormValues = { email: "", password: "" };
 
@@ -32,7 +31,9 @@ const SignIn = ({
     initialValues: initialValues,
     validationSchema: signInVS,
     onSubmit: (values) => {
-      modal && signInOpenState(false);
+      const signInStatus =
+        promise?.["signin"]?.["status"] === RESOLVED_PROMISE_STATUS;
+      modal && signInStatus && signInOpenState(false);
       const { email, password } = values;
       onLogin(email, password);
     },
@@ -47,7 +48,7 @@ const SignIn = ({
     signUpOpenState(true);
   };
 
-  const getSignUp = () => history.push("/signup");
+  const getSignUp = () => navigate("/signup");
 
   useEffect(() => {
     if (auth?.["payload"] && modal) {
@@ -148,7 +149,3 @@ const SignIn = ({
     </div>
   );
 };
-
-export const CSignIn = connect((state: RootState) => ({ auth: state.auth }), {
-  onLogin: actionFullLogin,
-})(SignIn);

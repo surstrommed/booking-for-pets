@@ -11,13 +11,12 @@ import {
 } from "@mui/material";
 import AccountCircleIcon from "@mui/icons-material/AccountCircle";
 import MenuIcon from "@mui/icons-material/Menu";
-import { connect } from "react-redux";
-import { actionAuthLogout } from "../../actions/types";
-import { history } from "../App";
+import { useSelector } from "react-redux";
+import { actionAuthLogout as actionLogOut } from "../../actions/types";
 import { RootState } from "../../helpers/types";
 import ModalWindow from "./../Auxiliary/ModalWindow";
-import { CSignIn } from "./../Auth/Signin";
-import { CSignUp } from "./../Auth/Signup";
+import { SignIn } from "./../Auth/Signin";
+import { SignUp } from "./../Auth/Signup";
 import { Preloader } from "./../Auxiliary/Preloader";
 import { profileIconStyles } from "./headerStyles";
 import { links } from "../../helpers/consts";
@@ -30,10 +29,15 @@ import {
   UNREAD_NOTIFICATION,
   PENDING_REQUEST_MESSAGE,
 } from "../../helpers/consts";
+import { useNavigate } from "react-router-dom";
 
 type ButtonEvent = React.MouseEvent<HTMLButtonElement>;
 
-const ProfileIcon = ({ auth, promise, actionLogOut }) => {
+export const ProfileIcon = () => {
+  const promise = useSelector((state: RootState) => state.promise);
+  const auth = useSelector((state: RootState) => state.auth);
+  const navigate = useNavigate();
+
   const [anchorElUser, setAnchorElUser] = useState(null);
   const [openSignInModal, setOpenSignInModal] = useState(false);
   const [openSignUpModal, setOpenSignUpModal] = useState(false);
@@ -54,13 +58,13 @@ const ProfileIcon = ({ auth, promise, actionLogOut }) => {
     setOpenSignUpModal(value);
   };
 
-  const getUserHotels = () => history.push("/for-owners/hotels");
+  const getUserHotels = () => navigate("/for-owners/hotels");
 
-  const getWishlist = () => history.push("/wishlists");
+  const getWishlist = () => navigate("/wishlists");
 
-  const getProfile = () => history.push("/profile");
+  const getProfile = () => navigate("/profile");
 
-  const getNotifications = () => history.push("/notifications");
+  const getNotifications = () => navigate("/notifications");
 
   const openSignIn = () => setOpenSignInModal(true);
 
@@ -96,7 +100,7 @@ const ProfileIcon = ({ auth, promise, actionLogOut }) => {
               promiseName={"signin"}
               promiseState={promise}
               sub={
-                <CSignIn
+                <SignIn
                   modal
                   signInOpenState={updateSignInModal}
                   signUpOpenState={updateSignUpModal}
@@ -117,7 +121,7 @@ const ProfileIcon = ({ auth, promise, actionLogOut }) => {
               promiseName={"signup"}
               promiseState={promise}
               sub={
-                <CSignUp
+                <SignUp
                   modal
                   signInOpenState={updateSignInModal}
                   signUpOpenState={updateSignUpModal}
@@ -228,10 +232,3 @@ const ProfileIcon = ({ auth, promise, actionLogOut }) => {
     </>
   );
 };
-
-export const CProfileIcon = connect(
-  (state: RootState) => ({ auth: state.auth, promise: state.promise }),
-  {
-    actionLogOut: actionAuthLogout,
-  }
-)(ProfileIcon);

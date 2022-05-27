@@ -8,16 +8,18 @@ import WhatsAppIcon from "@mui/icons-material/WhatsApp";
 import TwitterIcon from "@mui/icons-material/Twitter";
 import { CopyToClipboard } from "react-copy-to-clipboard";
 import useSnackBar from "./../Auxiliary/SnackBar";
-import { history } from "../App";
 import { shareStyles } from "./shareStyles";
 import { sendSnackBarMessages, links } from "../../helpers/consts";
+import { useLocation } from "react-router-dom";
 
 export const ShareWindow = () => {
+  const location = useLocation();
+
   const [, sendSnackbar] = useSnackBar();
 
   return (
     <Box sx={shareStyles.main}>
-      <CopyToClipboard text={`${links.serverUrl}${history.location.pathname}`}>
+      <CopyToClipboard text={`${links.serverUrl}${location.pathname}`}>
         <Button
           variant="outlined"
           color="secondary"
@@ -57,7 +59,7 @@ export const ShareWindow = () => {
         variant="outlined"
         color="secondary"
         sx={shareStyles.button}
-        href={links.telegramLink(links.serverUrl, history.location.pathname)}
+        href={links.telegramLink(links.serverUrl, location.pathname)}
       >
         <TelegramIcon />
         &nbsp;&nbsp;Telegram
@@ -66,7 +68,7 @@ export const ShareWindow = () => {
         variant="outlined"
         color="secondary"
         sx={shareStyles.button}
-        href={links.whatsAppLink(links.serverUrl, history.location.pathname)}
+        href={links.whatsAppLink(links.serverUrl, location.pathname)}
       >
         <WhatsAppIcon />
         &nbsp;&nbsp;WhatsApp

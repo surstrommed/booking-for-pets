@@ -1,6 +1,5 @@
 import React, { useState } from "react";
-import { connect } from "react-redux";
-import { history } from "../components/App";
+import { useSelector } from "react-redux";
 import { RootState } from "../helpers/types";
 import {
   Typography,
@@ -16,8 +15,8 @@ import { truncText } from "../helpers/functions";
 import EditIcon from "@mui/icons-material/Edit";
 import DeleteIcon from "@mui/icons-material/Delete";
 import InboxIcon from "@mui/icons-material/Inbox";
-import { actionFullHotelDelete } from "../actions/thunks";
-import { CFullWindowHotelEditing } from "../components/ForOwners/FullWindowHotelEditing";
+import { actionFullHotelDelete as onHotelDelete } from "../actions/thunks";
+import { FullWindowHotelEditing } from "../components/ForOwners/FullWindowHotelEditing";
 import useSnackBar from "../components/Auxiliary/SnackBar";
 import { Preloader } from "../components/Auxiliary/Preloader";
 import { links } from "../helpers/consts";
@@ -31,8 +30,14 @@ import {
   DELETED_HOTEL,
   PENDING_REQUEST_MESSAGE,
 } from "../helpers/consts";
+import { useNavigate } from "react-router-dom";
 
-const OwnersHotels = ({ auth, promise, currencyList, onHotelDelete }) => {
+export const OwnersHotels = () => {
+  const promise = useSelector((state: RootState) => state.promise);
+  const auth = useSelector((state: RootState) => state.auth);
+  const currencyList = useSelector((state: RootState) => state.currencyList);
+  const navigate = useNavigate();
+
   const [openEditingDialogId, setOpenEditingDialogId] = useState<
     string | number
   >(0);
@@ -83,7 +88,7 @@ const OwnersHotels = ({ auth, promise, currencyList, onHotelDelete }) => {
                 promiseName={"hotelUpdate"}
                 promiseState={promise}
                 sub={
-                  <CFullWindowHotelEditing
+                  <FullWindowHotelEditing
                     updateOpenDialogStatus={updateEditingDialogStatusId}
                     hotelId={openEditingDialogId}
                   />
@@ -98,7 +103,7 @@ const OwnersHotels = ({ auth, promise, currencyList, onHotelDelete }) => {
                 alt={hotel.name}
               />
               <CardActionArea
-                onClick={() => history.push(`/hotels/hotel/${hotel.id}`)}
+                onClick={() => navigate(`/hotels/hotel/${hotel.id}`)}
               >
                 <Typography variant="h6" display="block" gutterBottom>
                   &nbsp;&nbsp;&nbsp;{hotel.name}
@@ -135,7 +140,7 @@ const OwnersHotels = ({ auth, promise, currencyList, onHotelDelete }) => {
                 <IconButton
                   color="secondary"
                   onClick={() =>
-                    history.push(`/for-owners/hotels/${hotel.id}/requests`)
+                    navigate(`/for-owners/hotels/${hotel.id}/requests`)
                   }
                 >
                   {hotel?.userRequests?.filter(
@@ -165,14 +170,3 @@ const OwnersHotels = ({ auth, promise, currencyList, onHotelDelete }) => {
     </div>
   );
 };
-
-export const COwnersHotels = connect(
-  (state: RootState) => ({
-    auth: state.auth,
-    promise: state.promise,
-    currencyList: state.currencyList,
-  }),
-  {
-    onHotelDelete: actionFullHotelDelete,
-  }
-)(OwnersHotels);

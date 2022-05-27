@@ -18,7 +18,7 @@ export interface Wishlists {
   hotelsId: number[];
 }
 export interface UserModel {
-  id: number;
+  id?: number;
   email?: string;
   login?: string;
   firstName?: string;
@@ -56,11 +56,11 @@ export interface CurrencyModel {
 }
 
 export interface NotificationModel {
-  id: number;
-  text: string;
-  status: string;
-  fromId: number | null;
-  toId: number;
+  id: string;
+  text?: string;
+  status?: string;
+  fromId?: number | null;
+  toId?: number;
 }
 
 export interface FreeRoomsModel {
@@ -82,14 +82,6 @@ export interface UserRequestModel {
 }
 
 export interface IRegister {
-  promise?: RootState;
-  onRegister: (
-    email: string,
-    login: string,
-    firstName: string,
-    lastName: string,
-    password: string
-  ) => void;
   modal?: boolean;
   signInOpenState?: (value: boolean) => void;
   signUpOpenState?: (value: boolean) => void;
@@ -105,9 +97,6 @@ export interface RegisterFormValues {
 }
 
 export interface ILogin {
-  promise?: RootState;
-  auth?: RootState;
-  onLogin: (email: string, password: string) => void;
   modal?: boolean;
   signInOpenState?: (value: boolean) => void;
   signUpOpenState?: (value: boolean) => void;
@@ -195,7 +184,7 @@ export interface EditingHotelDataValues {
 }
 
 export interface IOwner {
-  id: number;
+  id: string;
   email: string;
   login: string;
   firstName: string;
@@ -205,7 +194,7 @@ export interface IOwner {
 }
 
 export interface IReview {
-  id: number;
+  id: string;
   rating?: number;
   text?: string;
   createdAt?: Date;

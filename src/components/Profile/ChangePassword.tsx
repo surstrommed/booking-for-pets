@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { connect } from "react-redux";
+import { useSelector } from "react-redux";
 import { RootState } from "../../helpers/types";
 import { useFormik } from "formik";
 import {
@@ -12,14 +12,16 @@ import {
 } from "@mui/material";
 import VisibilityIcon from "@mui/icons-material/Visibility";
 import VisibilityOffIcon from "@mui/icons-material/VisibilityOff";
-import { actionChangePassword } from "./../../actions/thunks";
+import { actionChangePassword as changePassword } from "./../../actions/thunks";
 import { changeProfileStyles } from "./profileStyles";
 import { changePasswordVS } from "../../helpers/validationSchemes";
 import useSnackBar from "../Auxiliary/SnackBar";
 import { sendSnackBarMessages } from "../../helpers/consts";
 import { RESOLVED_PROMISE_STATUS } from "../../helpers/consts";
 
-const ChangePassword = ({ promise, changePassword }) => {
+export const ChangePassword = () => {
+  const promise = useSelector((state: RootState) => state.promise);
+
   const [showPassword, setShowPassword] = useState(false);
   const [showRetryPassword, setShowRetryPassword] = useState(false);
   const [showNewPassword, setShowNewPassword] = useState(false);
@@ -168,10 +170,3 @@ const ChangePassword = ({ promise, changePassword }) => {
     </Card>
   );
 };
-
-export const CChangePassword = connect(
-  (state: RootState) => ({ promise: state.promise }),
-  {
-    changePassword: actionChangePassword,
-  }
-)(ChangePassword);

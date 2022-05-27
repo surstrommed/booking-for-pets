@@ -1,10 +1,9 @@
 import React, { useState } from "react";
-import { connect } from "react-redux";
+import { useSelector } from "react-redux";
 import {
-  actionFullHotelUpdate,
-  actionFullSendNotification,
+  actionFullHotelUpdate as onBooking,
+  actionFullSendNotification as onUpdateNotification,
 } from "../../actions/thunks";
-import { history } from "../App";
 import { RootState } from "../../helpers/types";
 import {
   IconButton,
@@ -25,8 +24,13 @@ import {
   READ_NOTIFICATION,
   UNREAD_NOTIFICATION,
 } from "../../helpers/consts";
+import { useNavigate } from "react-router-dom";
 
-const UserNotifications = ({ auth, promise, onUpdateNotification }) => {
+export const UserNotifications = () => {
+  const promise = useSelector((state: RootState) => state.promise);
+  const auth = useSelector((state: RootState) => state.auth);
+  const navigate = useNavigate();
+
   const currentUserNotifications = (
     promise.getNotifications?.payload || []
   ).filter(
@@ -51,11 +55,11 @@ const UserNotifications = ({ auth, promise, onUpdateNotification }) => {
     return (allUsers || [])?.find((user: UserModel) => user.id === userId);
   }
 
-  function readMessage(messageId: number) {
+  function readMessage(messageId: string) {
     onUpdateNotification({ id: messageId, status: READ_NOTIFICATION });
   }
 
-  function deleteMessage(messageId: number) {
+  function deleteMessage(messageId: string) {
     onUpdateNotification({ id: messageId, status: DELETED_NOTIFICATION });
   }
 
@@ -82,8 +86,7 @@ const UserNotifications = ({ auth, promise, onUpdateNotification }) => {
               links.noAvatar
             }
             onClick={() =>
-              notification.fromId &&
-              history.push(`/users/${notification.fromId}`)
+              notification.fromId && navigate(`/users/${notification.fromId}`)
             }
           />
           <Typography sx={{ ml: 4 }} variant="h6" component="div"></Typography>
@@ -177,14 +180,3 @@ const UserNotifications = ({ auth, promise, onUpdateNotification }) => {
     </div>
   );
 };
-
-export const CUserNotifications = connect(
-  (state: RootState) => ({
-    promise: state.promise,
-    auth: state.auth,
-  }),
-  {
-    onUpdateNotification: actionFullSendNotification,
-    onBooking: actionFullHotelUpdate,
-  }
-)(UserNotifications);

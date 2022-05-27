@@ -1,11 +1,9 @@
 import React, { useCallback, useState } from "react";
-import { connect } from "react-redux";
-import { RootState } from "../../helpers/types";
 import { useDropzone } from "react-dropzone";
 import { Typography } from "@mui/material";
-import { actionChangeAvatar } from "./../../actions/thunks";
+import { actionChangeAvatar as actionAvatar } from "./../../actions/thunks";
 
-const Dropzone = ({ text, actionAvatar, type, limit }) => {
+export const Dropzone = ({ text, type, limit }) => {
   const [typeError, setTypeError] = useState(false);
 
   const onDrop = useCallback(
@@ -54,10 +52,3 @@ const Dropzone = ({ text, actionAvatar, type, limit }) => {
     </div>
   );
 };
-
-export const CDropzone = connect(
-  (state: RootState) => ({ promise: state.promise }),
-  {
-    actionAvatar: actionChangeAvatar,
-  }
-)(Dropzone);
