@@ -87,6 +87,8 @@ export const links = {
   twitterLink: "https://twitter.com/intent/tweet?url=link_to_be_shared",
   noImage: "https://i.ibb.co/LCjP65p/noImage.jpg",
   errorSign: "https://i.ibb.co/yFHZ4GN/404.png",
+  currencyChange:
+    "https://openexchangerates.org/api/latest.json?app_id=68546b0af6d145a7a1f7260446e53927",
 };
 
 export const apiErrors = [

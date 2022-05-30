@@ -70,13 +70,13 @@ export const ProfileIcon = () => {
 
   const openSignUp = () => setOpenSignUpModal(true);
 
-  const unreadUserMessages = (promise.getNotifications?.payload || []).filter(
+  const unreadUserMessages = (promise?.getNotifications?.payload || []).filter(
     (notification: NotificationModel) =>
       notification.toId === auth?.payload?.id &&
       notification.status === UNREAD_NOTIFICATION
   );
 
-  const currentUserHotels = (promise.getHotels?.payload || []).filter(
+  const currentUserHotels = (promise?.getHotels?.payload || []).filter(
     (hotel: HotelModel) => hotel.owner === auth?.payload?.id
   );
 

@@ -19,7 +19,6 @@ import { ProfileIcon } from "./ProfileIcon";
 import { Link, useNavigate } from "react-router-dom";
 import { useLocation } from "react-router-dom";
 import SearchBar from "./SearchBar";
-import { useDispatch, useSelector } from "react-redux";
 import {
   actionSmallHeader,
   actionBigHeader,
@@ -33,6 +32,7 @@ import { SignUp } from "./../Auth/Signup";
 import { ElevationScrollProps } from "../../server/api/api-models";
 import { ButtonEvent, RootState } from "../../helpers/types";
 import { SlideDialogCurrency } from "./SlideDialogCurrency";
+import { useAppDispatch, useAppSelector } from "../../hooks/redux";
 
 const pages = ["For owners"];
 
@@ -45,7 +45,7 @@ const ElevationScroll = (props: ElevationScrollProps) => {
     target: window ? window() : undefined,
   });
 
-  const dispatch = useDispatch();
+  const dispatch = useAppDispatch();
 
   useEffect(() => {
     const headerBar = document.getElementsByClassName("Header");
@@ -79,19 +79,15 @@ export const HeaderBar = (props) => {
 
   const navigate = useNavigate();
 
-  const smallHeader = useSelector(
-    (state: RootState) => state.header.smallHeader
-  );
-  const bigHeader = useSelector((state: RootState) => state.header.bigHeader);
-  const expandSmallHeader = useSelector(
-    (state: RootState) => state.header.expandSmallHeader
+  const { smallHeader, bigHeader, expandSmallHeader } = useAppSelector(
+    (state) => state.header
   );
 
-  const currentUser = useSelector((state: RootState) => state.auth?.payload);
-  const promise = useSelector((state: RootState) => state.promise);
+  const currentUser = useAppSelector((state) => state.auth?.payload);
+  const promise = useAppSelector((state) => state.promise);
 
   const location = useLocation().pathname;
-  const dispatch = useDispatch();
+  const dispatch = useAppDispatch();
 
   const handleOpenNavMenu = (event: ButtonEvent) => {
     setAnchorElNav(event.currentTarget);

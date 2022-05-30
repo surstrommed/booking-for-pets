@@ -200,3 +200,7 @@ export interface IReview {
   createdAt?: Date;
   owner: IOwner;
 }
+
+export interface ICurrency {
+  [sign: string]: string;
+}

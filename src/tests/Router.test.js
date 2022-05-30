@@ -5,9 +5,10 @@ import { SignUp } from "../components/Auth/Signup";
 import { Provider } from "react-redux";
 import { BrowserRouter, MemoryRouter } from "react-router-dom";
 import { ThemeProvider } from "@mui/material";
-import App, { store } from "../components/App";
 import { theme } from "../assets/theme";
 import "@testing-library/jest-dom";
+import { store } from "../store/store";
+import { App } from "../components/App";
 
 describe("ROUTES TESTS", () => {
   it("Sign in router test", async () => {

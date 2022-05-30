@@ -1,4 +1,4 @@
-import { jwtDecode } from "../helpers/functions";
+import { jwtDecode } from "../../helpers/functions";
 
 export function promiseReducer(
   state = {},
@@ -99,28 +99,6 @@ export function headerReducer(state, { type }) {
       smallHeader: false,
       bigHeader: false,
       expandSmallHeader: true,
-    };
-  }
-  return state;
-}
-
-export function routeReducer(state, { type, route, params }) {
-  if (!state) {
-    state = {
-      route: "",
-      params: "",
-    };
-  }
-  if (type === "ROUTE") {
-    return {
-      ...state,
-      route,
-    };
-  }
-  if (type === "PARAMS") {
-    return {
-      ...state,
-      params,
     };
   }
   return state;

@@ -1,15 +1,7 @@
-import React from "react";
+import React, { useEffect } from "react";
 import "./../assets/scss/App.scss";
 import { Main } from "./../pages/Main";
 import { HeaderBar } from "./Header/HeaderBar";
-import { configureStore, combineReducers } from "@reduxjs/toolkit";
-import {
-  sessionStoredReducer,
-  promiseReducer,
-  authReducer,
-  headerReducer,
-  currencyReducer,
-} from "./../reducers/index";
 import { ThemeProvider } from "@mui/material/styles";
 import { theme } from "./../assets/theme";
 import {
@@ -21,21 +13,12 @@ import {
   actionFullGetCurrencyExchange,
   actionFullGetCurrencyList,
 } from "../actions/thunks";
-import { Provider } from "react-redux";
+import { setupStore } from "../store/store";
+import { useAppDispatch, useAppSelector } from "../hooks/redux";
 import { SnackbarProvider } from "notistack";
+import { fetchCurrencyExchange } from "../store/reducers/ActionCreators";
 
-const rootReducer = combineReducers({
-  promise: sessionStoredReducer(promiseReducer, "promise"),
-  header: headerReducer,
-  auth: sessionStoredReducer(authReducer, "auth"),
-  currencyList: sessionStoredReducer(currencyReducer, "currencyList"),
-});
-
-export const store = configureStore({
-  reducer: rootReducer,
-  middleware: (getDefaultMiddleware) =>
-    getDefaultMiddleware({ serializableCheck: false }),
-});
+export const store = setupStore();
 
 export const { getState } = store;
 
@@ -45,17 +28,29 @@ export const { getState } = store;
 // store.dispatch(actionFullGetCurrencyList());
 // store.dispatch(actionFullGetCurrencyExchange());
 
-export default function App() {
+export const App = () => {
+  const { currency, isLoading, error } = useAppSelector(
+    (state) => state.currency
+  );
+  const dispatch = useAppDispatch();
+
+  useEffect(() => {
+    dispatch(fetchCurrencyExchange());
+  }, []);
+
   return (
     <SnackbarProvider maxSnack={1}>
-      <Provider store={store}>
-        <ThemeProvider theme={theme}>
-          <div className="App">
-            <HeaderBar />
-            <Main />
+      <ThemeProvider theme={theme}>
+        <div className="App">
+          <HeaderBar />
+          <div style={{ marginTop: "30vh" }}>
+            {isLoading && <h1>Loading...</h1>}
+            {error && <h1>{error}</h1>}
+            {JSON.stringify(currency, null, 2)}
           </div>
-        </ThemeProvider>
-      </Provider>
+          {/* <Main /> */}
+        </div>
+      </ThemeProvider>
     </SnackbarProvider>
   );
-}
+};
