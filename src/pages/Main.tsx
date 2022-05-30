@@ -1,5 +1,5 @@
 import React from "react";
-import { Routes, Route } from "react-router-dom";
+import { Routes, Route, BrowserRouter } from "react-router-dom";
 import Page404 from "./Page404";
 import { Profile } from "./Profile";
 import { PrivateRoute } from "./../components/Auxiliary/PrivateRoute";
@@ -17,7 +17,7 @@ import { WishlistPage } from "./../components/Wishlist/WishlistPage";
 import { Register } from "../pages/Register";
 import { Login } from "../pages/Login";
 
-const MainPage = () => {
+export const MainPage = () => {
   return (
     <div className="Main">
       <div className="Top">
@@ -162,7 +162,7 @@ export const Main = () => {
           />
         }
       />
-      <Route path="*" element={<Page404 />} />
+      <Route path="/*" element={<Page404 />} />
     </Routes>
   );
 };

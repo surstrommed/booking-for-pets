@@ -3,33 +3,24 @@ import userEvent from "@testing-library/user-event";
 import { SignIn } from "../components/Auth/Signin";
 import { SignUp } from "../components/Auth/Signup";
 import { Provider } from "react-redux";
-import { BrowserRouter } from "react-router-dom";
+import { BrowserRouter, MemoryRouter } from "react-router-dom";
 import { ThemeProvider } from "@mui/material";
-import { store } from "../components/App";
+import App, { store } from "../components/App";
 import { theme } from "../assets/theme";
+import "@testing-library/jest-dom";
 
 describe("ROUTES TESTS", () => {
-  const signin = (
-    <Provider store={store}>
-      <ThemeProvider theme={theme}>
-        <BrowserRouter>
-          <SignIn />
-        </BrowserRouter>
-      </ThemeProvider>
-    </Provider>
-  );
-
-  const signup = (
-    <Provider store={store}>
-      <ThemeProvider theme={theme}>
-        <BrowserRouter>
-          <SignUp />
-        </BrowserRouter>
-      </ThemeProvider>
-    </Provider>
-  );
-
   it("Sign in router test", async () => {
+    const signin = (
+      <Provider store={store}>
+        <ThemeProvider theme={theme}>
+          <BrowserRouter>
+            <SignIn />
+          </BrowserRouter>
+        </ThemeProvider>
+      </Provider>
+    );
+
     render(signin);
     const goToSignUp = await screen.findByRole("button", { name: /sign up/i });
     userEvent.click(goToSignUp);
@@ -38,10 +29,30 @@ describe("ROUTES TESTS", () => {
   });
 
   it("Sign up router test", async () => {
+    const signup = (
+      <Provider store={store}>
+        <ThemeProvider theme={theme}>
+          <BrowserRouter>
+            <SignUp />
+          </BrowserRouter>
+        </ThemeProvider>
+      </Provider>
+    );
+
     render(signup);
     const goToSignIn = await screen.findByRole("button", { name: /sign in/i });
     userEvent.click(goToSignIn);
     const signInWindowCheck = await screen.findAllByText(/sign in/i);
     expect(signInWindowCheck).toHaveLength(1);
+  });
+
+  it("Error page router test", () => {
+    const app = (
+      <MemoryRouter initialEntries={["/wrong-page"]}>
+        <App />
+      </MemoryRouter>
+    );
+    render(app);
+    expect(screen.getByTestId("error-page")).toBeInTheDocument();
   });
 });

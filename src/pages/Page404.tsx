@@ -7,7 +7,7 @@ import { links } from "../helpers/consts";
 
 export default function Page404() {
   return (
-    <div style={pagesStyles.page404.main}>
+    <div style={pagesStyles.page404.main} data-testid="error-page">
       <img src={links.errorSign} />
       <Typography variant="subtitle1" gutterBottom component="div">
         Sorry, but this page was not found.

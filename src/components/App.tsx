@@ -23,7 +23,6 @@ import {
 } from "../actions/thunks";
 import { Provider } from "react-redux";
 import { SnackbarProvider } from "notistack";
-import { BrowserRouter } from "react-router-dom";
 
 const rootReducer = combineReducers({
   promise: sessionStoredReducer(promiseReducer, "promise"),
@@ -48,17 +47,15 @@ export const { getState } = store;
 
 export default function App() {
   return (
-    <BrowserRouter>
-      <SnackbarProvider maxSnack={1}>
-        <Provider store={store}>
-          <ThemeProvider theme={theme}>
-            <div className="App">
-              <HeaderBar />
-              <Main />
-            </div>
-          </ThemeProvider>
-        </Provider>
-      </SnackbarProvider>
-    </BrowserRouter>
+    <SnackbarProvider maxSnack={1}>
+      <Provider store={store}>
+        <ThemeProvider theme={theme}>
+          <div className="App">
+            <HeaderBar />
+            <Main />
+          </div>
+        </ThemeProvider>
+      </Provider>
+    </SnackbarProvider>
   );
 }
