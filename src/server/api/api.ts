@@ -1,6 +1,5 @@
 import { JsonModel, UserModel } from "./api-models";
 import axios from "axios";
-import jsonData from "../db.json";
 import { links } from "../../helpers/consts";
 
 const myFetch =
@@ -45,9 +44,7 @@ const exchangeRatesFetch = (url: string) => async () => {
   return obj?.data?.rates;
 };
 
-export const uploadImage = imageFetch(
-  "https://api.imgbb.com/1/upload?key=478a8e5dc3d296b8693734b3983d5902"
-);
+export const uploadImage = imageFetch(links.uploadImage);
 
 export const userRegister = myFetch(links.apiUrl + "register");
 
@@ -59,18 +56,6 @@ export const getHotels = myFetch(links.apiUrl + "hotels");
 
 export const getCurrency = myFetch(links.apiUrl + "currency");
 
-export const getExchangeRates = exchangeRatesFetch(
-  "https://openexchangerates.org/api/latest.json?app_id=68546b0af6d145a7a1f7260446e53927"
-);
+export const getExchangeRates = exchangeRatesFetch(links.currencyChange);
 
 export const getNotifications = myFetch(links.apiUrl + "notifications");
-
-export const db: JsonModel = JSON.parse(JSON.stringify(jsonData));
-
-export const isExisted = (email: string, login: string) =>
-  db.users.find(
-    (user: UserModel) => user.email === email && user.login === login
-  );
-
-export const isSignupAuthenticated = (login: string) =>
-  db.users.findIndex((user) => user.login === login) !== -1;

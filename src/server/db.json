@@ -100,6 +100,66 @@
       "pictureUrl": null,
       "wishlists": [],
       "id": 8
+    },
+    {
+      "email": "sadas@ukr.net",
+      "password": "$2a$10$KD.gEbjZiCWQF5HNti/DWOdVIJa1xefmgw/YLmSV07EObY4oMBJBO",
+      "login": "sadas",
+      "firstName": "Sadas",
+      "lastName": "Sadass",
+      "currencyId": 1,
+      "createdAt": 1654028806000,
+      "pictureUrl": null,
+      "wishlists": [],
+      "id": 9
+    },
+    {
+      "email": "abobas@ukr.net",
+      "password": "$2a$10$4Et3lvNphE7c90oPx1ary.Fu/e1HFSnNGtgMXTm5O9G91zmB1wc.m",
+      "login": "abobas",
+      "firstName": "Testname",
+      "lastName": "Testlname",
+      "currencyId": 1,
+      "createdAt": 1654028897000,
+      "pictureUrl": null,
+      "wishlists": [],
+      "id": 10
+    },
+    {
+      "email": "abobass@ukr.net",
+      "password": "$2a$10$3thpdGZpGdKs6djNDfVoXOrZRiSnNtdDdnFz/zlypy//.ipu5Hdh.",
+      "login": "abobas",
+      "firstName": "Testname",
+      "lastName": "Testlname",
+      "currencyId": 1,
+      "createdAt": 1654028966000,
+      "pictureUrl": null,
+      "wishlists": [],
+      "id": 11
+    },
+    {
+      "email": "badass@ukr.net",
+      "password": "$2a$10$dyqVbu9ZkGORQDdY6DdHve0cXcvfsyd2DvpVoXEAp14mfH6Q/p8YG",
+      "login": "badass",
+      "firstName": "Badass",
+      "lastName": "Badasss",
+      "currencyId": 1,
+      "createdAt": 1654029062000,
+      "pictureUrl": null,
+      "wishlists": [],
+      "id": 12
+    },
+    {
+      "email": "badass2@ukr.net",
+      "password": "$2a$10$PzYmYTP.iysQ6dTMZDMzo.34/u3T2S2mlsSvDsF4yIu1IxBhnFm0.",
+      "login": "badass2",
+      "firstName": "Aboba",
+      "lastName": "Abobass",
+      "currencyId": 1,
+      "createdAt": 1654029183000,
+      "pictureUrl": null,
+      "wishlists": [],
+      "id": 13
     }
   ],
   "hotels": [
@@ -372,23 +432,7 @@
       "id": "TBoHVML"
     }
   ],
-  "currency": [
-    {
-      "id": 1,
-      "name": "USD",
-      "sign": "$"
-    },
-    {
-      "id": 2,
-      "name": "EUR",
-      "sign": "€"
-    },
-    {
-      "id": 3,
-      "name": "UAH",
-      "sign": "₴"
-    }
-  ],
+  "currency": [],
   "notifications": [
     {
       "id": "TB12VML",

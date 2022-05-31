@@ -51,6 +51,8 @@ export const DEFAULT_CURRENCY_ID = 1;
 
 export const MAX_ANIMALS = 10;
 
+export const SECRET_KEY = "666666";
+
 export const sendSnackBarMessages = {
   selectedCurrencyMessage: (currencyName: string) =>
     `You have selected currency: ${currencyName}`,
@@ -89,6 +91,8 @@ export const links = {
   errorSign: "https://i.ibb.co/yFHZ4GN/404.png",
   currencyChange:
     "https://openexchangerates.org/api/latest.json?app_id=68546b0af6d145a7a1f7260446e53927",
+  uploadImage:
+    "https://api.imgbb.com/1/upload?key=478a8e5dc3d296b8693734b3983d5902",
 };
 
 export const apiErrors = [

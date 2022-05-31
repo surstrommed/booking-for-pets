@@ -1,14 +1,7 @@
 import { configureStore, combineReducers } from "@reduxjs/toolkit";
-import { store } from "src/components/App";
 import headerReducer from "./reducers/HeaderSlice";
-import currencyReducer from "./reducers/CurrencySlice";
-
-// const rootReducer = combineReducers({
-//   promise: sessionStoredReducer(promiseReducer, "promise"),
-//   header: headerReducer,
-//   auth: sessionStoredReducer(authReducer, "auth"),
-//   currencyList: sessionStoredReducer(currencyReducer, "currencyList"),
-// });
+import { currencyAPI } from "./reducers/CurrencyService";
+import { authAPI } from "./reducers/AuthService";
 
 export const loadSessionStorageState = () => {
   try {
@@ -31,7 +24,8 @@ export const saveSessionStorageState = async (state: AppStore) => {
 
 const rootReducer = combineReducers({
   header: headerReducer,
-  currency: currencyReducer,
+  [currencyAPI.reducerPath]: currencyAPI.reducer,
+  [authAPI.reducerPath]: authAPI.reducer,
 });
 
 export const setupStore = () => {
@@ -39,6 +33,8 @@ export const setupStore = () => {
     devTools: true,
     reducer: rootReducer,
     preloadedState: loadSessionStorageState(),
+    middleware: (getDefaultMiddleware) =>
+      getDefaultMiddleware().concat(currencyAPI.middleware, authAPI.middleware),
   });
 };
 

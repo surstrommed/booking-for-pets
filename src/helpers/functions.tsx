@@ -1,40 +1,11 @@
 import React from "react";
-import CryptoJS from "crypto-js";
 import ErrorIcon from "@mui/icons-material/Error";
-import { jwtCodeData } from "./types";
 import { HotelModel } from "../server/api/api-models";
 import { stringMonthsArray, apiErrors } from "./consts";
+import { Jwt, create, verify, JSONMap } from "njwt";
 
 export const stringMonth = (monthNumber: number) => {
   return stringMonthsArray[monthNumber];
-};
-
-export const jwtDecode = (token: string) => {
-  const arrToken = token.split(".");
-  const base64Token = atob(arrToken[1]);
-  return JSON.parse(base64Token);
-};
-
-const base64url = (source: string) => {
-  let encodedSource = CryptoJS.enc.Base64.stringify(source);
-  encodedSource = encodedSource.replace(/=+$/, "");
-  encodedSource = encodedSource.replace(/\+/g, "-");
-  encodedSource = encodedSource.replace(/\//g, "_");
-  return encodedSource;
-};
-
-export const jwtCode = (data: jwtCodeData) => {
-  const header = {
-    alg: "HS256",
-    typ: "JWT",
-  };
-  const stringifiedHeader = CryptoJS.enc.Utf8.parse(JSON.stringify(header));
-  const encodedHeader = base64url(stringifiedHeader);
-  const stringifiedData = CryptoJS.enc.Utf8.parse(JSON.stringify(data));
-  const encodedData = base64url(stringifiedData);
-  let token = encodedHeader + "." + encodedData;
-  token = encodedHeader + "." + encodedData + "." + CryptoJS.SHA256(token);
-  return token;
 };
 
 export const checkError = (checkString: string) => {
@@ -116,3 +87,30 @@ export const setTabsProps = (index: number) => ({
   id: `simple-tab-${index}`,
   "aria-controls": `simple-tabpanel-${index}`,
 });
+
+export const jwtHelper = (
+  payload: JSONMap,
+  key: string,
+  token?: string,
+  type: string = "create"
+) => {
+  let jwt: Jwt | string = "";
+  switch (type) {
+    case "create":
+      try {
+        jwt = create(payload, key).compact();
+      } catch (e) {
+        return e;
+      }
+      return jwt;
+      break;
+    case "verify":
+      try {
+        jwt = verify(token, key);
+      } catch (e) {
+        return e;
+      }
+      return jwt;
+      break;
+  }
+};

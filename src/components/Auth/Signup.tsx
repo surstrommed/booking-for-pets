@@ -14,22 +14,18 @@ import { CustomTextField } from "./../Auxiliary/CustomTextField";
 import { authFormStyles, authModalStyles } from "./authStyles";
 import { signUpVS } from "./../../helpers/validationSchemes";
 import { IRegister, RegisterFormValues } from "./../../server/api/api-models";
-import { RootState } from "../../helpers/types";
-import { RESOLVED_PROMISE_STATUS } from "../../helpers/consts";
-import { useSelector } from "react-redux";
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
+import { jwtHelper } from "../../helpers/functions";
+import { authAPI } from "../../store/reducers/AuthService";
+import { SECRET_KEY } from "../../helpers/consts";
 
 export const SignUp = ({
   modal,
   signInOpenState,
   signUpOpenState,
 }: IRegister) => {
-  const promise = useSelector((state: RootState) => state.promise);
-
   const [showPassword, setShowPassword] = useState(false);
   const [showRetryPassword, setShowRetryPassword] = useState(false);
-
-  const navigate = useNavigate();
 
   const initialValues: RegisterFormValues = {
     email: "",
@@ -40,15 +36,30 @@ export const SignUp = ({
     retryPassword: "",
   };
 
+  const navigate = useNavigate();
+  const location = useLocation().pathname;
+
+  const [signup, { data, isError, error }] = authAPI.useSignupMutation();
+
   const formik = useFormik({
     initialValues: initialValues,
     validationSchema: signUpVS,
-    onSubmit: (values) => {
-      const signUpStatus =
-        promise?.["signup"]?.["status"] === RESOLVED_PROMISE_STATUS;
-      modal && signUpStatus && signUpOpenState(false);
+    onSubmit: async (values) => {
+      modal && signUpOpenState(false);
       const { email, login, firstName, lastName, password } = values;
-      onRegister({ email, login, firstName, lastName, password });
+      const response = await signup({
+        email,
+        login,
+        firstName,
+        lastName,
+        password,
+      });
+      let jwtToken = "";
+      if (response?.data?.user) {
+        jwtToken = jwtHelper(response?.data?.user, SECRET_KEY);
+        sessionStorage.setItem("token", jwtToken);
+        (location === "/signin" || location === "/signup") && navigate("/");
+      }
     },
   });
 

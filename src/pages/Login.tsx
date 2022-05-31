@@ -6,15 +6,16 @@ import { useSelector } from "react-redux";
 import { RootState } from "../helpers/types";
 
 export const Login = () => {
-  const promise = useSelector((state: RootState) => state.promise);
+  // const promise = useSelector((state: RootState) => state.promise);
 
   return (
     <Box>
-      <Preloader
+      {/* <Preloader
         promiseName={"signin"}
         promiseState={promise}
         sub={<SignIn />}
-      />
+      /> */}
+      <SignIn />
     </Box>
   );
 };

@@ -9,8 +9,9 @@ import { saveSessionStorageState, GetState } from "./store/store";
 
 store.subscribe(
   debounce(() => {
+    sessionStorage.removeItem("appState");
     saveSessionStorageState(getState<GetState>());
-  }, 800)
+  }, 1000)
 );
 
 ReactDOM.render(

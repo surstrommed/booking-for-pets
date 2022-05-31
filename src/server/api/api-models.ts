@@ -202,5 +202,11 @@ export interface IReview {
 }
 
 export interface ICurrency {
-  [sign: string]: string;
+  disclaimer: string;
+  license: string;
+  timestamp: Date | number;
+  base: string;
+  rates: {
+    [sign: string]: number;
+  };
 }

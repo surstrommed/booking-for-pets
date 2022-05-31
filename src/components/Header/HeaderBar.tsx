@@ -33,6 +33,7 @@ import { ElevationScrollProps } from "../../server/api/api-models";
 import { ButtonEvent, RootState } from "../../helpers/types";
 import { SlideDialogCurrency } from "./SlideDialogCurrency";
 import { useAppDispatch, useAppSelector } from "../../hooks/redux";
+import { headerSlice } from "../../store/reducers/HeaderSlice";
 
 const pages = ["For owners"];
 
@@ -53,10 +54,10 @@ const ElevationScroll = (props: ElevationScrollProps) => {
       headerBar[0].children[0].classList.contains("SmallHeader") &&
       !headerBar[0].children[0].classList.contains("WhiteBigHeader")
     ) {
-      dispatch(actionSmallHeader());
+      dispatch(headerSlice.actions.small());
     }
     if (headerBar[0].children[0].classList.contains("BigHeader")) {
-      dispatch(actionBigHeader());
+      dispatch(headerSlice.actions.big());
     }
   });
 
@@ -78,6 +79,8 @@ export const HeaderBar = (props) => {
   const [openSignUpModal, setOpenSignUpModal] = useState(false);
 
   const navigate = useNavigate();
+  const location = useLocation().pathname;
+  const dispatch = useAppDispatch();
 
   const { smallHeader, bigHeader, expandSmallHeader } = useAppSelector(
     (state) => state.header
@@ -85,9 +88,6 @@ export const HeaderBar = (props) => {
 
   const currentUser = useAppSelector((state) => state.auth?.payload);
   const promise = useAppSelector((state) => state.promise);
-
-  const location = useLocation().pathname;
-  const dispatch = useAppDispatch();
 
   const handleOpenNavMenu = (event: ButtonEvent) => {
     setAnchorElNav(event.currentTarget);
@@ -99,7 +99,7 @@ export const HeaderBar = (props) => {
   const expandMenu = () => {
     const smallHeader = document.getElementsByClassName("SmallHeader");
     smallHeader[0].classList.add("WhiteBigHeader");
-    dispatch(actionExpandSmallHeader());
+    dispatch(headerSlice.actions.expand());
   };
 
   document.body.addEventListener("click", (e) => {
@@ -110,7 +110,7 @@ export const HeaderBar = (props) => {
     ) {
       const headerBar = document.getElementsByClassName("Header");
       headerBar[0].children[0].classList.remove("WhiteBigHeader");
-      dispatch(actionSmallHeader());
+      dispatch(headerSlice.actions.small());
     }
   });
 

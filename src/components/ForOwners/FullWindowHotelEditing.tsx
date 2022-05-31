@@ -12,7 +12,6 @@ import {
 import ArrowBackIosNewOutlinedIcon from "@mui/icons-material/ArrowBackIosNewOutlined";
 import { forOwnersStyles } from "./forOwnersStyles";
 import { useFormik } from "formik";
-import { useSelector } from "react-redux";
 import { actionFullHotelUpdate as onHotelUpdate } from "../../actions/thunks";
 import {
   CurrencyModel,
@@ -24,11 +23,16 @@ import { RootState } from "../../helpers/types";
 import useSnackBar from "../Auxiliary/SnackBar";
 import { RESOLVED_PROMISE_STATUS, EDIT_HOTEL } from "../../helpers/consts";
 import { Transition } from "../Auxiliary/Transition";
+import { useAppSelector } from "../../hooks/redux";
+import { currencyAPI } from "../../store/reducers/CurrencyService";
 
 export const FullWindowHotelEditing = ({ hotelId, updateOpenDialogStatus }) => {
-  const promise = useSelector((state: RootState) => state.promise);
-  const auth = useSelector((state: RootState) => state.auth);
-  const currencyList = useSelector((state: RootState) => state.currencyList);
+  // const promise = useSelector((state: RootState) => state.promise);
+  // const auth = useSelector((state: RootState) => state.auth);
+
+  const currencyList = useAppSelector((state) => state.currencyList);
+
+  console.log("currencyList", currencyList);
 
   const [open, setOpen] = useState(true);
   const [, sendSnackbar] = useSnackBar();

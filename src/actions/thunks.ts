@@ -21,7 +21,6 @@ import {
   actionSendNotification,
   actionGetNotifications,
 } from "./index";
-import { jwtCode, jwtDecode } from "../helpers/functions";
 import { getState } from "../components/App";
 import {
   UserModel,
@@ -54,9 +53,9 @@ export const actionFullLogin =
 
     if (loginUser) {
       const token = jwtCode({ ...loginUser.user, password });
-      sessionStorage.authToken = token;
+      sessionStorage.token = token;
 
-      if (sessionStorage.authToken) {
+      if (sessionStorage.token) {
         dispatch(actionAuthLogin(token));
       }
     }
@@ -112,7 +111,7 @@ export const actionFullUserUpdate =
 export const actionChangeAvatar =
   (image: File) => async (dispatch: DispatchType) => {
     const avatar: string = await dispatch(actionUploadPhoto(image));
-    const { password } = jwtDecode(sessionStorage.authToken);
+    const { password } = jwtDecode(sessionStorage.token);
     const { id, email }: payloadTypes = getState().auth.payload;
 
     if (avatar && id && email && password) {
@@ -123,7 +122,7 @@ export const actionChangeAvatar =
   };
 
 export const actionDeleteAvatar = () => async (dispatch: DispatchType) => {
-  const { password } = jwtDecode(sessionStorage.authToken);
+  const { password } = jwtDecode(sessionStorage.token);
   const { id, email }: payloadTypes = getState().auth.payload;
   if (id && email && password) {
     await dispatch(
@@ -145,7 +144,7 @@ export const actionChangePassword =
 
 export const actionChooseCurrency =
   (currencyId: number) => async (dispatch: DispatchType) => {
-    const { password } = jwtDecode(sessionStorage.authToken);
+    const { password } = jwtDecode(sessionStorage.token);
     const { id, email }: payloadTypes = getState().auth.payload;
 
     if (id && email && password) {
@@ -184,7 +183,7 @@ export const actionFullSendNotification =
 
 export const actionUpdateWishlists =
   (wishlists: WishlistModel[]) => async (dispatch: DispatchType) => {
-    const { password } = jwtDecode(sessionStorage.authToken);
+    const { password } = jwtDecode(sessionStorage.token);
     const { id, email }: { id: number; email: string } =
       getState().auth.payload;
 

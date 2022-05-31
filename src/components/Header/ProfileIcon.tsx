@@ -70,6 +70,11 @@ export const ProfileIcon = () => {
 
   const openSignUp = () => setOpenSignUpModal(true);
 
+  const getLogOut = () => {
+    sessionStorage.removeItem("token");
+    handleCloseUserMenu();
+  };
+
   const unreadUserMessages = (promise?.getNotifications?.payload || []).filter(
     (notification: NotificationModel) =>
       notification.toId === auth?.payload?.id &&
@@ -182,7 +187,7 @@ export const ProfileIcon = () => {
           open={Boolean(anchorElUser)}
           onClose={handleCloseUserMenu}
         >
-          {sessionStorage.authToken ? (
+          {sessionStorage.token ? (
             <div>
               <MenuItem onClick={getUserHotels}>
                 <Typography
@@ -213,7 +218,7 @@ export const ProfileIcon = () => {
                 <Typography textAlign="center">Profile</Typography>
               </MenuItem>
               <hr />
-              <MenuItem onClick={actionLogOut}>
+              <MenuItem onClick={getLogOut}>
                 <Typography textAlign="center">Logout</Typography>
               </MenuItem>
             </div>

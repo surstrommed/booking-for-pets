@@ -16,11 +16,19 @@ import {
 import { setupStore } from "../store/store";
 import { useAppDispatch, useAppSelector } from "../hooks/redux";
 import { SnackbarProvider } from "notistack";
-import { fetchCurrencyExchange } from "../store/reducers/ActionCreators";
+import { currencyAPI } from "../store/reducers/CurrencyService";
 
 export const store = setupStore();
 
 export const { getState } = store;
+
+// useEffect(() => {
+//   const {
+//     data: currency,
+//     error,
+//     isLoading,
+//   } = currencyAPI.useFetchAllCurrencyQuery("");
+// }, []);
 
 // store.dispatch(actionGetNotifications());
 // store.dispatch(actionGetUsers());
@@ -29,26 +37,12 @@ export const { getState } = store;
 // store.dispatch(actionFullGetCurrencyExchange());
 
 export const App = () => {
-  const { currency, isLoading, error } = useAppSelector(
-    (state) => state.currency
-  );
-  const dispatch = useAppDispatch();
-
-  useEffect(() => {
-    dispatch(fetchCurrencyExchange());
-  }, []);
-
   return (
     <SnackbarProvider maxSnack={1}>
       <ThemeProvider theme={theme}>
         <div className="App">
           <HeaderBar />
-          <div style={{ marginTop: "30vh" }}>
-            {isLoading && <h1>Loading...</h1>}
-            {error && <h1>{error}</h1>}
-            {JSON.stringify(currency, null, 2)}
-          </div>
-          {/* <Main /> */}
+          <Main />
         </div>
       </ThemeProvider>
     </SnackbarProvider>

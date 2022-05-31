@@ -10,11 +10,12 @@ export const Register = () => {
 
   return (
     <Box>
-      <Preloader
+      {/* <Preloader
         promiseName={"signup"}
         promiseState={promise}
         sub={<SignUp />}
-      />
+      /> */}
+      <SignUp />
     </Box>
   );
 };
