@@ -24,7 +24,7 @@ const Wishlists = ({ auth, promise }) => {
         Wishlists
       </Typography>
       <Box sx={pagesStyles.wishlists.cards}>
-        {currentUserWishlists.length === 0 ? (
+        {currentUserWishlists?.length === 0 ? (
           <Typography variant="h6" component="div" gutterBottom>
             You currently have no wishlists
           </Typography>

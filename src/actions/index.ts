@@ -29,6 +29,7 @@ export const actionRegister = (userData: UserModel) => {
       currencyId: DEFAULT_CURRENCY_ID,
       createdAt: Date.now(),
       pictureUrl: null,
+      wishlists: [],
     })
   );
 };
@@ -53,7 +54,9 @@ export const actionGetHotels = () => {
 
 export const actionHotelUpdate = (hotelData: HotelModel) => {
   const { payload: allHotels } = getState().promise.getHotels;
-  const currentHotel = allHotels.find((hotel: HotelModel) => hotel.id === hotelData.id);
+  const currentHotel = allHotels.find(
+    (hotel: HotelModel) => hotel.id === hotelData.id
+  );
 
   return actionPromise(
     "hotelUpdate",
@@ -92,7 +95,9 @@ export const actionHotelDelete = (hotelId: string) => {
 
 export const actionHotelCreate = (hotelData: HotelModel) => {
   const { payload: allHotels } = getState().promise.getHotels;
-  const currentHotel = allHotels.find((hotel: HotelModel) => hotel.id === hotelData.id);
+  const currentHotel = allHotels.find(
+    (hotel: HotelModel) => hotel.id === hotelData.id
+  );
 
   return actionPromise(
     "hotelCreate",

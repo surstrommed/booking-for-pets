@@ -196,4 +196,3 @@ export const actionUpdateWishlists =
       await dispatch(actionGetHotels());
     }
   };
-

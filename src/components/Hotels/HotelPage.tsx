@@ -19,7 +19,10 @@ import { HotelOwner } from "./HotelOwner";
 import { CHotelHeader } from "./HotelHeader";
 import { HotelGallery } from "./HotelGallery";
 import { HotelDescription } from "./HotelDescription";
-import { HotelPageFormValues } from "../../server/api/api-models";
+import {
+  HotelPageFormValues,
+  UserRequestModel,
+} from "../../server/api/api-models";
 import { hotelPageVS } from "./../../helpers/validationSchemes";
 import useSnackBar from "./../Auxiliary/SnackBar";
 import Page404 from "../../pages/Page404";
@@ -86,10 +89,10 @@ const HotelPage = ({
         id: createUniqueId(),
       };
 
-      onBooking({
-        id: currentHotel?.id,
-        userRequests: [...currentHotel.userRequests, userRequest],
-      });
+      // onBooking({
+      //   id: currentHotel?.id,
+      //   userRequests: [...currentHotel.userRequests, userRequest],
+      // });
 
       onSendNotification({
         id: createUniqueId(),
@@ -102,6 +105,16 @@ const HotelPage = ({
         toId: currentHotel.owner,
       });
 
+      const alreadyBookedSeats = (
+        currentHotel.userRequests.filter(
+          (request: UserRequestModel) =>
+            Number(request?.arrivalDate) === formattedDateArrival &&
+            Number(request?.departureDate) === formattedDateDeparture
+        ) || []
+      ).reduce((accumulator: number, currentRequest: UserRequestModel) => {
+        return accumulator + currentRequest?.animalsNumber;
+      }, 0);
+
       if (
         values.dateArrival &&
         values.dateDeparture &&
@@ -111,7 +124,7 @@ const HotelPage = ({
       ) {
         sendSnackbar({
           msg: sendSnackBarMessages.hotelBookedMessage(
-            sessionStorage.usersAnimalsCount,
+            alreadyBookedSeats + values.numberAnimals,
             formatStringDate(Date.parse(values.dateArrival.toString())),
             formatStringDate(Date.parse(values.dateDeparture.toString()))
           ),

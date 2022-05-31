@@ -6,7 +6,7 @@
       "firstName": "Anton",
       "lastName": "Zadorozhnyi",
       "createdAt": 1647206008510,
-      "currencyId": 2,
+      "currencyId": 1,
       "id": 1,
       "pictureUrl": "https://i.ibb.co/v41JTMR/147144.png",
       "wishlists": [
@@ -15,7 +15,7 @@
           "hotelsId": []
         }
       ],
-      "password": "$2a$10$/DYfGMN0AgP.fMP3NNrXf.FjY3SIgI0NihSnBKWM1s2MVEdT2ZWY6"
+      "password": "$2a$10$4g5Ws/BSao6f0YemFOLJI.S2AGTbwTu69t8TptjGat8NbN79QOa/."
     },
     {
       "email": "user1231@ukr.net",
@@ -88,23 +88,64 @@
       "pictureUrl": null,
       "id": 7,
       "wishlists": []
+    },
+    {
+      "email": "test@ukr.net",
+      "password": "$2a$10$IpakyQJqynRb9KjFvgPGOu6Mpw0SHijuu9HmGm8.gYwVtA6.tCN7W",
+      "login": "aboba",
+      "firstName": "Test",
+      "lastName": "User",
+      "currencyId": 1,
+      "createdAt": 1653559130093,
+      "pictureUrl": null,
+      "wishlists": [],
+      "id": 8
     }
   ],
   "hotels": [
     {
       "id": "lKRS7",
-      "name": "",
-      "location": "",
-      "address": "",
-      "description": "",
+      "name": "Test hotel1",
+      "location": "Test location",
+      "address": "Test address",
+      "description": "Test description",
       "photos": [],
-      "hotelRooms": 0,
-      "freeRooms": {},
-      "userRequests": [],
+      "hotelRooms": 10,
+      "freeRooms": {
+        "1651006800000": {
+          "availableSeats": 8,
+          "usersId": [
+            6
+          ],
+          "usersAnimalsCount": [
+            2
+          ]
+        },
+        "1651093200000": {
+          "availableSeats": 8,
+          "usersId": [
+            6
+          ],
+          "usersAnimalsCount": [
+            2
+          ]
+        }
+      },
+      "userRequests": [
+        {
+          "arrivalDate": 1651006800000,
+          "departureDate": 1651093200000,
+          "animalsNumber": 2,
+          "usersId": 6,
+          "message": "Hello, can I take a book on this days?",
+          "status": "Confirmed",
+          "id": "FYWvr"
+        }
+      ],
       "disableUserDates": {},
       "disableUsersDates": [],
-      "price": 0,
-      "owner": 0,
+      "price": 11,
+      "owner": 1,
       "reviews": []
     },
     {
@@ -183,6 +224,24 @@
           "message": "Empty",
           "status": "Rejected",
           "id": "tAEsi"
+        },
+        {
+          "arrivalDate": 1653598800000,
+          "departureDate": 1653685200000,
+          "animalsNumber": 1,
+          "usersId": 8,
+          "message": "Empty",
+          "status": "Pending",
+          "id": "QE5Sy"
+        },
+        {
+          "arrivalDate": 1653598800000,
+          "departureDate": 1653685200000,
+          "animalsNumber": 1,
+          "usersId": 8,
+          "message": "Empty",
+          "status": "Pending",
+          "id": "EYPBi"
         }
       ],
       "disableUserDates": {},
@@ -334,14 +393,14 @@
     {
       "id": "TB12VML",
       "text": "Welcome",
-      "status": "Read",
+      "status": "Deleted",
       "fromId": null,
       "toId": 1
     },
     {
       "id": "LnVm9",
       "text": "Empty",
-      "status": "Read",
+      "status": "Deleted",
       "fromId": 6,
       "toId": 1
     },
@@ -355,30 +414,107 @@
     {
       "id": "ncW76",
       "text": "Empty",
-      "status": "Read",
+      "status": "Deleted",
       "fromId": 6,
       "toId": 1
     },
     {
       "id": "XYc4O",
       "text": "Empty",
-      "status": "Read",
+      "status": "Deleted",
       "fromId": 6,
       "toId": 1
     },
     {
       "id": "LLOQX",
       "text": "Good",
-      "status": "Unread",
+      "status": "Read",
       "fromId": 1,
       "toId": 6
     },
     {
       "id": "rJo4V",
       "text": "Bad",
-      "status": "Unread",
+      "status": "Read",
       "fromId": 1,
       "toId": 6
+    },
+    {
+      "id": "v0Rou",
+      "text": "Hello, can I take a book on this days?",
+      "status": "Deleted",
+      "fromId": 6,
+      "toId": 1
+    },
+    {
+      "id": "c09V1",
+      "text": "Ok, welcome",
+      "status": "Read",
+      "fromId": 1,
+      "toId": 6
+    },
+    {
+      "id": "R7lpe",
+      "text": "Empty",
+      "status": "Unread",
+      "fromId": 8,
+      "toId": 1
+    },
+    {
+      "id": "PWFzo",
+      "text": "Empty",
+      "status": "Unread",
+      "fromId": 8,
+      "toId": 1
+    },
+    {
+      "id": "yw8tA",
+      "text": "Empty",
+      "status": "Unread",
+      "fromId": 8,
+      "toId": 1
+    },
+    {
+      "id": "BZ1If",
+      "text": "Empty",
+      "status": "Unread",
+      "fromId": 8,
+      "toId": 1
+    },
+    {
+      "id": "q12qq",
+      "text": "Empty",
+      "status": "Unread",
+      "fromId": 8,
+      "toId": 1
+    },
+    {
+      "id": "BvUCD",
+      "text": "Empty",
+      "status": "Unread",
+      "fromId": 8,
+      "toId": 1
+    },
+    {
+      "id": "CDAu4",
+      "text": "Empty",
+      "status": "Unread",
+      "fromId": 8,
+      "toId": 1
+    },
+    {
+      "id": "oBOti",
+      "text": "Empty",
+      "status": "Unread",
+      "fromId": 8,
+      "toId": 1
+    },
+    {
+      "id": "2tGOL",
+      "text": "Empty",
+      "status": "Unread",
+      "fromId": 8,
+      "toId": 1
     }
   ]
 }

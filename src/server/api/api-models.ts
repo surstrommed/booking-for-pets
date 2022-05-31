@@ -18,7 +18,7 @@ export interface Wishlists {
   hotelsId: number[];
 }
 export interface UserModel {
-  id: number;
+  id?: number;
   email?: string;
   login?: string;
   firstName?: string;
@@ -83,13 +83,7 @@ export interface UserRequestModel {
 
 export interface IRegister {
   promise?: RootState;
-  onRegister: (
-    email: string,
-    login: string,
-    firstName: string,
-    lastName: string,
-    password: string
-  ) => void;
+  onRegister: (user: UserModel) => void;
   modal?: boolean;
   signInOpenState?: (value: boolean) => void;
   signUpOpenState?: (value: boolean) => void;
