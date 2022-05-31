@@ -17,12 +17,14 @@ import { authFormStyles, authModalStyles } from "./authStyles";
 import { signUpVS } from "./../../helpers/validationSchemes";
 import { IRegister, RegisterFormValues } from "./../../server/api/api-models";
 import { RootState } from "../../helpers/types";
+import { RESOLVED_PROMISE_STATUS } from "../../helpers/consts";
 
 const SignUp = ({
   onRegister,
   modal,
   signInOpenState,
   signUpOpenState,
+  promise,
 }: IRegister) => {
   const [showPassword, setShowPassword] = useState(false);
   const [showRetryPassword, setShowRetryPassword] = useState(false);
@@ -40,7 +42,9 @@ const SignUp = ({
     initialValues: initialValues,
     validationSchema: signUpVS,
     onSubmit: (values) => {
-      modal && signUpOpenState(false);
+      const signUpStatus =
+        promise?.["signup"]?.["status"] === RESOLVED_PROMISE_STATUS;
+      modal && signUpStatus && signUpOpenState(false);
       const { email, login, firstName, lastName, password } = values;
       onRegister({ email, login, firstName, lastName, password });
     },
