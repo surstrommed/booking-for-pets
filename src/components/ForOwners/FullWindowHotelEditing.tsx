@@ -12,8 +12,8 @@ import {
 import ArrowBackIosNewOutlinedIcon from "@mui/icons-material/ArrowBackIosNewOutlined";
 import { forOwnersStyles } from "./forOwnersStyles";
 import { useFormik } from "formik";
-import { connect } from "react-redux";
-import { actionFullHotelUpdate } from "../../actions/thunks";
+import { useSelector } from "react-redux";
+import { actionFullHotelUpdate as onHotelUpdate } from "../../actions/thunks";
 import {
   CurrencyModel,
   EditingHotelDataValues,
@@ -25,14 +25,11 @@ import useSnackBar from "../Auxiliary/SnackBar";
 import { RESOLVED_PROMISE_STATUS, EDIT_HOTEL } from "../../helpers/consts";
 import { Transition } from "../Auxiliary/Transition";
 
-const FullWindowHotelEditing = ({
-  hotelId,
-  updateOpenDialogStatus,
-  onHotelUpdate,
-  promise,
-  auth,
-  currencyList,
-}) => {
+export const FullWindowHotelEditing = ({ hotelId, updateOpenDialogStatus }) => {
+  const promise = useSelector((state: RootState) => state.promise);
+  const auth = useSelector((state: RootState) => state.auth);
+  const currencyList = useSelector((state: RootState) => state.currencyList);
+
   const [open, setOpen] = useState(true);
   const [, sendSnackbar] = useSnackBar();
 
@@ -254,14 +251,3 @@ const FullWindowHotelEditing = ({
     </div>
   );
 };
-
-export const CFullWindowHotelEditing = connect(
-  (state: RootState) => ({
-    promise: state.promise,
-    currencyList: state.currencyList,
-    auth: state.auth,
-  }),
-  {
-    onHotelUpdate: actionFullHotelUpdate,
-  }
-)(FullWindowHotelEditing);

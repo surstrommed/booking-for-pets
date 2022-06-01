@@ -6,7 +6,7 @@ import AdapterDateFns from "@mui/lab/AdapterDateFns";
 import SearchIcon from "@mui/icons-material/Search";
 import { searchBar } from "./headerStyles";
 import { AsyncAutocomplete } from "./../Auxiliary/AsyncAutocomplete";
-import { history } from "./../App";
+import { useNavigate } from "react-router-dom";
 
 export default function SearchBar({ styles }) {
   const [location, setLocation] = useState("");
@@ -33,6 +33,8 @@ export default function SearchBar({ styles }) {
   const handleChangeNumber = (e: React.ChangeEvent<HTMLInputElement>) => {
     setNumberValue(+e.target.value);
   };
+
+  const navigate = useNavigate();
 
   return (
     <div style={styles}>
@@ -97,7 +99,7 @@ export default function SearchBar({ styles }) {
           sx={searchBar.searchButton}
           disabled={!location}
           onClick={() =>
-            history.push(
+            navigate(
               `/hotels/${location}/${Date.parse(arrivalValue)}/${Date.parse(
                 departureValue
               )}/${numberValue}`

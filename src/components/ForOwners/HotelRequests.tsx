@@ -1,9 +1,9 @@
 import React, { useState } from "react";
 import { RootState } from "../../helpers/types";
-import { connect } from "react-redux";
+import { useSelector } from "react-redux";
 import {
-  actionFullHotelUpdate,
-  actionFullSendNotification,
+  actionFullHotelUpdate as onHotelUpdate,
+  actionFullSendNotification as onSendNotification,
 } from "../../actions/thunks";
 import { Tabs, Tab, Box } from "@mui/material";
 import { forOwnersStyles } from "./forOwnersStyles";
@@ -56,7 +56,9 @@ const TabPanel = (props: TabPanelProps) => {
   );
 };
 
-const HotelRequests = ({ promise, onHotelUpdate, onSendNotification }) => {
+export const HotelRequests = () => {
+  const promise = useSelector((state: RootState) => state.promise);
+
   const { hotelId } = useParams();
   const [value, setValue] = useState(0);
   const [ownerNotification, setOwnerNotification] = useState("");
@@ -258,14 +260,3 @@ const HotelRequests = ({ promise, onHotelUpdate, onSendNotification }) => {
     </Box>
   );
 };
-
-export const CHotelRequests = connect(
-  (state: RootState) => ({
-    auth: state.auth,
-    promise: state.promise,
-  }),
-  {
-    onHotelUpdate: actionFullHotelUpdate,
-    onSendNotification: actionFullSendNotification,
-  }
-)(HotelRequests);

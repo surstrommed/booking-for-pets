@@ -1,13 +1,15 @@
 import React from "react";
-import { connect } from "react-redux";
+import { useSelector } from "react-redux";
 import { RootState } from "../../helpers/types";
-import { CHotelCard } from "./HotelCard";
+import { HotelCard } from "./HotelCard";
 import { useParams } from "react-router-dom";
 import { Typography } from "@mui/material";
 import { spaceFormatting } from "../../helpers/functions";
 import { FreeRoomsModel, HotelModel } from "../../server/api/api-models";
 
-const HotelsList = ({ promise }) => {
+export const HotelsList = () => {
+  const promise = useSelector((state: RootState) => state.promise);
+
   const params = useParams();
   const locationParameter = params?.location
     ? spaceFormatting(params.location)
@@ -67,7 +69,7 @@ const HotelsList = ({ promise }) => {
       <div className="HotelsList">
         {(withoutDeleted || []).map((hotel: HotelModel, index: number) => (
           <div key={hotel.id}>
-            <CHotelCard
+            <HotelCard
               hotelData={{
                 index,
                 id: hotel.id,
@@ -83,7 +85,3 @@ const HotelsList = ({ promise }) => {
     </>
   );
 };
-
-export const CHotelsList = connect((state: RootState) => ({
-  promise: state.promise,
-}))(HotelsList);

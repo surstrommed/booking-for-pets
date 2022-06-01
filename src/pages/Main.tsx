@@ -1,23 +1,23 @@
 import React from "react";
 import { Routes, Route } from "react-router-dom";
 import Page404 from "./Page404";
-import { CProfile } from "./Profile";
+import { Profile } from "./Profile";
 import { PrivateRoute } from "./../components/Auxiliary/PrivateRoute";
-import { CHotels } from "./Hotels";
-import { CHotelPage } from "./../components/Hotels/HotelPage";
+import { Hotels } from "./Hotels";
+import { HotelPage } from "./../components/Hotels/HotelPage";
 import { Preloader } from "./../components/Auxiliary/Preloader";
-import { connect } from "react-redux";
+import { useSelector } from "react-redux";
 import { RootState } from "../helpers/types";
-import { CForOwners } from "./ForOwners";
-import { COwnersHotels } from "./OwnersHotels";
-import { CHotelRequests } from "../components/ForOwners/HotelRequests";
-import { CUserNotifications } from "../components/Notifications/UserNotifications";
-import { CWishlists } from "./Wishlists";
-import { CWishlistPage } from "./../components/Wishlist/WishlistPage";
-import { CRegister } from "../pages/Register";
-import { CLogin } from "../pages/Login";
+import { ForOwners } from "./ForOwners";
+import { OwnersHotels } from "./OwnersHotels";
+import { HotelRequests } from "../components/ForOwners/HotelRequests";
+import { UserNotifications } from "../components/Notifications/UserNotifications";
+import { Wishlists } from "./Wishlists";
+import { WishlistPage } from "./../components/Wishlist/WishlistPage";
+import { Register } from "../pages/Register";
+import { Login } from "../pages/Login";
 
-function MainPage() {
+const MainPage = () => {
   return (
     <div className="Main">
       <div className="Top">
@@ -30,9 +30,11 @@ function MainPage() {
       </div>
     </div>
   );
-}
+};
 
-const Main = ({ promise }) => {
+export const Main = () => {
+  const promise = useSelector((state: RootState) => state.promise);
+
   return (
     <Routes>
       <Route path="/" element={<MainPage />} />
@@ -40,7 +42,7 @@ const Main = ({ promise }) => {
         path="/signup"
         element={
           <PrivateRoute>
-            <CRegister />
+            <Register />
           </PrivateRoute>
         }
       />
@@ -48,7 +50,7 @@ const Main = ({ promise }) => {
         path="/signin"
         element={
           <PrivateRoute>
-            <CLogin />
+            <Login />
           </PrivateRoute>
         }
       />
@@ -56,7 +58,7 @@ const Main = ({ promise }) => {
         path="/profile"
         element={
           <PrivateRoute>
-            <CProfile />
+            <Profile />
           </PrivateRoute>
         }
       />
@@ -64,13 +66,13 @@ const Main = ({ promise }) => {
         path="/hotels"
         element={
           <PrivateRoute>
-            <CHotels />
+            <Hotels />
           </PrivateRoute>
         }
       />
       <Route
         path="/hotels/:location/:arrival/:departure/:number"
-        element={<CHotels />}
+        element={<Hotels />}
       />
       <Route
         path="/hotels/hotel/:hotelId"
@@ -78,7 +80,7 @@ const Main = ({ promise }) => {
           <Preloader
             promiseName={"getHotels"}
             promiseState={promise}
-            sub={<CHotelPage />}
+            sub={<HotelPage />}
           />
         }
       />
@@ -90,7 +92,7 @@ const Main = ({ promise }) => {
             promiseState={promise}
             sub={
               <PrivateRoute>
-                <CForOwners />
+                <ForOwners />
               </PrivateRoute>
             }
           />
@@ -104,7 +106,7 @@ const Main = ({ promise }) => {
             promiseState={promise}
             sub={
               <PrivateRoute>
-                <COwnersHotels />
+                <OwnersHotels />
               </PrivateRoute>
             }
           />
@@ -118,7 +120,7 @@ const Main = ({ promise }) => {
             promiseState={promise}
             sub={
               <PrivateRoute>
-                <CHotelRequests />
+                <HotelRequests />
               </PrivateRoute>
             }
           />
@@ -132,7 +134,7 @@ const Main = ({ promise }) => {
             promiseState={promise}
             sub={
               <PrivateRoute>
-                <CUserNotifications />
+                <UserNotifications />
               </PrivateRoute>
             }
           />
@@ -142,7 +144,7 @@ const Main = ({ promise }) => {
         path="/wishlists"
         element={
           <PrivateRoute>
-            <CWishlists />
+            <Wishlists />
           </PrivateRoute>
         }
       />
@@ -154,7 +156,7 @@ const Main = ({ promise }) => {
             promiseState={promise}
             sub={
               <PrivateRoute>
-                <CWishlistPage />
+                <WishlistPage />
               </PrivateRoute>
             }
           />
@@ -164,7 +166,3 @@ const Main = ({ promise }) => {
     </Routes>
   );
 };
-
-export const CMain = connect((state: RootState) => ({
-  promise: state.promise,
-}))(Main);

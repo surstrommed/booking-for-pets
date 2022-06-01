@@ -2,8 +2,8 @@ import React from "react";
 import { useFormik } from "formik";
 import { CustomTextField } from "../Auxiliary/CustomTextField";
 import { Button, Typography } from "@mui/material";
-import { connect } from "react-redux";
-import { actionUpdateWishlists } from "../../actions/thunks";
+import { useSelector } from "react-redux";
+import { actionUpdateWishlists as onCreateWishlist } from "../../actions/thunks";
 import useSnackBar from "./../Auxiliary/SnackBar";
 import { wishlistVS } from "../../helpers/validationSchemes";
 import { sendSnackBarMessages } from "../../helpers/consts";
@@ -11,12 +11,9 @@ import { WishlistModel } from "../../server/api/api-models";
 import { ALREADY_EXIST_WISHLIST } from "../../helpers/consts";
 import { wishlistName, RootState } from "../../helpers/types";
 
-const CreateWishlist = ({
-  auth,
-  onCreateWishlist,
-  modalWindowState,
-  hotelData,
-}) => {
+export const CreateWishlist = ({ modalWindowState, hotelData }) => {
+  const auth = useSelector((state: RootState) => state.auth);
+
   const currentUserWishlists = auth?.payload?.wishlists;
   const initialValues: wishlistName = { wishlistName: "" };
 
@@ -90,10 +87,3 @@ const CreateWishlist = ({
     </div>
   );
 };
-
-export const CCreateWishlist = connect(
-  (state: RootState) => ({ auth: state.auth, promise: state.promise }),
-  {
-    onCreateWishlist: actionUpdateWishlists,
-  }
-)(CreateWishlist);

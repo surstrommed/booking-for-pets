@@ -14,20 +14,17 @@ import {
   NEW_WISHLIST_MODAL_TITLE,
   sendSnackBarMessages,
 } from "../../helpers/consts";
-import { connect } from "react-redux";
+import { useSelector } from "react-redux";
 import { RootState } from "../../helpers/types";
-import { actionUpdateWishlists } from "../../actions/thunks";
-import { CCreateWishlist } from "./CreateWishlist";
+import { actionUpdateWishlists as onSelect } from "../../actions/thunks";
+import { CreateWishlist } from "./CreateWishlist";
 import useSnackBar from "./../Auxiliary/SnackBar";
 import { HotelModel, WishlistModel } from "src/server/api/api-models";
 
-const SelectWishlist = ({
-  auth,
-  promise,
-  modalWindowState,
-  onSelect,
-  currentHotel,
-}) => {
+export const SelectWishlist = ({ modalWindowState, currentHotel }) => {
+  const promise = useSelector((state: RootState) => state.promise);
+  const auth = useSelector((state: RootState) => state.auth);
+
   const currentUserWishlists = auth?.payload?.wishlists;
   const allHotels = promise?.getHotels?.payload;
 
@@ -76,7 +73,7 @@ const SelectWishlist = ({
         <ModalWindow
           title={NEW_WISHLIST_MODAL_TITLE}
           body={
-            <CCreateWishlist
+            <CreateWishlist
               modalWindowState={updateCreateWishlistWindow}
               hotelData={currentHotel}
             />
@@ -119,10 +116,3 @@ const SelectWishlist = ({
     </div>
   );
 };
-
-export const CSelectWishlist = connect(
-  (state: RootState) => ({ auth: state.auth, promise: state.promise }),
-  {
-    onSelect: actionUpdateWishlists,
-  }
-)(SelectWishlist);

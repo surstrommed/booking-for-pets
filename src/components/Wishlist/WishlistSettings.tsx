@@ -11,22 +11,20 @@ import {
 } from "@mui/material";
 import CloseIcon from "@mui/icons-material/Close";
 import { wishlistVS } from "../../helpers/validationSchemes";
-import { connect } from "react-redux";
-import { RootState } from "../../helpers/types";
-import { actionUpdateWishlists } from "../../actions/thunks";
-import { history } from "./../App";
+import { actionUpdateWishlists as onUpdate } from "../../actions/thunks";
 import { WishlistModel } from "../../server/api/api-models";
 import { RENAME_ERROR_WISHLIST } from "../../helpers/consts";
 import { wishlistStyles } from "./wishlistStyles";
 import { wishlistName } from "../../helpers/types";
+import { useNavigate } from "react-router-dom";
 
-const WishlistSettings = ({
+export const WishlistSettings = ({
   handleClose,
   currentWishlist,
   currentWishlists,
-  onDelete,
-  onRename,
 }) => {
+  const navigate = useNavigate();
+
   const initialValues: wishlistName = { wishlistName: "" };
 
   const formik = useFormik({
@@ -48,9 +46,9 @@ const WishlistSettings = ({
 
       filteredUserWishlists.push(filteredCurrentUserWishlist);
 
-      onRename(filteredUserWishlists);
+      onUpdate(filteredUserWishlists);
 
-      history.push(`/wishlists/wishlist/${values.wishlistName}`);
+      navigate(`/wishlists/wishlist/${values.wishlistName}`);
     },
   });
 
@@ -65,9 +63,9 @@ const WishlistSettings = ({
       (wishlist: WishlistModel) => wishlist.name !== currentWishlist.name
     );
 
-    onDelete(filteredCurrentWishlists);
+    onUpdate(filteredCurrentWishlists);
 
-    history.push("/wishlists");
+    navigate("/wishlists");
   }
 
   return (
@@ -134,13 +132,3 @@ const WishlistSettings = ({
     </div>
   );
 };
-
-export const CWishlistSettings = connect(
-  (state: RootState) => ({
-    auth: state.auth,
-  }),
-  {
-    onDelete: actionUpdateWishlists,
-    onRename: actionUpdateWishlists,
-  }
-)(WishlistSettings);

@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { connect } from "react-redux";
+import { useSelector } from "react-redux";
 import { RootState } from "../../helpers/types";
 import { useFormik } from "formik";
 import {
@@ -12,7 +12,7 @@ import {
 } from "@mui/material";
 import VisibilityIcon from "@mui/icons-material/Visibility";
 import VisibilityOffIcon from "@mui/icons-material/VisibilityOff";
-import { actionFullUserUpdate } from "../../actions/thunks";
+import { actionFullUserUpdate as onUpdate } from "../../actions/thunks";
 import { changeProfileStyles } from "./profileStyles";
 import { PersonalDataValues } from "../../server/api/api-models";
 import { changePersonalDataVS } from "./../../helpers/validationSchemes";
@@ -20,7 +20,10 @@ import useSnackBar from "../Auxiliary/SnackBar";
 import { sendSnackBarMessages } from "../../helpers/consts";
 import { RESOLVED_PROMISE_STATUS } from "../../helpers/consts";
 
-const ChangePersonalData = ({ auth, promise, onUpdate }) => {
+export const ChangePersonalData = () => {
+  const promise = useSelector((state: RootState) => state.promise);
+  const auth = useSelector((state: RootState) => state.auth);
+
   const [showPassword, setShowPassword] = useState(false);
 
   const initialValues: PersonalDataValues = {
@@ -180,10 +183,3 @@ const ChangePersonalData = ({ auth, promise, onUpdate }) => {
     </Card>
   );
 };
-
-export const CChangePersonalData = connect(
-  (state: RootState) => ({ auth: state.auth, promise: state.promise }),
-  {
-    onUpdate: actionFullUserUpdate,
-  }
-)(ChangePersonalData);

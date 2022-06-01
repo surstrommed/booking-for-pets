@@ -1,22 +1,26 @@
 import React from "react";
-import { history } from "../components/App";
 import { RootState } from "../helpers/types";
-import { connect } from "react-redux";
+import { useSelector } from "react-redux";
 import { Typography, Button, TextField, InputAdornment } from "@mui/material";
-import { EditingHotelDataValues } from "../server/api/api-models";
+import { EditingHotelDataValues, HotelModel } from "../server/api/api-models";
 import { useFormik } from "formik";
 import { pagesStyles } from "./pagesStyles";
 import { editingHotelVS } from "../helpers/validationSchemes";
-import { actionFullHotelCreate } from "../actions/thunks";
+import { actionFullHotelCreate as onHotelCreate } from "../actions/thunks";
 import { getUniqueId } from "../helpers/functions";
 import useSnackBar from "../components/Auxiliary/SnackBar";
 import ArrowCircleRightIcon from "@mui/icons-material/ArrowCircleRight";
 import { CurrencyModel } from "../server/api/api-models";
 import { RESOLVED_PROMISE_STATUS, CREATED_HOTEL } from "../helpers/consts";
+import { useNavigate } from "react-router-dom";
 
-const ForOwners = ({ auth, promise, onHotelCreate, currencyList }) => {
+export const ForOwners = () => {
+  const promise = useSelector((state: RootState) => state.promise);
+  const auth = useSelector((state: RootState) => state.auth);
+  const currencyList = useSelector((state: RootState) => state.currencyList);
+  const navigate = useNavigate();
+
   const { payload: allHotels } = promise.getHotels || [];
-
   const currencySiteList = currencyList?.currency;
 
   const currentCurrency = (currencySiteList || []).find(
@@ -82,10 +86,10 @@ const ForOwners = ({ auth, promise, onHotelCreate, currencyList }) => {
     formik;
 
   const checkCreatedHotels = allHotels?.some(
-    (hotel) => hotel.owner === auth?.payload?.id
+    (hotel: HotelModel) => hotel.owner === auth?.payload?.id
   );
 
-  const viewCreatedHotels = () => history.push("/for-owners/hotels");
+  const viewCreatedHotels = () => navigate("/for-owners/hotels");
 
   if (values.description.length > 300) {
     errors.description = "Description cannot exceed 300 characters";
@@ -258,14 +262,3 @@ const ForOwners = ({ auth, promise, onHotelCreate, currencyList }) => {
     </div>
   );
 };
-
-export const CForOwners = connect(
-  (state: RootState) => ({
-    auth: state.auth,
-    promise: state.promise,
-    currencyList: state.currencyList,
-  }),
-  {
-    onHotelCreate: actionFullHotelCreate,
-  }
-)(ForOwners);

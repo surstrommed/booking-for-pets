@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { connect } from "react-redux";
+import { useSelector } from "react-redux";
 import {
   createUniqueId,
   formatDate,
@@ -10,13 +10,13 @@ import { RootState } from "../../helpers/types";
 import { useParams } from "react-router-dom";
 import { useFormik } from "formik";
 import {
-  actionFullHotelUpdate,
-  actionFullSendNotification,
+  actionFullHotelUpdate as onBooking,
+  actionFullSendNotification as onSendNotification,
 } from "./../../actions/thunks";
 import FullWindowGallery from "./FullWindowGallery";
 import { HotelReviews } from "./HotelReviews";
 import { HotelOwner } from "./HotelOwner";
-import { CHotelHeader } from "./HotelHeader";
+import { HotelHeader } from "./HotelHeader";
 import { HotelGallery } from "./HotelGallery";
 import { HotelDescription } from "./HotelDescription";
 import {
@@ -34,13 +34,11 @@ import {
   UNREAD_NOTIFICATION,
 } from "../../helpers/consts";
 
-const HotelPage = ({
-  promise,
-  auth,
-  currencyList,
-  onBooking,
-  onSendNotification,
-}) => {
+export const HotelPage = () => {
+  const promise = useSelector((state: RootState) => state.promise);
+  const auth = useSelector((state: RootState) => state.auth);
+  const currencyList = useSelector((state: RootState) => state.currencyList);
+
   const { hotelId } = useParams();
   const [openDialog, setOpenDialog] = useState(false);
   const { payload: hotelsList } = promise.getHotels;
@@ -203,7 +201,7 @@ const HotelPage = ({
               gallery={galleryHotelPhotos}
             />
           )}
-          <CHotelHeader currentHotel={currentHotel} />
+          <HotelHeader currentHotel={currentHotel} />
           <HotelGallery
             currentHotel={currentHotel}
             updateOpenDialogStatus={updateOpenDialogStatus}
@@ -232,15 +230,3 @@ const HotelPage = ({
     </>
   );
 };
-
-export const CHotelPage = connect(
-  (state: RootState) => ({
-    promise: state.promise,
-    auth: state.auth,
-    currencyList: state.currencyList,
-  }),
-  {
-    onBooking: actionFullHotelUpdate,
-    onSendNotification: actionFullSendNotification,
-  }
-)(HotelPage);

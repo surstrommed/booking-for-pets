@@ -7,14 +7,18 @@ import {
   CardActionArea,
   CardContent,
 } from "@mui/material";
-import { connect } from "react-redux";
+import { useSelector } from "react-redux";
 import { RootState } from "../helpers/types";
 import { links } from "../helpers/consts";
 import { pagesStyles } from "./pagesStyles";
-import { history } from "./../components/App";
 import { WishlistModel, HotelModel } from "src/server/api/api-models";
+import { useNavigate } from "react-router-dom";
 
-const Wishlists = ({ auth, promise }) => {
+export const Wishlists = () => {
+  const promise = useSelector((state: RootState) => state.promise);
+  const auth = useSelector((state: RootState) => state.auth);
+  const navigate = useNavigate();
+
   const currentUserWishlists = auth?.payload.wishlists;
   const allHotels = promise?.getHotels?.payload;
 
@@ -34,7 +38,7 @@ const Wishlists = ({ auth, promise }) => {
               <Card key={index} sx={pagesStyles.wishlists.card}>
                 <CardActionArea
                   onClick={() =>
-                    history.push(`/wishlists/wishlist/${wishlist.name}`)
+                    navigate(`/wishlists/wishlist/${wishlist.name}`)
                   }
                 >
                   <CardMedia
@@ -62,8 +66,3 @@ const Wishlists = ({ auth, promise }) => {
     </Box>
   );
 };
-
-export const CWishlists = connect((state: RootState) => ({
-  auth: state.auth,
-  promise: state.promise,
-}))(Wishlists);

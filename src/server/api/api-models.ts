@@ -56,11 +56,11 @@ export interface CurrencyModel {
 }
 
 export interface NotificationModel {
-  id: number;
-  text: string;
-  status: string;
-  fromId: number | null;
-  toId: number;
+  id: string;
+  text?: string;
+  status?: string;
+  fromId?: number | null;
+  toId?: number;
 }
 
 export interface FreeRoomsModel {
@@ -82,8 +82,6 @@ export interface UserRequestModel {
 }
 
 export interface IRegister {
-  promise?: RootState;
-  onRegister: (user: UserModel) => void;
   modal?: boolean;
   signInOpenState?: (value: boolean) => void;
   signUpOpenState?: (value: boolean) => void;
@@ -99,9 +97,6 @@ export interface RegisterFormValues {
 }
 
 export interface ILogin {
-  promise?: RootState;
-  auth?: RootState;
-  onLogin: (email: string, password: string) => void;
   modal?: boolean;
   signInOpenState?: (value: boolean) => void;
   signUpOpenState?: (value: boolean) => void;

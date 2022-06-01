@@ -22,7 +22,7 @@ import {
   actionGetNotifications,
 } from "./index";
 import { jwtCode, jwtDecode } from "../helpers/functions";
-import { getState, history } from "../components/App";
+import { getState } from "../components/App";
 import {
   UserModel,
   HotelModel,
@@ -58,9 +58,6 @@ export const actionFullLogin =
 
       if (sessionStorage.authToken) {
         dispatch(actionAuthLogin(token));
-        (history.location.pathname.includes("signin") ||
-          history.location.pathname.includes("signup")) &&
-          history.push("/");
       }
     }
   };
@@ -84,7 +81,7 @@ export const actionFullGetCurrencyExchange =
 export const actionFullGetCurrencyList =
   () => async (dispatch: DispatchType) => {
     const currencyList = await dispatch(actionGetCurrency());
-    if (Object.keys(currencyList).length > 0) {
+    if (currencyList && Object.keys(currencyList).length > 0) {
       dispatch(actionGetCurrencyList(currencyList));
     }
   };

@@ -15,8 +15,8 @@ import PetsIcon from "@mui/icons-material/Pets";
 import SearchIcon from "@mui/icons-material/Search";
 import LanguageOutlinedIcon from "@mui/icons-material/LanguageOutlined";
 import useScrollTrigger from "@mui/material/useScrollTrigger";
-import { CProfileIcon } from "./ProfileIcon";
-import { Link } from "react-router-dom";
+import { ProfileIcon } from "./ProfileIcon";
+import { Link, useNavigate } from "react-router-dom";
 import { useLocation } from "react-router-dom";
 import SearchBar from "./SearchBar";
 import { useDispatch, useSelector } from "react-redux";
@@ -26,14 +26,13 @@ import {
   actionExpandSmallHeader,
 } from "./../../actions/types";
 import { headerBar } from "./headerStyles";
-import SlideDialogCurrency from "./SlideDialogCurrency";
 import ModalWindow from "./../Auxiliary/ModalWindow";
 import { Preloader } from "./../Auxiliary/Preloader";
-import { CSignIn } from "./../Auth/Signin";
-import { CSignUp } from "./../Auth/Signup";
+import { SignIn } from "./../Auth/Signin";
+import { SignUp } from "./../Auth/Signup";
 import { ElevationScrollProps } from "../../server/api/api-models";
-import { history } from "../App";
 import { ButtonEvent, RootState } from "../../helpers/types";
+import { SlideDialogCurrency } from "./SlideDialogCurrency";
 
 const pages = ["For owners"];
 
@@ -72,11 +71,13 @@ const ElevationScroll = (props: ElevationScrollProps) => {
       });
 };
 
-export default function HeaderBar(props) {
+export const HeaderBar = (props) => {
   const [anchorElNav, setAnchorElNav] = useState(null);
   const [openCurrencyModal, setOpenCurrencyModal] = useState(false);
   const [openSignInModal, setOpenSignInModal] = useState(false);
   const [openSignUpModal, setOpenSignUpModal] = useState(false);
+
+  const navigate = useNavigate();
 
   const smallHeader = useSelector(
     (state: RootState) => state.header.smallHeader
@@ -140,7 +141,7 @@ export default function HeaderBar(props) {
                   promiseName={"signin"}
                   promiseState={promise}
                   sub={
-                    <CSignIn
+                    <SignIn
                       modal
                       signInOpenState={updateSignInModal}
                       signUpOpenState={updateSignUpModal}
@@ -161,7 +162,7 @@ export default function HeaderBar(props) {
                   promiseName={"signup"}
                   promiseState={promise}
                   sub={
-                    <CSignUp
+                    <SignUp
                       modal
                       signInOpenState={updateSignInModal}
                       signUpOpenState={updateSignUpModal}
@@ -265,7 +266,7 @@ export default function HeaderBar(props) {
                 sx={headerBar.headerButtons}
                 onClick={() =>
                   currentUser
-                    ? history.push("/for-owners")
+                    ? navigate("/for-owners")
                     : updateSignInModal(true)
                 }
               >
@@ -281,7 +282,7 @@ export default function HeaderBar(props) {
               >
                 <LanguageOutlinedIcon />
               </Button>
-              <CProfileIcon />
+              <ProfileIcon />
             </Toolbar>
           </Container>
         </AppBar>
@@ -289,4 +290,4 @@ export default function HeaderBar(props) {
       <Toolbar />
     </div>
   );
-}
+};

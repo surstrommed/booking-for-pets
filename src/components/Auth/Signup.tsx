@@ -9,25 +9,28 @@ import {
 } from "@mui/material";
 import VisibilityIcon from "@mui/icons-material/Visibility";
 import VisibilityOffIcon from "@mui/icons-material/VisibilityOff";
-import { actionFullRegister } from "../../actions/thunks";
-import { connect } from "react-redux";
-import { history } from "../App";
+import { actionFullRegister as onRegister } from "../../actions/thunks";
 import { CustomTextField } from "./../Auxiliary/CustomTextField";
 import { authFormStyles, authModalStyles } from "./authStyles";
 import { signUpVS } from "./../../helpers/validationSchemes";
 import { IRegister, RegisterFormValues } from "./../../server/api/api-models";
 import { RootState } from "../../helpers/types";
 import { RESOLVED_PROMISE_STATUS } from "../../helpers/consts";
+import { useSelector } from "react-redux";
+import { useNavigate } from "react-router-dom";
 
-const SignUp = ({
-  onRegister,
+export const SignUp = ({
   modal,
   signInOpenState,
   signUpOpenState,
   promise,
 }: IRegister) => {
+  const promise = useSelector((state: RootState) => state.promise);
+
   const [showPassword, setShowPassword] = useState(false);
   const [showRetryPassword, setShowRetryPassword] = useState(false);
+
+  const navigate = useNavigate();
 
   const initialValues: RegisterFormValues = {
     email: "",
@@ -61,7 +64,7 @@ const SignUp = ({
     signUpOpenState(false);
   };
 
-  const getSignIn = () => history.push("/signin");
+  const getSignIn = () => navigate("/signin");
 
   return (
     <div style={modal ? authModalStyles.main : authFormStyles.main}>
@@ -224,10 +227,3 @@ const SignUp = ({
     </div>
   );
 };
-
-export const CSignUp = connect(
-  (state: RootState) => ({ promise: state.promise }),
-  {
-    onRegister: actionFullRegister,
-  }
-)(SignUp);

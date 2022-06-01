@@ -1,9 +1,9 @@
 import React, { useState, useEffect } from "react";
 import { Dialog, Tabs, Tab, Typography, Box, Button } from "@mui/material";
 import { RootState } from "../../helpers/types";
-import { connect, useSelector } from "react-redux";
+import { useSelector } from "react-redux";
 import { Preloader } from "./../Auxiliary/Preloader";
-import { actionChooseCurrency } from "./../../actions/thunks";
+import { actionChooseCurrency as chooseCurrency } from "./../../actions/thunks";
 import { dialogCurrencyStyles } from "./headerStyles";
 import { TabPanelProps } from "../../server/api/api-models";
 import useSnackBar from "./../Auxiliary/SnackBar";
@@ -12,7 +12,7 @@ import { Transition } from "../Auxiliary/Transition";
 import { CurrencyModel } from "../../server/api/api-models";
 import { setTabsProps } from "../../helpers/functions";
 
-function TabPanel(props: TabPanelProps) {
+const TabPanel = (props: TabPanelProps) => {
   const { children, value, index, ...other } = props;
   return (
     <div
@@ -29,12 +29,15 @@ function TabPanel(props: TabPanelProps) {
       )}
     </div>
   );
-}
+};
 
-function BasicTabs({ auth, currencyList, chooseCurrency }) {
+const BasicTabs = () => {
+  const auth = useSelector((state: RootState) => state.auth);
+  const currencyList = useSelector((state: RootState) => state.currencyList);
+
   const currencySiteList = currencyList?.currency;
   const currentCurrency = (currencySiteList || []).find(
-    (currency) => auth?.payload?.currencyId === currency?.id
+    (currency: CurrencyModel) => auth?.payload?.currencyId === currency?.id
   );
   const [value, setValue] = useState(0);
 
@@ -99,20 +102,9 @@ function BasicTabs({ auth, currencyList, chooseCurrency }) {
       </TabPanel>
     </Box>
   );
-}
+};
 
-const CBasicTabs = connect(
-  (state: RootState) => ({
-    promise: state.promise,
-    auth: state.auth,
-    currencyList: state.currencyList,
-  }),
-  {
-    chooseCurrency: actionChooseCurrency,
-  }
-)(BasicTabs);
-
-export default function SlideDialogCurrency({ updateOpenDialogStatus }) {
+export const SlideDialogCurrency = ({ updateOpenDialogStatus }) => {
   const promise = useSelector((state: RootState) => state.promise);
   const [open, setOpen] = useState(true);
 
@@ -139,10 +131,10 @@ export default function SlideDialogCurrency({ updateOpenDialogStatus }) {
         <Preloader
           promiseName={"getCurrency"}
           promiseState={promise}
-          sub={<CBasicTabs />}
+          sub={<BasicTabs />}
           modal
         />
       </Dialog>
     </div>
   );
-}
+};

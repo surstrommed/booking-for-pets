@@ -9,28 +9,25 @@ import {
 import { CardActionArea, IconButton } from "@mui/material";
 import { Link } from "react-router-dom";
 import { RootState } from "../../helpers/types";
-import { connect } from "react-redux";
+import { useSelector } from "react-redux";
 import { hotelCardStyles } from "./hotelsStyles";
 import {
-  actionFullHotelUpdate,
-  actionUpdateWishlists,
+  actionFullHotelUpdate as hotelUpdate,
+  actionUpdateWishlists as onUnsave,
 } from "./../../actions/thunks";
 import { truncText } from "../../helpers/functions";
 import { links, sendSnackBarMessages } from "../../helpers/consts";
 import FavoriteBorderIcon from "@mui/icons-material/FavoriteBorder";
 import FavoriteIcon from "@mui/icons-material/Favorite";
 import ModalWindow from "./../Auxiliary/ModalWindow";
-import { CSelectWishlist } from "./../Wishlist/SelectWishlist";
+import { SelectWishlist } from "./../Wishlist/SelectWishlist";
 import useSnackBar from "./../Auxiliary/SnackBar";
 import { CurrencyModel, WishlistModel } from "src/server/api/api-models";
 
-const HotelCard = ({
-  auth,
-  hotelData,
-  hotelUpdate,
-  currencyList,
-  onUnsave,
-}) => {
+export const HotelCard = ({ hotelData }) => {
+  const auth = useSelector((state: RootState) => state.promise);
+  const currencyList = useSelector((state: RootState) => state.promise);
+
   const [openWishlistsWindow, setOpenWishlistsWindow] = useState(false);
   const [, sendSnackbar] = useSnackBar();
 
@@ -86,7 +83,7 @@ const HotelCard = ({
         <ModalWindow
           title={"Your choice"}
           body={
-            <CSelectWishlist
+            <SelectWishlist
               modalWindowState={updateWishlistWindow}
               currentHotel={hotelData}
             />
@@ -160,15 +157,3 @@ const HotelCard = ({
     </Card>
   );
 };
-
-export const CHotelCard = connect(
-  (state: RootState) => ({
-    auth: state.auth,
-    promise: state.promise,
-    currencyList: state.currencyList,
-  }),
-  {
-    hotelUpdate: actionFullHotelUpdate,
-    onUnsave: actionUpdateWishlists,
-  }
-)(HotelCard);
