@@ -200,3 +200,7 @@ export interface IReview {
   createdAt?: Date;
   owner: IOwner;
 }
+
+export interface FetchDataModel {
+  id?: string;
+}

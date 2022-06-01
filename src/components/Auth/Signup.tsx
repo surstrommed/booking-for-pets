@@ -23,6 +23,7 @@ export const SignUp = ({
   modal,
   signInOpenState,
   signUpOpenState,
+  promise,
 }: IRegister) => {
   const promise = useSelector((state: RootState) => state.promise);
 

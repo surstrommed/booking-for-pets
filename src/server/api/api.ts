@@ -1,11 +1,11 @@
-import { JsonModel, UserModel } from "./api-models";
+import { JsonModel, UserModel, FetchDataModel } from "./api-models";
 import axios from "axios";
 import jsonData from "../db.json";
 import { links } from "../../helpers/consts";
 
 const myFetch =
   (url: string) =>
-  async (data: object = {}, type: string = "POST") => {
+  async (data: FetchDataModel = {}, type: string = "POST") => {
     if (Object.keys(data).length === 0) {
       type = "GET";
     }
