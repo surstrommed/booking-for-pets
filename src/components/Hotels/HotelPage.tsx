@@ -87,10 +87,10 @@ export const HotelPage = () => {
         id: createUniqueId(),
       };
 
-      onBooking({
-        id: currentHotel?.id,
-        userRequests: [...currentHotel.userRequests, userRequest],
-      });
+      // onBooking({
+      //   id: currentHotel?.id,
+      //   userRequests: [...currentHotel.userRequests, userRequest],
+      // });
 
       onSendNotification({
         id: createUniqueId(),
