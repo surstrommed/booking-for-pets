@@ -3,17 +3,12 @@ import {
   actionRejected,
   actionResolved,
   actionAuthLogin,
-  actionGetExchangeList,
-  actionGetCurrencyList,
 } from "./types";
 import {
   actionLogin,
   actionRegister,
   actionUserUpdate,
-  actionUploadPhoto,
   actionHotelUpdate,
-  actionGetCurrencyExchange,
-  actionGetCurrency,
   actionHotelCreate,
   actionHotelDelete,
   actionGetHotels,
@@ -69,22 +64,6 @@ export const actionFullRegister =
     }
   };
 
-export const actionFullGetCurrencyExchange =
-  () => async (dispatch: DispatchType) => {
-    const currencyExchangeList = await dispatch(actionGetCurrencyExchange());
-    if (Object.keys(currencyExchangeList).length > 0) {
-      dispatch(actionGetExchangeList(currencyExchangeList));
-    }
-  };
-
-export const actionFullGetCurrencyList =
-  () => async (dispatch: DispatchType) => {
-    const currencyList = await dispatch(actionGetCurrency());
-    if (currencyList && Object.keys(currencyList).length > 0) {
-      dispatch(actionGetCurrencyList(currencyList));
-    }
-  };
-
 export const actionFullUserUpdate =
   (userData: UserModel, newPassword?: string) =>
   async (dispatch: DispatchType) => {
@@ -110,7 +89,7 @@ export const actionFullUserUpdate =
 
 export const actionChangeAvatar =
   (image: File) => async (dispatch: DispatchType) => {
-    const avatar: string = await dispatch(actionUploadPhoto(image));
+    // const avatar: string = await dispatch(actionUploadPhoto(image));
     const { password } = jwtDecode(sessionStorage.token);
     const { id, email }: payloadTypes = getState().auth.payload;
 

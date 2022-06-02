@@ -5,7 +5,6 @@ import Box from "@mui/material/Box";
 import { ChangePassword } from "./../components/Profile/ChangePassword";
 import { ChangeAvatar } from "./../components/Profile/ChangeAvatar";
 import { ChangePersonalData } from "./../components/Profile/ChangePersonalData";
-import { Preloader } from "./../components/Auxiliary/Preloader";
 import { RootState } from "../helpers/types";
 import { pagesStyles } from "./pagesStyles";
 import { TabPanelProps } from "../server/api/api-models";
@@ -34,8 +33,6 @@ function tabsProps(index: number) {
 }
 
 export const Profile = () => {
-  const promise = useSelector((state: RootState) => state.promise);
-
   const [value, setValue] = useState(0);
 
   const handleChange = (event: React.SyntheticEvent, newValue: number) => {
@@ -58,25 +55,13 @@ export const Profile = () => {
       </Tabs>
       <div style={pagesStyles.profile.tabPanel}>
         <TabPanel value={value} index={0}>
-          <Preloader
-            promiseName={"uploadAvatar"}
-            promiseState={promise}
-            sub={<ChangeAvatar />}
-          />
+          <ChangeAvatar />
         </TabPanel>
         <TabPanel value={value} index={1}>
-          <Preloader
-            promiseName={"signin"}
-            promiseState={promise}
-            sub={<ChangePersonalData />}
-          />
+          <ChangePersonalData />
         </TabPanel>
         <TabPanel value={value} index={2}>
-          <Preloader
-            promiseName={"signin"}
-            promiseState={promise}
-            sub={<ChangePassword />}
-          />
+          <ChangePassword />
         </TabPanel>
       </div>
     </Box>

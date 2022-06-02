@@ -65,6 +65,7 @@ export const sendSnackBarMessages = {
       Date.parse(arrivalDate.toString())
     )} to ${formatStringDate(Date.parse(departureDate.toString()))}`,
   changedAvatarMessage: () => "Your avatar has been changed",
+  removedAvatarMessage: () => "You avatar has been deleted",
   changedPasswordMessage: () => "Your password has been changed",
   changedPersonalDataMessage: () => "Your personal date has been changed",
   copiedMessage: () => "The hotel link has been copied!",
@@ -115,4 +116,11 @@ export const stringMonthsArray = [
   "October",
   "November",
   "December",
+];
+
+export const privateRoutes = [
+  "/profile",
+  "/for-owners",
+  "/notifications",
+  "/wishlists",
 ];

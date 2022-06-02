@@ -32,8 +32,6 @@ export const FullWindowHotelEditing = ({ hotelId, updateOpenDialogStatus }) => {
 
   const currencyList = useAppSelector((state) => state.currencyList);
 
-  console.log("currencyList", currencyList);
-
   const [open, setOpen] = useState(true);
   const [, sendSnackbar] = useSnackBar();
 

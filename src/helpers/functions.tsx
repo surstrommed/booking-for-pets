@@ -1,7 +1,7 @@
 import React from "react";
 import ErrorIcon from "@mui/icons-material/Error";
-import { HotelModel } from "../server/api/api-models";
-import { stringMonthsArray, apiErrors } from "./consts";
+import { HotelModel, UserModel, IJwtHelper } from "../server/api/api-models";
+import { stringMonthsArray, apiErrors, SECRET_KEY } from "./consts";
 import { Jwt, create, verify, JSONMap } from "njwt";
 
 export const stringMonth = (monthNumber: number) => {
@@ -88,29 +88,77 @@ export const setTabsProps = (index: number) => ({
   "aria-controls": `simple-tabpanel-${index}`,
 });
 
-export const jwtHelper = (
-  payload: JSONMap,
-  key: string,
-  token?: string,
-  type: string = "create"
-) => {
+export const jwtHelper = ({
+  payload,
+  key,
+  token,
+  type = "create",
+}: IJwtHelper) => {
   let jwt: Jwt | string = "";
-  switch (type) {
-    case "create":
-      try {
-        jwt = create(payload, key).compact();
-      } catch (e) {
-        return e;
-      }
-      return jwt;
-      break;
-    case "verify":
-      try {
-        jwt = verify(token, key);
-      } catch (e) {
-        return e;
-      }
-      return jwt;
-      break;
+  if (type === "create") {
+    try {
+      jwt = create(payload, key).compact();
+    } catch (e) {
+      return e;
+    }
   }
+  if (type === "verify") {
+    try {
+      jwt = verify(token, key);
+    } catch (e) {
+      return e;
+    }
+  }
+  return jwt;
+};
+
+export const formateUser = () => {
+  const { body: jwtBody } = jwtHelper({
+    token: sessionStorage?.token,
+    key: SECRET_KEY,
+    type: "verify",
+  });
+
+  const currentUser = { ...jwtBody };
+
+  if (currentUser?.iat) {
+    delete currentUser.iat;
+  }
+  if (currentUser?.exp) {
+    delete currentUser.exp;
+  }
+  if (currentUser?.jti) {
+    delete currentUser.jti;
+  }
+
+  return currentUser;
+};
+
+export const checkUser = (payload: UserModel) => {
+  if (
+    payload?.id &&
+    payload?.email &&
+    payload?.login &&
+    payload?.firstName &&
+    payload?.lastName &&
+    payload?.createdAt &&
+    (payload?.pictureUrl || payload?.pictureUrl === null) &&
+    payload?.currencyId &&
+    Array.isArray(payload?.notifications) &&
+    Array.isArray(payload?.wishlists)
+  ) {
+    return true;
+  } else {
+    return false;
+  }
+};
+
+export const updateJwtToken = (payload) => {
+  let jwtToken = "";
+  jwtToken = jwtHelper({
+    payload: payload,
+    key: SECRET_KEY,
+    type: "create",
+  });
+  sessionStorage.setItem("token", jwtToken);
 };

@@ -19,21 +19,16 @@ import { ProfileIcon } from "./ProfileIcon";
 import { Link, useNavigate } from "react-router-dom";
 import { useLocation } from "react-router-dom";
 import SearchBar from "./SearchBar";
-import {
-  actionSmallHeader,
-  actionBigHeader,
-  actionExpandSmallHeader,
-} from "./../../actions/types";
 import { headerBar } from "./headerStyles";
-import ModalWindow from "./../Auxiliary/ModalWindow";
-import { Preloader } from "./../Auxiliary/Preloader";
+import { ModalWindow } from "./../Auxiliary/ModalWindow";
 import { SignIn } from "./../Auth/Signin";
 import { SignUp } from "./../Auth/Signup";
 import { ElevationScrollProps } from "../../server/api/api-models";
-import { ButtonEvent, RootState } from "../../helpers/types";
+import { ButtonEvent } from "../../helpers/types";
 import { SlideDialogCurrency } from "./SlideDialogCurrency";
 import { useAppDispatch, useAppSelector } from "../../hooks/redux";
 import { headerSlice } from "../../store/reducers/HeaderSlice";
+import { checkUser, formateUser } from "../../helpers/functions";
 
 const pages = ["For owners"];
 
@@ -86,9 +81,6 @@ export const HeaderBar = (props) => {
     (state) => state.header
   );
 
-  const currentUser = useAppSelector((state) => state.auth?.payload);
-  const promise = useAppSelector((state) => state.promise);
-
   const handleOpenNavMenu = (event: ButtonEvent) => {
     setAnchorElNav(event.currentTarget);
   };
@@ -133,17 +125,10 @@ export const HeaderBar = (props) => {
             <ModalWindow
               title={"Sign in"}
               body={
-                <Preloader
-                  promiseName={"signin"}
-                  promiseState={promise}
-                  sub={
-                    <SignIn
-                      modal
-                      signInOpenState={updateSignInModal}
-                      signUpOpenState={updateSignUpModal}
-                    />
-                  }
+                <SignIn
                   modal
+                  signInOpenState={updateSignInModal}
+                  signUpOpenState={updateSignUpModal}
                 />
               }
               type={"signin"}
@@ -154,17 +139,10 @@ export const HeaderBar = (props) => {
             <ModalWindow
               title={"Sign up"}
               body={
-                <Preloader
-                  promiseName={"signup"}
-                  promiseState={promise}
-                  sub={
-                    <SignUp
-                      modal
-                      signInOpenState={updateSignInModal}
-                      signUpOpenState={updateSignUpModal}
-                    />
-                  }
+                <SignUp
                   modal
+                  signInOpenState={updateSignInModal}
+                  signUpOpenState={updateSignUpModal}
                 />
               }
               type={"signup"}
@@ -261,7 +239,7 @@ export const HeaderBar = (props) => {
               <Button
                 sx={headerBar.headerButtons}
                 onClick={() =>
-                  currentUser
+                  checkUser(formateUser())
                     ? navigate("/for-owners")
                     : updateSignInModal(true)
                 }
@@ -271,7 +249,7 @@ export const HeaderBar = (props) => {
               <Button
                 sx={headerBar.headerButtons}
                 onClick={() =>
-                  currentUser
+                  checkUser(formateUser())
                     ? updateCurrencyModal(true)
                     : updateSignInModal(true)
                 }

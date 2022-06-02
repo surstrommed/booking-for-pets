@@ -2,6 +2,9 @@ import { configureStore, combineReducers } from "@reduxjs/toolkit";
 import headerReducer from "./reducers/HeaderSlice";
 import { currencyAPI } from "./reducers/CurrencyService";
 import { authAPI } from "./reducers/AuthService";
+import { notificationAPI } from "./reducers/NotificationService";
+import { hotelAPI } from "./reducers/HotelService";
+import { usersAPI } from "./reducers/UserService";
 
 export const loadSessionStorageState = () => {
   try {
@@ -26,6 +29,9 @@ const rootReducer = combineReducers({
   header: headerReducer,
   [currencyAPI.reducerPath]: currencyAPI.reducer,
   [authAPI.reducerPath]: authAPI.reducer,
+  [notificationAPI.reducerPath]: notificationAPI.reducer,
+  [hotelAPI.reducerPath]: hotelAPI.reducer,
+  [usersAPI.reducerPath]: usersAPI.reducer,
 });
 
 export const setupStore = () => {
@@ -34,7 +40,13 @@ export const setupStore = () => {
     reducer: rootReducer,
     preloadedState: loadSessionStorageState(),
     middleware: (getDefaultMiddleware) =>
-      getDefaultMiddleware().concat(currencyAPI.middleware, authAPI.middleware),
+      getDefaultMiddleware().concat(
+        currencyAPI.middleware,
+        authAPI.middleware,
+        notificationAPI.middleware,
+        hotelAPI.middleware,
+        usersAPI.middleware
+      ),
   });
 };
 

@@ -1,6 +1,6 @@
 import React, { useEffect } from "react";
 import "./../assets/scss/App.scss";
-import { Main } from "./../pages/Main";
+import { Router } from "../pages/Router";
 import { HeaderBar } from "./Header/HeaderBar";
 import { ThemeProvider } from "@mui/material/styles";
 import { theme } from "./../assets/theme";
@@ -9,10 +9,6 @@ import {
   actionGetUsers,
   actionGetNotifications,
 } from "./../actions/index";
-import {
-  actionFullGetCurrencyExchange,
-  actionFullGetCurrencyList,
-} from "../actions/thunks";
 import { setupStore } from "../store/store";
 import { useAppDispatch, useAppSelector } from "../hooks/redux";
 import { SnackbarProvider } from "notistack";
@@ -42,7 +38,7 @@ export const App = () => {
       <ThemeProvider theme={theme}>
         <div className="App">
           <HeaderBar />
-          <Main />
+          <Router />
         </div>
       </ThemeProvider>
     </SnackbarProvider>

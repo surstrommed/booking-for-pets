@@ -1,23 +1,6 @@
 {
   "users": [
     {
-      "email": "crng@ukr.net",
-      "login": "admin",
-      "firstName": "Anton",
-      "lastName": "Zadorozhnyi",
-      "createdAt": 1647206008510,
-      "currencyId": 1,
-      "id": 1,
-      "pictureUrl": "https://i.ibb.co/v41JTMR/147144.png",
-      "wishlists": [
-        {
-          "name": "Test",
-          "hotelsId": []
-        }
-      ],
-      "password": "$2a$10$4g5Ws/BSao6f0YemFOLJI.S2AGTbwTu69t8TptjGat8NbN79QOa/."
-    },
-    {
       "email": "user1231@ukr.net",
       "login": "user1231",
       "firstName": "Sergii",
@@ -160,6 +143,18 @@
       "pictureUrl": null,
       "wishlists": [],
       "id": 13
+    },
+    {
+      "email": "crng@ukr.net",
+      "login": "admin",
+      "firstName": "Anton",
+      "lastName": "Zadorozhnyi",
+      "currencyId": 1,
+      "createdAt": 1654154619000,
+      "pictureUrl": "https://i.ibb.co/KwfdGtY/pngtree-user-avatar-boy-image-1482937.jpg",
+      "wishlists": [],
+      "id": 14,
+      "password": "$2a$10$BhSEyoAmnVLZy3sHY.2VXOkMeoWvw1XGYBpcgS1mzcCku/NyGM/Xy"
     }
   ],
   "hotels": [

@@ -9,7 +9,7 @@ import { Tabs, Tab, Box } from "@mui/material";
 import { forOwnersStyles } from "./forOwnersStyles";
 import { useParams } from "react-router-dom";
 import useSnackBar from "../Auxiliary/SnackBar";
-import ModalWindow from "../Auxiliary/ModalWindow";
+import { ModalWindow } from "../Auxiliary/ModalWindow";
 import { RequestNotification } from "./RequestNotification";
 import {
   clearPastFreeRooms,

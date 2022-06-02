@@ -25,7 +25,7 @@ import {
 } from "../../server/api/api-models";
 import { hotelPageVS } from "./../../helpers/validationSchemes";
 import useSnackBar from "./../Auxiliary/SnackBar";
-import Page404 from "../../pages/Page404";
+import { Page404 } from "../../pages/Page404";
 import { hotelPageStyles } from "./hotelsStyles";
 import { HotelModel, CurrencyModel } from "../../server/api/api-models";
 import {

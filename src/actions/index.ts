@@ -3,10 +3,7 @@ import {
   userLogin,
   userRegister,
   userUpdate,
-  uploadImage,
   getHotels,
-  getCurrency,
-  getExchangeRates,
   getNotifications,
 } from "../server/api/api";
 import { actionPromise } from "./thunks";
@@ -42,10 +39,6 @@ export const actionUserUpdate = (userData: UserModel) => {
     "userUpdate",
     userUpdate({ ...currentUser, ...userData }, "PUT")
   );
-};
-
-export const actionUploadPhoto = (image: File) => {
-  return actionPromise("uploadAvatar", uploadImage(image));
 };
 
 export const actionGetHotels = () => {
@@ -105,14 +98,6 @@ export const actionHotelCreate = (hotelData: HotelModel) => {
       ? getHotels({ ...currentHotel, ...hotelData }, "PUT")
       : getHotels(hotelData)
   );
-};
-
-export const actionGetCurrency = () => {
-  return actionPromise("getCurrency", getCurrency());
-};
-
-export const actionGetCurrencyExchange = () => {
-  return actionPromise("exchangeRates", getExchangeRates());
 };
 
 export const actionGetUsers = () => {

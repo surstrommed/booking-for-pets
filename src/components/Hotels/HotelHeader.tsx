@@ -5,7 +5,7 @@ import { hotelPageStyles } from "./hotelsStyles";
 import IosShareOutlinedIcon from "@mui/icons-material/IosShareOutlined";
 import GradeOutlinedIcon from "@mui/icons-material/GradeOutlined";
 import GradeIcon from "@mui/icons-material/Grade";
-import ModalWindow from "./../Auxiliary/ModalWindow";
+import { ModalWindow } from "./../Auxiliary/ModalWindow";
 import { SelectWishlist } from "../Wishlist/SelectWishlist";
 import { useSelector } from "react-redux";
 import { RootState } from "../../helpers/types";

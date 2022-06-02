@@ -19,7 +19,7 @@ import { truncText } from "../../helpers/functions";
 import { links, sendSnackBarMessages } from "../../helpers/consts";
 import FavoriteBorderIcon from "@mui/icons-material/FavoriteBorder";
 import FavoriteIcon from "@mui/icons-material/Favorite";
-import ModalWindow from "./../Auxiliary/ModalWindow";
+import { ModalWindow } from "./../Auxiliary/ModalWindow";
 import { SelectWishlist } from "./../Wishlist/SelectWishlist";
 import useSnackBar from "./../Auxiliary/SnackBar";
 import { CurrencyModel, WishlistModel } from "src/server/api/api-models";

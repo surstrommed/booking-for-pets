@@ -28,24 +28,6 @@ const myFetch =
     return response;
   };
 
-const imageFetch = (url: string) => async (file: File) => {
-  const payload = new FormData();
-  payload.append("image", file);
-  const obj = await axios.post(url, payload).catch(() => {
-    throw new Error("Failed to connect to the server, please try again later.");
-  });
-  return obj?.data?.data?.image?.url;
-};
-
-const exchangeRatesFetch = (url: string) => async () => {
-  const obj = await axios.get(url).catch(() => {
-    throw new Error("Failed to connect to the server, please try again later.");
-  });
-  return obj?.data?.rates;
-};
-
-export const uploadImage = imageFetch(links.uploadImage);
-
 export const userRegister = myFetch(links.apiUrl + "register");
 
 export const userLogin = myFetch(links.apiUrl + "login");
@@ -54,8 +36,15 @@ export const userUpdate = myFetch(links.apiUrl + "users");
 
 export const getHotels = myFetch(links.apiUrl + "hotels");
 
-export const getCurrency = myFetch(links.apiUrl + "currency");
-
-export const getExchangeRates = exchangeRatesFetch(links.currencyChange);
-
 export const getNotifications = myFetch(links.apiUrl + "notifications");
+
+const uploadImage = (url: string) => async (file: File) => {
+  const payload = new FormData();
+  payload.append("image", file);
+  const obj = await axios.post(url, payload).catch(() => {
+    throw new Error("Failed to connect to the server, please try again later.");
+  });
+  return obj?.data?.data?.image?.url;
+};
+
+export const getImageLink = uploadImage(links.uploadImage);

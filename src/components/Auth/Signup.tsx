@@ -13,21 +13,23 @@ import { actionFullRegister as onRegister } from "../../actions/thunks";
 import { CustomTextField } from "./../Auxiliary/CustomTextField";
 import { authFormStyles, authModalStyles } from "./authStyles";
 import { signUpVS } from "./../../helpers/validationSchemes";
-import { IRegister, RegisterFormValues } from "./../../server/api/api-models";
+import { ISignUp, SignUpFormValues } from "./../../server/api/api-models";
 import { useLocation, useNavigate } from "react-router-dom";
-import { jwtHelper } from "../../helpers/functions";
+import { jwtHelper, updateJwtToken } from "../../helpers/functions";
 import { authAPI } from "../../store/reducers/AuthService";
 import { SECRET_KEY } from "../../helpers/consts";
+import { Preloader } from "../Auxiliary/Preloader";
+import { JSONMap } from "njwt";
 
 export const SignUp = ({
   modal,
   signInOpenState,
   signUpOpenState,
-}: IRegister) => {
+}: ISignUp) => {
   const [showPassword, setShowPassword] = useState(false);
   const [showRetryPassword, setShowRetryPassword] = useState(false);
 
-  const initialValues: RegisterFormValues = {
+  const initialValues: SignUpFormValues = {
     email: "",
     login: "",
     firstName: "",
@@ -39,13 +41,12 @@ export const SignUp = ({
   const navigate = useNavigate();
   const location = useLocation().pathname;
 
-  const [signup, { data, isError, error }] = authAPI.useSignupMutation();
+  const [signup, { isLoading, isSuccess, error }] = authAPI.useSignupMutation();
 
   const formik = useFormik({
     initialValues: initialValues,
     validationSchema: signUpVS,
     onSubmit: async (values) => {
-      modal && signUpOpenState(false);
       const { email, login, firstName, lastName, password } = values;
       const response = await signup({
         email,
@@ -54,12 +55,15 @@ export const SignUp = ({
         lastName,
         password,
       });
-      let jwtToken = "";
-      if (response?.data?.user) {
-        jwtToken = jwtHelper(response?.data?.user, SECRET_KEY);
-        sessionStorage.setItem("token", jwtToken);
-        (location === "/signin" || location === "/signup") && navigate("/");
+      if ("data" in response && !("error" in response)) {
+        updateJwtToken(response?.data?.user);
+      } else {
+        return;
       }
+      modal && signUpOpenState(false);
+      (location === "/signin" || location === "/signup") &&
+        !modal &&
+        navigate("/");
     },
   });
 
@@ -77,8 +81,8 @@ export const SignUp = ({
   const getSignIn = () => navigate("/signin");
 
   return (
-    <div style={modal ? authModalStyles.main : authFormStyles.main}>
-      <div>
+    <Preloader isLoading={isLoading} isSuccess={isSuccess} error={error?.data}>
+      <div style={modal ? authModalStyles.main : authFormStyles.main}>
         {modal || (
           <>
             <Typography
@@ -164,7 +168,6 @@ export const SignUp = ({
                     <IconButton
                       aria-label="toggle password visibility"
                       onClick={showPass}
-                      onMouseDown={showPass}
                     >
                       {showPassword ? (
                         <VisibilityIcon />
@@ -195,7 +198,6 @@ export const SignUp = ({
                     <IconButton
                       aria-label="toggle retry password visibility"
                       onClick={showRetryPass}
-                      onMouseDown={showRetryPass}
                     >
                       {showRetryPassword ? (
                         <VisibilityIcon />
@@ -234,6 +236,6 @@ export const SignUp = ({
           </Box>
         </form>
       </div>
-    </div>
+    </Preloader>
   );
 };

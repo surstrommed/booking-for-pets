@@ -1,25 +1,21 @@
 import React, { useCallback, useState } from "react";
 import { useDropzone } from "react-dropzone";
 import { Typography } from "@mui/material";
-import { actionChangeAvatar as actionAvatar } from "./../../actions/thunks";
 
-export const Dropzone = ({ text, type, limit }) => {
+export const Dropzone = ({ text, type, limit, handleImageUpload }) => {
   const [typeError, setTypeError] = useState(false);
 
-  const onDrop = useCallback(
-    (acceptedFiles) => {
-      if (
-        acceptedFiles[0].type.includes(type) &&
-        acceptedFiles.length <= limit &&
-        acceptedFiles.length > 0
-      ) {
-        actionAvatar(acceptedFiles[0]);
-      } else {
-        setTypeError(true);
-      }
-    },
-    [actionAvatar]
-  );
+  const onDrop = useCallback((acceptedFiles) => {
+    if (
+      acceptedFiles[0].type.includes(type) &&
+      acceptedFiles.length <= limit &&
+      acceptedFiles.length > 0
+    ) {
+      handleImageUpload(acceptedFiles[0]);
+    } else {
+      setTypeError(true);
+    }
+  }, []);
 
   const { getRootProps, getInputProps, isDragActive } = useDropzone({ onDrop });
 

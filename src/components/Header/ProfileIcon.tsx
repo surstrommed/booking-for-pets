@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import {
   Box,
   Avatar,
@@ -12,14 +12,11 @@ import {
 import AccountCircleIcon from "@mui/icons-material/AccountCircle";
 import MenuIcon from "@mui/icons-material/Menu";
 import { useSelector } from "react-redux";
-import { actionAuthLogout as actionLogOut } from "../../actions/types";
-import { RootState } from "../../helpers/types";
-import ModalWindow from "./../Auxiliary/ModalWindow";
+import { ModalWindow } from "./../Auxiliary/ModalWindow";
 import { SignIn } from "./../Auth/Signin";
 import { SignUp } from "./../Auth/Signup";
-import { Preloader } from "./../Auxiliary/Preloader";
 import { profileIconStyles } from "./headerStyles";
-import { links } from "../../helpers/consts";
+import { links, privateRoutes } from "../../helpers/consts";
 import {
   NotificationModel,
   HotelModel,
@@ -29,14 +26,19 @@ import {
   UNREAD_NOTIFICATION,
   PENDING_REQUEST_MESSAGE,
 } from "../../helpers/consts";
-import { useNavigate } from "react-router-dom";
-
-type ButtonEvent = React.MouseEvent<HTMLButtonElement>;
+import { useNavigate, useLocation } from "react-router-dom";
+import { ButtonEvent, RootState } from "../../helpers/types";
 
 export const ProfileIcon = () => {
   const promise = useSelector((state: RootState) => state.promise);
   const auth = useSelector((state: RootState) => state.auth);
   const navigate = useNavigate();
+  const location = useLocation().pathname;
+
+  useEffect(() => {
+    const routeCheck = privateRoutes.some((route) => location.includes(route));
+    !sessionStorage?.token && routeCheck && navigate("/signin");
+  }, [sessionStorage?.token]);
 
   const [anchorElUser, setAnchorElUser] = useState(null);
   const [openSignInModal, setOpenSignInModal] = useState(false);
@@ -65,6 +67,8 @@ export const ProfileIcon = () => {
   const getProfile = () => navigate("/profile");
 
   const getNotifications = () => navigate("/notifications");
+
+  const goHome = () => navigate("/");
 
   const openSignIn = () => setOpenSignInModal(true);
 
@@ -101,17 +105,10 @@ export const ProfileIcon = () => {
         <ModalWindow
           title={"Sign in"}
           body={
-            <Preloader
-              promiseName={"signin"}
-              promiseState={promise}
-              sub={
-                <SignIn
-                  modal
-                  signInOpenState={updateSignInModal}
-                  signUpOpenState={updateSignUpModal}
-                />
-              }
+            <SignIn
               modal
+              signInOpenState={updateSignInModal}
+              signUpOpenState={updateSignUpModal}
             />
           }
           type={"signin"}
@@ -122,17 +119,10 @@ export const ProfileIcon = () => {
         <ModalWindow
           title={"Sign up"}
           body={
-            <Preloader
-              promiseName={"signup"}
-              promiseState={promise}
-              sub={
-                <SignUp
-                  modal
-                  signInOpenState={updateSignInModal}
-                  signUpOpenState={updateSignUpModal}
-                />
-              }
+            <SignUp
               modal
+              signInOpenState={updateSignInModal}
+              signUpOpenState={updateSignUpModal}
             />
           }
           type={"signup"}
@@ -220,6 +210,12 @@ export const ProfileIcon = () => {
               <hr />
               <MenuItem onClick={getLogOut}>
                 <Typography textAlign="center">Logout</Typography>
+              </MenuItem>
+            </div>
+          ) : location === "/signin" || location === "/signup" ? (
+            <div>
+              <MenuItem onClick={goHome}>
+                <Typography textAlign="center">Go home</Typography>
               </MenuItem>
             </div>
           ) : (

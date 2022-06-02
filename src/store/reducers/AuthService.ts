@@ -2,11 +2,16 @@ import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 import { UserModel } from "../../server/api/api-models";
 import { links } from "../../helpers/consts";
 
+interface IAuthAPI {
+  accessToken: string;
+  user: UserModel;
+}
+
 export const authAPI = createApi({
   baseQuery: fetchBaseQuery({ baseUrl: links.apiUrl }),
   tagTypes: ["Auth"],
   endpoints: (build) => ({
-    signin: build.mutation<UserModel, UserModel>({
+    signin: build.mutation<IAuthAPI, UserModel>({
       query: (user) => ({
         url: "login",
         method: "POST",
@@ -14,7 +19,7 @@ export const authAPI = createApi({
       }),
       invalidatesTags: ["Auth"],
     }),
-    signup: build.mutation<UserModel, UserModel>({
+    signup: build.mutation<IAuthAPI, UserModel>({
       query: (user) => {
         const modifiedUser = {
           ...user,

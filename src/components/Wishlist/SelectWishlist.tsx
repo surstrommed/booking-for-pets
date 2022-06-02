@@ -8,7 +8,7 @@ import {
 } from "@mui/material";
 import AddBoxOutlinedIcon from "@mui/icons-material/AddBoxOutlined";
 import { wishlistStyles } from "./wishlistStyles";
-import ModalWindow from "../Auxiliary/ModalWindow";
+import { ModalWindow } from "../Auxiliary/ModalWindow";
 import {
   links,
   NEW_WISHLIST_MODAL_TITLE,
@@ -19,7 +19,7 @@ import { RootState } from "../../helpers/types";
 import { actionUpdateWishlists as onSelect } from "../../actions/thunks";
 import { CreateWishlist } from "./CreateWishlist";
 import useSnackBar from "./../Auxiliary/SnackBar";
-import { HotelModel, WishlistModel } from "src/server/api/api-models";
+import { HotelModel, WishlistModel } from "../../server/api/api-models";
 
 export const SelectWishlist = ({ modalWindowState, currentHotel }) => {
   const promise = useSelector((state: RootState) => state.promise);
