@@ -1,14 +1,18 @@
 import React from "react";
-import { useSelector } from "react-redux";
-import { RootState } from "../../helpers/types";
 import { HotelCard } from "./HotelCard";
 import { useParams } from "react-router-dom";
 import { Typography } from "@mui/material";
 import { spaceFormatting } from "../../helpers/functions";
 import { FreeRoomsModel, HotelModel } from "../../server/api/api-models";
+import { hotelAPI } from "../../store/reducers/HotelService";
+import { Preloader } from "../Auxiliary/Preloader";
 
 export const HotelsList = () => {
-  const promise = useSelector((state: RootState) => state.promise);
+  const {
+    data: allHotels,
+    error: hotelsError,
+    isLoading: hotelsLoading,
+  } = hotelAPI.useFetchAllHotelsQuery("");
 
   const params = useParams();
   const locationParameter = params?.location
@@ -52,36 +56,41 @@ export const HotelsList = () => {
 
   const hotels =
     Object.keys(params).length === 0
-      ? promise?.getHotels?.payload
-      : promise?.getHotels?.payload?.filter(
+      ? allHotels || []
+      : (allHotels || [])?.filter(
           (hotel: HotelModel) =>
             hotel.location === locationParameter &&
             dateAvailabilityCheck(hotel.freeRooms)
         );
 
-  const withoutDeleted = (hotels || []).filter((hotel) => hotel.owner !== 0);
-
   return (
-    <>
-      <Typography variant="h5" gutterBottom component="div" sx={{ padding: 5 }}>
-        {withoutDeleted.length} hotels found according to your request
-      </Typography>
-      <div className="HotelsList">
-        {(withoutDeleted || []).map((hotel: HotelModel, index: number) => (
-          <div key={hotel.id}>
-            <HotelCard
-              hotelData={{
-                index,
-                id: hotel.id,
-                image: hotel.photos[0],
-                title: hotel.name,
-                description: hotel.description,
-                price: hotel.price,
-              }}
-            />
-          </div>
-        ))}
-      </div>
-    </>
+    <Preloader isLoading={hotelsLoading} error={hotelsError?.data}>
+      <>
+        <Typography
+          variant="h5"
+          gutterBottom
+          component="div"
+          sx={{ padding: 5 }}
+        >
+          {hotels.length} hotels found according to your request
+        </Typography>
+        <div className="HotelsList">
+          {(hotels || []).map((hotel: HotelModel, index: number) => (
+            <div key={hotel.id}>
+              <HotelCard
+                hotelData={{
+                  index,
+                  id: hotel.id,
+                  image: hotel.photos[0],
+                  title: hotel.name,
+                  description: hotel.description,
+                  price: hotel.price,
+                }}
+              />
+            </div>
+          ))}
+        </div>
+      </>
+    </Preloader>
   );
 };

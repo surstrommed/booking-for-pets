@@ -36,8 +36,7 @@ export const ChangePersonalData = () => {
 
   const [, sendSnackbar] = useSnackBar();
 
-  const [updateUser, { isLoading, isSuccess, error }] =
-    usersAPI.useUpdateUserMutation();
+  const [updateUser, { isLoading, error }] = usersAPI.useUpdateUserMutation();
 
   const [signin, { error: signInError }] = authAPI.useSigninMutation();
 
@@ -62,7 +61,7 @@ export const ChangePersonalData = () => {
         };
         const response = await updateUser(modifiedUser);
         if ("data" in response && !("error" in response)) {
-          updateJwtToken(response?.data);
+          updateJwtToken({ ...response?.data, password: values?.password });
         }
         if (typeof sendSnackbar === "function") {
           sendSnackbar({
@@ -87,11 +86,7 @@ export const ChangePersonalData = () => {
     initialValues.lastName === values.lastName;
 
   return (
-    <Preloader
-      isLoading={isLoading}
-      isSuccess={isSuccess}
-      error={signInError?.data || error?.data}
-    >
+    <Preloader isLoading={isLoading} error={signInError?.data || error?.data}>
       <Card sx={changeProfileStyles.personalDataCard}>
         <Typography variant="body2" gutterBottom>
           To change the data, enter a new value in one of the fields and click

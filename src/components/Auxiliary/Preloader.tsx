@@ -2,7 +2,6 @@ import React from "react";
 import { LinearProgress, Box, Alert, AlertTitle } from "@mui/material";
 import { preloaderStyles } from "./auxiliaryStyles";
 import { IPreloader } from "../../server/api/api-models";
-import { Page404 } from "../../pages/Page404";
 
 export const Loader = () => {
   return (
@@ -14,7 +13,6 @@ export const Loader = () => {
 
 export const Preloader = ({
   isLoading,
-  isSuccess,
   error,
   modal,
   children,
@@ -23,8 +21,6 @@ export const Preloader = ({
     <>
       {isLoading ? (
         <Loader />
-      ) : isSuccess ? (
-        children
       ) : error ? (
         <>
           <Alert

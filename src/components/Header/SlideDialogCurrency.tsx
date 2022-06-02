@@ -3,14 +3,18 @@ import { Dialog, Tabs, Tab, Typography, Box, Button } from "@mui/material";
 import { RootState } from "../../helpers/types";
 import { useSelector } from "react-redux";
 import { Preloader } from "./../Auxiliary/Preloader";
-import { actionChooseCurrency as chooseCurrency } from "./../../actions/thunks";
 import { dialogCurrencyStyles } from "./headerStyles";
 import { TabPanelProps } from "../../server/api/api-models";
 import useSnackBar from "./../Auxiliary/SnackBar";
-import { sendSnackBarMessages } from "../../helpers/consts";
+import { sendSnackBarMessages, siteCurrencyList } from "../../helpers/consts";
 import { Transition } from "../Auxiliary/Transition";
 import { CurrencyModel } from "../../server/api/api-models";
-import { setTabsProps } from "../../helpers/functions";
+import {
+  formateUser,
+  setTabsProps,
+  updateJwtToken,
+} from "../../helpers/functions";
+import { usersAPI } from "../../store/reducers/UserService";
 
 const TabPanel = (props: TabPanelProps) => {
   const { children, value, index, ...other } = props;
@@ -32,12 +36,15 @@ const TabPanel = (props: TabPanelProps) => {
 };
 
 const BasicTabs = () => {
-  const auth = useSelector((state: RootState) => state.auth);
-  const currencyList = useSelector((state: RootState) => state.currencyList);
+  const currentUser = formateUser();
 
-  const currencySiteList = currencyList?.currency;
-  const currentCurrency = (currencySiteList || []).find(
-    (currency: CurrencyModel) => auth?.payload?.currencyId === currency?.id
+  const [, sendSnackbar] = useSnackBar();
+
+  const [updateUser, { isLoading: updateUserLoading, error: updateUserError }] =
+    usersAPI.useUpdateUserMutation();
+
+  const currentCurrency = (siteCurrencyList || []).find(
+    (currency: CurrencyModel) => currentUser?.currencyId === currency?.id
   );
   const [value, setValue] = useState(0);
 
@@ -45,67 +52,75 @@ const BasicTabs = () => {
     setValue(newValue);
   };
 
-  const [, sendSnackbar] = useSnackBar();
+  const selectCurrency = async (currency: CurrencyModel) => {
+    const response = await updateUser({
+      ...currentUser,
+      currencyId: currency.id,
+    });
+
+    if (response?.data) {
+      updateJwtToken({ ...response?.data, password: currentUser?.password });
+    }
+
+    typeof sendSnackbar === "function" &&
+      !updateUserError?.data &&
+      sendSnackbar({
+        msg: sendSnackBarMessages.selectedCurrencyMessage(currency?.name),
+        variant: "success",
+      });
+  };
 
   return (
-    <Box sx={dialogCurrencyStyles.tabBoxWidth}>
-      <Box sx={dialogCurrencyStyles.tabBoxMain}>
-        <Tabs
-          value={value}
-          onChange={handleChange}
-          textColor="secondary"
-          indicatorColor="secondary"
-        >
-          <Tab label="Language" {...setTabsProps(0)} />
-          <Tab label="Currency" {...setTabsProps(1)} />
-        </Tabs>
+    <Preloader isLoading={updateUserLoading} error={updateUserError?.data}>
+      <Box sx={dialogCurrencyStyles.tabBoxWidth}>
+        <Box sx={dialogCurrencyStyles.tabBoxMain}>
+          <Tabs
+            value={value}
+            onChange={handleChange}
+            textColor="secondary"
+            indicatorColor="secondary"
+          >
+            <Tab label="Language" {...setTabsProps(0)} />
+            <Tab label="Currency" {...setTabsProps(1)} />
+          </Tabs>
+        </Box>
+        <TabPanel value={value} index={0}>
+          <Typography variant="h5" gutterBottom component="span">
+            Choose a language
+          </Typography>
+        </TabPanel>
+        <TabPanel value={value} index={1}>
+          <Typography variant="h5" gutterBottom component="span">
+            Choose a currency
+          </Typography>
+          <br />
+          <Typography variant="body1" gutterBottom component="span">
+            Selected: {currentCurrency?.sign}
+          </Typography>
+          <span style={dialogCurrencyStyles.tabs}>
+            {(siteCurrencyList || []).map(
+              (currency: CurrencyModel, index: number) => (
+                <Button
+                  key={index}
+                  variant="outlined"
+                  color="secondary"
+                  size="large"
+                  disabled={currentCurrency.id === currency.id}
+                  sx={{ margin: "0 2vh" }}
+                  onClick={() => selectCurrency(currency)}
+                >
+                  {currency.name} - {currency.sign}
+                </Button>
+              )
+            )}
+          </span>
+        </TabPanel>
       </Box>
-      <TabPanel value={value} index={0}>
-        <Typography variant="h5" gutterBottom component="span">
-          Choose a language
-        </Typography>
-      </TabPanel>
-      <TabPanel value={value} index={1}>
-        <Typography variant="h5" gutterBottom component="span">
-          Choose a currency
-        </Typography>
-        <br />
-        <Typography variant="body1" gutterBottom component="span">
-          Selected: {currentCurrency?.sign}
-        </Typography>
-        <span style={dialogCurrencyStyles.tabs}>
-          {(currencySiteList || []).map(
-            (currency: CurrencyModel, index: number) => (
-              <Button
-                key={index}
-                variant="outlined"
-                color="secondary"
-                size="large"
-                disabled={currentCurrency.id === currency.id}
-                sx={{ margin: "0 2vh" }}
-                onClick={() => {
-                  chooseCurrency(currency.id);
-                  typeof sendSnackbar === "function" &&
-                    sendSnackbar({
-                      msg: sendSnackBarMessages.selectedCurrencyMessage(
-                        currency?.name
-                      ),
-                      variant: "success",
-                    });
-                }}
-              >
-                {currency.name} - {currency.sign}
-              </Button>
-            )
-          )}
-        </span>
-      </TabPanel>
-    </Box>
+    </Preloader>
   );
 };
 
 export const SlideDialogCurrency = ({ updateOpenDialogStatus }) => {
-  const promise = useSelector((state: RootState) => state.promise);
   const [open, setOpen] = useState(true);
 
   const handleClose = () => {
@@ -128,12 +143,7 @@ export const SlideDialogCurrency = ({ updateOpenDialogStatus }) => {
         keepMounted
         onClose={handleClose}
       >
-        <Preloader
-          promiseName={"getCurrency"}
-          promiseState={promise}
-          sub={<BasicTabs />}
-          modal
-        />
+        <BasicTabs />
       </Dialog>
     </div>
   );

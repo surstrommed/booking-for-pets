@@ -18,7 +18,7 @@ import useScrollTrigger from "@mui/material/useScrollTrigger";
 import { ProfileIcon } from "./ProfileIcon";
 import { Link, useNavigate } from "react-router-dom";
 import { useLocation } from "react-router-dom";
-import SearchBar from "./SearchBar";
+import { SearchBar } from "./SearchBar";
 import { headerBar } from "./headerStyles";
 import { ModalWindow } from "./../Auxiliary/ModalWindow";
 import { SignIn } from "./../Auth/Signin";

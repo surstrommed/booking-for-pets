@@ -3,7 +3,7 @@ import { links } from "../../helpers/consts";
 import { HotelModel } from "../../server/api/api-models";
 
 interface IHotelAPI {
-  notifications: HotelModel[] | HotelModel;
+  data: HotelModel;
 }
 
 export const hotelAPI = createApi({
@@ -39,9 +39,9 @@ export const hotelAPI = createApi({
       }),
       invalidatesTags: ["Hotels"],
     }),
-    deleteHotel: build.mutation<IHotelAPI, HotelModel>({
-      query: (hotel) => ({
-        url: `/hotels/${hotel.id}`,
+    deleteHotel: build.mutation<IHotelAPI, string>({
+      query: (hotelId) => ({
+        url: `/hotels/${hotelId}`,
         method: "DELETE",
       }),
       invalidatesTags: ["Hotels"],

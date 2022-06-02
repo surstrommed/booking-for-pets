@@ -28,7 +28,7 @@ export const SignIn = ({
   const navigate = useNavigate();
   const location = useLocation().pathname;
 
-  const [signin, { isLoading, isSuccess, error }] = authAPI.useSigninMutation();
+  const [signin, { isLoading, error }] = authAPI.useSigninMutation();
 
   const formik = useFormik({
     initialValues: initialValues,
@@ -37,7 +37,7 @@ export const SignIn = ({
       const { email, password } = values;
       const response = await signin({ email, password });
       if ("data" in response && !("error" in response)) {
-        updateJwtToken(response?.data?.user);
+        updateJwtToken({ ...response?.data?.user, password });
       } else {
         return;
       }
@@ -66,7 +66,7 @@ export const SignIn = ({
   }, [sessionStorage?.token]);
 
   return (
-    <Preloader isLoading={isLoading} isSuccess={isSuccess} error={error?.data}>
+    <Preloader isLoading={isLoading} error={error?.data}>
       <div style={modal ? authModalStyles.main : authFormStyles.main}>
         {modal || (
           <>

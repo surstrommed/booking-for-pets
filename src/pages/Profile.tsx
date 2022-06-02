@@ -10,7 +10,7 @@ import { pagesStyles } from "./pagesStyles";
 import { TabPanelProps } from "../server/api/api-models";
 import { useSelector } from "react-redux";
 
-function TabPanel(props: TabPanelProps) {
+const TabPanel = (props: TabPanelProps) => {
   const { children, value, index, ...other } = props;
   return (
     <div
@@ -23,14 +23,14 @@ function TabPanel(props: TabPanelProps) {
       {value === index && <Box sx={{ p: 3 }}>{children}</Box>}
     </div>
   );
-}
+};
 
-function tabsProps(index: number) {
+const tabsProps = (index: number) => {
   return {
     id: `vertical-tab-${index}`,
     "aria-controls": `vertical-tabpanel-${index}`,
   };
-}
+};
 
 export const Profile = () => {
   const [value, setValue] = useState(0);

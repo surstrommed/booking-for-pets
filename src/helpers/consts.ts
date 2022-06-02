@@ -1,11 +1,5 @@
 import { formatStringDate } from "./functions";
 
-export const PENDING_PROMISE_STATUS = "PENDING";
-
-export const RESOLVED_PROMISE_STATUS = "RESOLVED";
-
-export const REJECTED_PROMISE_STATUS = "REJECTED";
-
 export const PENDING_REQUEST_MESSAGE = "Pending";
 
 export const CONFIRMED_REQUEST_MESSAGE = "Confirmed";
@@ -17,8 +11,6 @@ export const UNREAD_NOTIFICATION = "Unread";
 export const READ_NOTIFICATION = "Read";
 
 export const EMPTY_NOTIFICATION = "Empty";
-
-export const DELETED_NOTIFICATION = "Deleted";
 
 export const NOTIFICATION_MESSAGE_MODAL =
   "You can write the message you want to send to the user or leave the field blank and send";
@@ -121,6 +113,17 @@ export const stringMonthsArray = [
 export const privateRoutes = [
   "/profile",
   "/for-owners",
+  "/for-owners/hotels",
   "/notifications",
   "/wishlists",
+];
+
+export const siteCurrencyList = [
+  {
+    id: 1,
+    name: "USD",
+    sign: "$",
+  },
+  { id: 2, name: "EUR", sign: "€" },
+  { id: 3, name: "UAH", sign: "₴" },
 ];

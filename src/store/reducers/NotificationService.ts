@@ -39,9 +39,9 @@ export const notificationAPI = createApi({
       }),
       invalidatesTags: ["Notifications"],
     }),
-    deleteNotification: build.mutation<INotificationAPI, NotificationModel>({
-      query: (notification) => ({
-        url: `/notifications/${notification.id}`,
+    deleteNotification: build.mutation<INotificationAPI, string>({
+      query: (notificationId) => ({
+        url: `/notifications/${notificationId}`,
         method: "DELETE",
       }),
       invalidatesTags: ["Notifications"],

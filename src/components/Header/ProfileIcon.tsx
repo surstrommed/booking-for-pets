@@ -11,7 +11,6 @@ import {
 } from "@mui/material";
 import AccountCircleIcon from "@mui/icons-material/AccountCircle";
 import MenuIcon from "@mui/icons-material/Menu";
-import { useSelector } from "react-redux";
 import { ModalWindow } from "./../Auxiliary/ModalWindow";
 import { SignIn } from "./../Auth/Signin";
 import { SignUp } from "./../Auth/Signup";
@@ -27,11 +26,14 @@ import {
   PENDING_REQUEST_MESSAGE,
 } from "../../helpers/consts";
 import { useNavigate, useLocation } from "react-router-dom";
-import { ButtonEvent, RootState } from "../../helpers/types";
+import { ButtonEvent } from "../../helpers/types";
+import { notificationAPI } from "../../store/reducers/NotificationService";
+import { formateUser } from "../../helpers/functions";
+import { Preloader } from "../Auxiliary/Preloader";
+import { hotelAPI } from "../../store/reducers/HotelService";
 
 export const ProfileIcon = () => {
-  const promise = useSelector((state: RootState) => state.promise);
-  const auth = useSelector((state: RootState) => state.auth);
+  const currentUser = formateUser();
   const navigate = useNavigate();
   const location = useLocation().pathname;
 
@@ -79,28 +81,43 @@ export const ProfileIcon = () => {
     handleCloseUserMenu();
   };
 
-  const unreadUserMessages = (promise?.getNotifications?.payload || []).filter(
+  const {
+    data: allNotifications,
+    error: notificationError,
+    isLoading: notificationLoading,
+  } = notificationAPI.useFetchAllNotificationsQuery("");
+
+  const {
+    data: allHotels,
+    error: hotelsError,
+    isLoading: hotelsLoading,
+  } = hotelAPI.useFetchAllHotelsQuery("");
+
+  const unreadUserMessages = (allNotifications || []).filter(
     (notification: NotificationModel) =>
-      notification.toId === auth?.payload?.id &&
+      notification.toId === currentUser?.id &&
       notification.status === UNREAD_NOTIFICATION
   );
 
-  const currentUserHotels = (promise?.getHotels?.payload || []).filter(
-    (hotel: HotelModel) => hotel.owner === auth?.payload?.id
+  const currentUserHotels = (allHotels || []).filter(
+    (hotel: HotelModel) => hotel.owner === currentUser?.id
   );
 
   const countPendingBookingRequests = (currentUserHotels || []).reduce(
     (total: number, curHotel: HotelModel) =>
       total +
-      curHotel.userRequests.filter(
-        (request: UserRequestModel) =>
-          request.status === PENDING_REQUEST_MESSAGE
-      ).length,
+        curHotel?.userRequests?.filter(
+          (request: UserRequestModel) =>
+            request?.status === PENDING_REQUEST_MESSAGE
+        )?.length || 0,
     0
   );
 
   return (
-    <>
+    <Preloader
+      isLoading={hotelsLoading || notificationLoading}
+      data={hotelsError?.data || notificationError?.data}
+    >
       {openSignInModal && (
         <ModalWindow
           title={"Sign in"}
@@ -132,14 +149,14 @@ export const ProfileIcon = () => {
       <Box sx={profileIconStyles.flexGrow}>
         <Tooltip title="Open profile">
           <IconButton onClick={handleOpenUserMenu} sx={profileIconStyles.main}>
-            {auth?.token ? (
+            {!!Object.keys(currentUser)?.length ? (
               <>
                 {unreadUserMessages.length > 0 ||
                 countPendingBookingRequests > 0 ? (
                   <Badge badgeContent={""} color="warning">
                     <MenuIcon sx={profileIconStyles.menuIcon} />
                     <Avatar
-                      src={auth?.payload?.pictureUrl || links.noAvatar}
+                      src={currentUser?.pictureUrl || links.noAvatar}
                       sx={profileIconStyles.avatarIcon}
                     />
                   </Badge>
@@ -147,7 +164,7 @@ export const ProfileIcon = () => {
                   <>
                     <MenuIcon sx={profileIconStyles.menuIcon} />
                     <Avatar
-                      src={auth?.payload?.pictureUrl || links.noAvatar}
+                      src={currentUser?.pictureUrl || links.noAvatar}
                       sx={profileIconStyles.avatarIcon}
                     />
                   </>
@@ -177,7 +194,7 @@ export const ProfileIcon = () => {
           open={Boolean(anchorElUser)}
           onClose={handleCloseUserMenu}
         >
-          {sessionStorage.token ? (
+          {!!Object.keys(currentUser)?.length ? (
             <div>
               <MenuItem onClick={getUserHotels}>
                 <Typography
@@ -230,6 +247,6 @@ export const ProfileIcon = () => {
           )}
         </Menu>
       </Box>
-    </>
+    </Preloader>
   );
 };

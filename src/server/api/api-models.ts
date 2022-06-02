@@ -6,7 +6,6 @@ import { JSONMap } from "njwt";
 export interface JsonModel {
   users: UserModel[];
   hotels: HotelModel[];
-  currency: CurrencyModel[];
   notifications: NotificationModel[];
 }
 
@@ -29,7 +28,6 @@ export interface UserModel {
   createdAt?: number;
   pictureUrl?: string | null | File;
   currencyId?: number;
-  notifications?: NotificationModel[];
   wishlists?: WishlistModel[];
 }
 
@@ -120,7 +118,6 @@ export interface IModal {
 
 export interface IPreloader {
   isLoading: boolean;
-  isSuccess: boolean;
   error: FetchBaseQueryError | SerializedError | string;
   children: React.ReactElement | string | number;
   modal?: boolean;

@@ -9,17 +9,14 @@ import {
 } from "@mui/material";
 import VisibilityIcon from "@mui/icons-material/Visibility";
 import VisibilityOffIcon from "@mui/icons-material/VisibilityOff";
-import { actionFullRegister as onRegister } from "../../actions/thunks";
 import { CustomTextField } from "./../Auxiliary/CustomTextField";
 import { authFormStyles, authModalStyles } from "./authStyles";
 import { signUpVS } from "./../../helpers/validationSchemes";
 import { ISignUp, SignUpFormValues } from "./../../server/api/api-models";
 import { useLocation, useNavigate } from "react-router-dom";
-import { jwtHelper, updateJwtToken } from "../../helpers/functions";
+import { updateJwtToken } from "../../helpers/functions";
 import { authAPI } from "../../store/reducers/AuthService";
-import { SECRET_KEY } from "../../helpers/consts";
 import { Preloader } from "../Auxiliary/Preloader";
-import { JSONMap } from "njwt";
 
 export const SignUp = ({
   modal,
@@ -41,7 +38,7 @@ export const SignUp = ({
   const navigate = useNavigate();
   const location = useLocation().pathname;
 
-  const [signup, { isLoading, isSuccess, error }] = authAPI.useSignupMutation();
+  const [signup, { isLoading, error }] = authAPI.useSignupMutation();
 
   const formik = useFormik({
     initialValues: initialValues,
@@ -56,7 +53,7 @@ export const SignUp = ({
         password,
       });
       if ("data" in response && !("error" in response)) {
-        updateJwtToken(response?.data?.user);
+        updateJwtToken({ ...response?.data?.user, password });
       } else {
         return;
       }
@@ -81,7 +78,7 @@ export const SignUp = ({
   const getSignIn = () => navigate("/signin");
 
   return (
-    <Preloader isLoading={isLoading} isSuccess={isSuccess} error={error?.data}>
+    <Preloader isLoading={isLoading} error={error?.data}>
       <div style={modal ? authModalStyles.main : authFormStyles.main}>
         {modal || (
           <>

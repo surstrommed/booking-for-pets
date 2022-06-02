@@ -11,22 +11,22 @@ import ArrowBackIosNewOutlinedIcon from "@mui/icons-material/ArrowBackIosNewOutl
 import { fullWindowStyles } from "./hotelsStyles";
 import { Transition } from "../Auxiliary/Transition";
 
-function formatImageSrc(
+const formatImageSrc = (
   image: string,
   width: number,
   height: number,
   rows = 1,
   cols = 1
-) {
+) => {
   return {
     src: `${image}?w=${width * cols}&h=${height * rows}&fit=crop&auto=format`,
     srcSet: `${image}?w=${width * cols}&h=${
       height * rows
     }&fit=crop&auto=format&dpr=2 2x`,
   };
-}
+};
 
-export default function FullWindowGallery({ updateOpenDialogStatus, gallery }) {
+export const FullWindowGallery = ({ updateOpenDialogStatus, gallery }) => {
   interface IGallerryItem {
     featured: boolean;
     img: string;
@@ -85,4 +85,4 @@ export default function FullWindowGallery({ updateOpenDialogStatus, gallery }) {
       </Dialog>
     </div>
   );
-}
+};

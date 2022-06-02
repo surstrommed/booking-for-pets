@@ -12,9 +12,7 @@ import {
   Box,
   Tooltip,
 } from "@mui/material";
-import { RootState } from "../../helpers/types";
 import { UserRequestModel, UserModel } from "../../server/api/api-models";
-import { useSelector } from "react-redux";
 import { forOwnersStyles } from "./forOwnersStyles";
 import { formatStringDate } from "../../helpers/functions";
 import { links } from "../../helpers/consts";
@@ -24,19 +22,24 @@ import {
   REJECTED_REQUEST_MESSAGE,
 } from "../../helpers/consts";
 import { useNavigate } from "react-router-dom";
+import { usersAPI } from "../../store/reducers/UserService";
+import { Preloader } from "../Auxiliary/Preloader";
 
 export const RequestsTab = ({
   type,
   openNotificationModalWindow,
   currentHotel,
 }) => {
-  const promise = useSelector((state: RootState) => state.promise);
-  const { payload: allUsers } = promise.getUsers || [];
+  const {
+    data: allUsers,
+    error: usersError,
+    isLoading: usersLoading,
+  } = usersAPI.useFetchAllUsersQuery("");
 
   const navigate = useNavigate();
 
   return (
-    <>
+    <Preloader isLoading={usersLoading} error={usersError?.data}>
       {currentHotel?.userRequests?.filter(
         (request: UserRequestModel) => request.status === type
       )?.length > 0 ? (
@@ -153,6 +156,6 @@ export const RequestsTab = ({
             : ""}
         </Typography>
       )}
-    </>
+    </Preloader>
   );
 };

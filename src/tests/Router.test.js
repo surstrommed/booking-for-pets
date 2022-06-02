@@ -22,7 +22,7 @@ describe("ROUTES TESTS", () => {
       </Provider>
     );
 
-    render(signin);
+    // render(signin);
     const goToSignUp = await screen.findByRole("button", { name: /sign up/i });
     userEvent.click(goToSignUp);
     const signUpWindowCheck = await screen.findAllByText(/sign up/i);
@@ -40,7 +40,7 @@ describe("ROUTES TESTS", () => {
       </Provider>
     );
 
-    render(signup);
+    // render(signup);
     const goToSignIn = await screen.findByRole("button", { name: /sign in/i });
     userEvent.click(goToSignIn);
     const signInWindowCheck = await screen.findAllByText(/sign in/i);
@@ -53,7 +53,7 @@ describe("ROUTES TESTS", () => {
         <App />
       </MemoryRouter>
     );
-    render(app);
+    // render(app);
     expect(screen.getByTestId("error-page")).toBeInTheDocument();
   });
 });

@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import {
   Box,
   Button,
@@ -30,8 +30,7 @@ export const ChangeAvatar = () => {
 
   const [, sendSnackbar] = useSnackBar();
 
-  const [updateUser, { isLoading, isSuccess, error }] =
-    usersAPI.useUpdateUserMutation();
+  const [updateUser, { isLoading, error }] = usersAPI.useUpdateUserMutation();
 
   const [signin, { error: signInError }] = authAPI.useSigninMutation();
 
@@ -62,7 +61,7 @@ export const ChangeAvatar = () => {
       };
       const response = await updateUser(modifiedUser);
       if ("data" in response && !("error" in response)) {
-        updateJwtToken(response?.data);
+        updateJwtToken({ ...response?.data, password });
         setAvatar(uploadedImageUrl);
         setPassword("");
         setUploadedImageUrl("");
@@ -103,11 +102,7 @@ export const ChangeAvatar = () => {
   };
 
   return (
-    <Preloader
-      isLoading={isLoading}
-      isSuccess={isSuccess}
-      error={signInError?.data || error?.data}
-    >
+    <Preloader isLoading={isLoading} error={signInError?.data || error?.data}>
       <Card sx={changeProfileStyles.avatarCard}>
         {avatar || uploadedImageUrl ? (
           <Badge

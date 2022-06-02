@@ -149,60 +149,26 @@
       "login": "admin",
       "firstName": "Anton",
       "lastName": "Zadorozhnyi",
-      "currencyId": 1,
+      "currencyId": 3,
       "createdAt": 1654154619000,
       "pictureUrl": "https://i.ibb.co/KwfdGtY/pngtree-user-avatar-boy-image-1482937.jpg",
-      "wishlists": [],
-      "id": 14,
-      "password": "$2a$10$BhSEyoAmnVLZy3sHY.2VXOkMeoWvw1XGYBpcgS1mzcCku/NyGM/Xy"
+      "wishlists": [
+        {
+          "name": "Test",
+          "hotelsId": []
+        },
+        {
+          "name": "SasAss",
+          "hotelsId": [
+            "w0ebO"
+          ]
+        }
+      ],
+      "id": 1,
+      "password": "$2a$10$Uqos8iazvfyM098eHvoafurN1WPiQ/h0iTJ8Q3UkIMN/v/R80SPRG"
     }
   ],
   "hotels": [
-    {
-      "id": "lKRS7",
-      "name": "Test hotel1",
-      "location": "Test location",
-      "address": "Test address",
-      "description": "Test description",
-      "photos": [],
-      "hotelRooms": 10,
-      "freeRooms": {
-        "1651006800000": {
-          "availableSeats": 8,
-          "usersId": [
-            6
-          ],
-          "usersAnimalsCount": [
-            2
-          ]
-        },
-        "1651093200000": {
-          "availableSeats": 8,
-          "usersId": [
-            6
-          ],
-          "usersAnimalsCount": [
-            2
-          ]
-        }
-      },
-      "userRequests": [
-        {
-          "arrivalDate": 1651006800000,
-          "departureDate": 1651093200000,
-          "animalsNumber": 2,
-          "usersId": 6,
-          "message": "Hello, can I take a book on this days?",
-          "status": "Confirmed",
-          "id": "FYWvr"
-        }
-      ],
-      "disableUserDates": {},
-      "disableUsersDates": [],
-      "price": 11,
-      "owner": 1,
-      "reviews": []
-    },
     {
       "id": "w0ebO",
       "name": "True friend",
@@ -377,183 +343,7 @@
           }
         }
       ]
-    },
-    {
-      "id": "lZTW7",
-      "name": "",
-      "location": "",
-      "address": "",
-      "description": "",
-      "photos": [],
-      "hotelRooms": 0,
-      "freeRooms": {},
-      "userRequests": [],
-      "disableUserDates": {},
-      "disableUsersDates": [],
-      "price": 0,
-      "owner": 0,
-      "reviews": []
-    },
-    {
-      "id": "2IYn2",
-      "name": "",
-      "location": "",
-      "address": "",
-      "description": "",
-      "photos": [],
-      "hotelRooms": 0,
-      "freeRooms": {},
-      "userRequests": [],
-      "disableUserDates": {},
-      "disableUsersDates": [],
-      "price": 0,
-      "owner": 0,
-      "reviews": []
-    },
-    {
-      "name": "",
-      "location": "",
-      "address": "",
-      "description": "",
-      "photos": [],
-      "hotelRooms": 0,
-      "freeRooms": {},
-      "userRequests": [],
-      "disableUserDates": {},
-      "disableUsersDates": [],
-      "price": 0,
-      "owner": 0,
-      "reviews": [],
-      "id": "TBoHVML"
     }
   ],
-  "currency": [],
-  "notifications": [
-    {
-      "id": "TB12VML",
-      "text": "Welcome",
-      "status": "Deleted",
-      "fromId": null,
-      "toId": 1
-    },
-    {
-      "id": "LnVm9",
-      "text": "Empty",
-      "status": "Deleted",
-      "fromId": 6,
-      "toId": 1
-    },
-    {
-      "id": "NwGJZ",
-      "text": "Good",
-      "status": "Read",
-      "fromId": 1,
-      "toId": 6
-    },
-    {
-      "id": "ncW76",
-      "text": "Empty",
-      "status": "Deleted",
-      "fromId": 6,
-      "toId": 1
-    },
-    {
-      "id": "XYc4O",
-      "text": "Empty",
-      "status": "Deleted",
-      "fromId": 6,
-      "toId": 1
-    },
-    {
-      "id": "LLOQX",
-      "text": "Good",
-      "status": "Read",
-      "fromId": 1,
-      "toId": 6
-    },
-    {
-      "id": "rJo4V",
-      "text": "Bad",
-      "status": "Read",
-      "fromId": 1,
-      "toId": 6
-    },
-    {
-      "id": "v0Rou",
-      "text": "Hello, can I take a book on this days?",
-      "status": "Deleted",
-      "fromId": 6,
-      "toId": 1
-    },
-    {
-      "id": "c09V1",
-      "text": "Ok, welcome",
-      "status": "Read",
-      "fromId": 1,
-      "toId": 6
-    },
-    {
-      "id": "R7lpe",
-      "text": "Empty",
-      "status": "Unread",
-      "fromId": 8,
-      "toId": 1
-    },
-    {
-      "id": "PWFzo",
-      "text": "Empty",
-      "status": "Unread",
-      "fromId": 8,
-      "toId": 1
-    },
-    {
-      "id": "yw8tA",
-      "text": "Empty",
-      "status": "Unread",
-      "fromId": 8,
-      "toId": 1
-    },
-    {
-      "id": "BZ1If",
-      "text": "Empty",
-      "status": "Unread",
-      "fromId": 8,
-      "toId": 1
-    },
-    {
-      "id": "q12qq",
-      "text": "Empty",
-      "status": "Unread",
-      "fromId": 8,
-      "toId": 1
-    },
-    {
-      "id": "BvUCD",
-      "text": "Empty",
-      "status": "Unread",
-      "fromId": 8,
-      "toId": 1
-    },
-    {
-      "id": "CDAu4",
-      "text": "Empty",
-      "status": "Unread",
-      "fromId": 8,
-      "toId": 1
-    },
-    {
-      "id": "oBOti",
-      "text": "Empty",
-      "status": "Unread",
-      "fromId": 8,
-      "toId": 1
-    },
-    {
-      "id": "2tGOL",
-      "text": "Empty",
-      "status": "Unread",
-      "fromId": 8,
-      "toId": 1
-    }
-  ]
+  "notifications": []
 }

@@ -1,8 +1,13 @@
 import React from "react";
 import ErrorIcon from "@mui/icons-material/Error";
-import { HotelModel, UserModel, IJwtHelper } from "../server/api/api-models";
-import { stringMonthsArray, apiErrors, SECRET_KEY } from "./consts";
-import { Jwt, create, verify, JSONMap } from "njwt";
+import { UserModel, IJwtHelper, WishlistModel } from "../server/api/api-models";
+import {
+  stringMonthsArray,
+  apiErrors,
+  SECRET_KEY,
+  sendSnackBarMessages,
+} from "./consts";
+import { Jwt, create, verify } from "njwt";
 
 export const stringMonth = (monthNumber: number) => {
   return stringMonthsArray[monthNumber];
@@ -60,27 +65,6 @@ export const createUniqueId = () => {
     result = result + words.substring(position, position + 1);
   }
   return result;
-};
-
-export const getUniqueId = (entityData: HotelModel[]) => {
-  const emptyHotelIndex = entityData.findIndex(
-    (hotel: HotelModel) => hotel.owner === 0
-  );
-
-  if (emptyHotelIndex !== -1) {
-    return entityData[emptyHotelIndex].id;
-  }
-
-  const uniqueId = createUniqueId();
-  const matchId = entityData.findIndex(
-    (hotel: HotelModel) => hotel.id === uniqueId
-  );
-
-  if (matchId === -1) {
-    return uniqueId;
-  } else {
-    getUniqueId(entityData);
-  }
 };
 
 export const setTabsProps = (index: number) => ({
@@ -144,7 +128,6 @@ export const checkUser = (payload: UserModel) => {
     payload?.createdAt &&
     (payload?.pictureUrl || payload?.pictureUrl === null) &&
     payload?.currencyId &&
-    Array.isArray(payload?.notifications) &&
     Array.isArray(payload?.wishlists)
   ) {
     return true;
@@ -161,4 +144,51 @@ export const updateJwtToken = (payload) => {
     type: "create",
   });
   sessionStorage.setItem("token", jwtToken);
+};
+
+export const unsaveHotelFromWishlist = async ({
+  hotelData,
+  isSaved,
+  currentUser,
+  userUpdate,
+  userUpdateError,
+  sendSnackbar,
+}) => {
+  const currentUserWishlists = currentUser?.wishlists;
+
+  const isSavedIndex = (currentUserWishlists || []).findIndex(
+    (wishlist: WishlistModel) => wishlist.hotelsId.includes(hotelData.id)
+  );
+
+  const filteredHotelsId = isSaved.hotelsId.filter(
+    (hotelId: string) => hotelId !== hotelData.id
+  );
+
+  const filteredUserWishlists = [...currentUserWishlists];
+
+  filteredUserWishlists.splice(isSavedIndex, 1);
+
+  const filteredCurrentUserWishlist = {
+    ...currentUserWishlists[isSavedIndex],
+    hotelsId: filteredHotelsId,
+  };
+
+  filteredUserWishlists.push(filteredCurrentUserWishlist);
+
+  const response = await userUpdate({
+    ...currentUser,
+    password: currentUser?.password,
+    wishlists: filteredUserWishlists,
+  });
+
+  if (response?.data) {
+    updateJwtToken({ ...response?.data, password: currentUser?.password });
+  }
+
+  if (typeof sendSnackbar === "function" && !userUpdateError?.data) {
+    sendSnackbar({
+      msg: sendSnackBarMessages.removedFromWishlistMessage(isSaved?.name),
+      variant: "error",
+    });
+  }
 };
