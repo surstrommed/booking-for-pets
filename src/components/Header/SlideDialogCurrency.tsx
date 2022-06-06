@@ -1,7 +1,5 @@
 import React, { useState, useEffect } from "react";
 import { Dialog, Tabs, Tab, Typography, Box, Button } from "@mui/material";
-import { RootState } from "../../helpers/types";
-import { useSelector } from "react-redux";
 import { Preloader } from "./../Auxiliary/Preloader";
 import { dialogCurrencyStyles } from "./headerStyles";
 import { TabPanelProps } from "../../server/api/api-models";

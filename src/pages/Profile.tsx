@@ -5,10 +5,8 @@ import Box from "@mui/material/Box";
 import { ChangePassword } from "./../components/Profile/ChangePassword";
 import { ChangeAvatar } from "./../components/Profile/ChangeAvatar";
 import { ChangePersonalData } from "./../components/Profile/ChangePersonalData";
-import { RootState } from "../helpers/types";
 import { pagesStyles } from "./pagesStyles";
 import { TabPanelProps } from "../server/api/api-models";
-import { useSelector } from "react-redux";
 
 const TabPanel = (props: TabPanelProps) => {
   const { children, value, index, ...other } = props;

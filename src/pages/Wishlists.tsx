@@ -7,8 +7,6 @@ import {
   CardActionArea,
   CardContent,
 } from "@mui/material";
-import { useSelector } from "react-redux";
-import { RootState } from "../helpers/types";
 import { links } from "../helpers/consts";
 import { pagesStyles } from "./pagesStyles";
 import { WishlistModel, HotelModel } from "../server/api/api-models";

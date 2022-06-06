@@ -5,6 +5,7 @@ import { authAPI } from "./reducers/AuthService";
 import { notificationAPI } from "./reducers/NotificationService";
 import { hotelAPI } from "./reducers/HotelService";
 import { usersAPI } from "./reducers/UserService";
+import { GetState } from "../helpers/types";
 
 export const loadSessionStorageState = () => {
   try {
@@ -16,7 +17,7 @@ export const loadSessionStorageState = () => {
   }
 };
 
-export const saveSessionStorageState = async (state: AppStore) => {
+export const saveSessionStorageState = async (state: GetState) => {
   try {
     const serializedState = JSON.stringify(state);
     sessionStorage.setItem("appState", serializedState);
@@ -25,7 +26,7 @@ export const saveSessionStorageState = async (state: AppStore) => {
   }
 };
 
-const rootReducer = combineReducers({
+export const rootReducer = combineReducers({
   header: headerReducer,
   [currencyAPI.reducerPath]: currencyAPI.reducer,
   [authAPI.reducerPath]: authAPI.reducer,
@@ -49,8 +50,3 @@ export const setupStore = () => {
       ),
   });
 };
-
-export type RootState = ReturnType<typeof rootReducer>;
-export type AppStore = ReturnType<typeof setupStore>;
-export type GetState = AppStore["getState"];
-export type AppDispatch = AppStore["dispatch"];

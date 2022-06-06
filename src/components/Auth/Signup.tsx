@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useFormik } from "formik";
 import {
   Button,
@@ -76,6 +76,12 @@ export const SignUp = ({
   };
 
   const getSignIn = () => navigate("/signin");
+
+  useEffect(() => {
+    if (sessionStorage?.token && modal) {
+      signUpOpenState(false);
+    }
+  }, [sessionStorage?.token]);
 
   return (
     <Preloader isLoading={isLoading} error={error?.data}>
