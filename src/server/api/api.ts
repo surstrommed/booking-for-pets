@@ -1,4 +1,4 @@
-import { JsonModel, UserModel } from "./api-models";
+import { JsonModel, UserModel, FetchDataModel } from "./api-models";
 import axios from "axios";
 import { links } from "../../helpers/consts";
 
