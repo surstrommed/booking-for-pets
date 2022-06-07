@@ -69,10 +69,12 @@ export const WishlistPage = () => {
     ) || {};
 
   const likedHotels = [];
-  for (const hotelId of currentWishlist.hotelsId) {
-    for (const hotel of allHotels) {
-      if (hotel.id === hotelId) {
-        likedHotels.push(hotel);
+  if (!!currentWishlist?.hotelsId?.length && !!allHotels?.length) {
+    for (const hotelId of currentWishlist.hotelsId) {
+      for (const hotel of allHotels) {
+        if (hotel.id === hotelId) {
+          likedHotels.push(hotel);
+        }
       }
     }
   }
@@ -135,7 +137,12 @@ export const WishlistPage = () => {
           </Toolbar>
         </AppBar>
         <Box>
-          <Typography variant="h4" component="div" gutterBottom>
+          <Typography
+            variant="h4"
+            component="div"
+            gutterBottom
+            data-testid="wishlist-name"
+          >
             {currentWishlist.name}
           </Typography>
           <Box sx={wishlistStyles.wishlistPageContent}>

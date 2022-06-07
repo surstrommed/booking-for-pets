@@ -14,7 +14,7 @@ export const store = setupStore();
 store.subscribe(
   debounce(() => {
     sessionStorage.removeItem("appState");
-    saveSessionStorageState(() => store.getState());
+    saveSessionStorageState(store.getState());
   }, 1000)
 );
 

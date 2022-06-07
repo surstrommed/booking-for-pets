@@ -6,6 +6,7 @@ import { spaceFormatting } from "../../helpers/functions";
 import { FreeRoomsModel, HotelModel } from "../../server/api/api-models";
 import { hotelAPI } from "../../store/reducers/HotelService";
 import { Preloader } from "../Auxiliary/Preloader";
+import { links } from "../../helpers/consts";
 
 export const HotelsList = () => {
   const {
@@ -72,7 +73,7 @@ export const HotelsList = () => {
           component="div"
           sx={{ padding: 5 }}
         >
-          {hotels.length} hotels found according to your request
+          {hotels.length} hotel(s) found according to your request
         </Typography>
         <div className="HotelsList">
           {(hotels || []).map((hotel: HotelModel, index: number) => (
@@ -81,7 +82,7 @@ export const HotelsList = () => {
                 hotelData={{
                   index,
                   id: hotel.id,
-                  image: hotel.photos[0],
+                  image: hotel.photos?.[0] || links.noImage,
                   title: hotel.name,
                   description: hotel.description,
                   price: hotel.price,

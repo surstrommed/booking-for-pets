@@ -232,7 +232,8 @@ export const HotelPage = () => {
         currencyError?.data ||
         usersError?.data ||
         updateHotelError?.data ||
-        createNotificationError?.data
+        createNotificationError?.data ||
+        (!currentHotel && "error")
       }
     >
       <div style={hotelPageStyles.main}>

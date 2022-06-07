@@ -55,17 +55,10 @@ export const HotelCard = ({ hotelData }) => {
     isLoading: currencyLoading,
   } = currencyAPI.useFetchAllCurrencyQuery("");
 
-  const [
-    updateHotel,
-    { isLoading: updateHotelLoading, error: updateHotelError },
-  ] = hotelAPI.useUpdateHotelMutation();
-
   return (
     <Preloader
-      isLoading={userUpdateLoading || currencyLoading || updateHotelLoading}
-      error={
-        userUpdateError?.data || currencyError?.data || updateHotelError?.data
-      }
+      isLoading={userUpdateLoading || currencyLoading}
+      error={userUpdateError?.data || currencyError?.data}
     >
       <Card sx={hotelCardStyles.main}>
         {openWishlistsWindow && (
@@ -81,7 +74,7 @@ export const HotelCard = ({ hotelData }) => {
           />
         )}
         <Link to={`/hotels/hotel/${hotelData.id}`}>
-          <CardActionArea onClick={() => updateHotel({ ...hotelData })}>
+          <CardActionArea>
             <CardMedia
               component="img"
               height="140"

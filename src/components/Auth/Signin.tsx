@@ -22,6 +22,7 @@ export const SignIn = ({
   modal,
   signInOpenState,
   signUpOpenState,
+  onSubmit,
 }: ISignIn) => {
   const [showPassword, setShowPassword] = useState(false);
   const initialValues: SignInFormValues = { email: "", password: "" };
@@ -81,7 +82,7 @@ export const SignIn = ({
             <hr />
           </>
         )}
-        <form onSubmit={handleSubmit}>
+        <form onSubmit={onSubmit || handleSubmit}>
           <Box sx={authFormStyles.inputsBox}>
             <CustomTextField
               id="email"
@@ -111,10 +112,7 @@ export const SignIn = ({
               InputProps={{
                 endAdornment: (
                   <InputAdornment position="end">
-                    <IconButton
-                      aria-label="toggle password visibility"
-                      onClick={showPass}
-                    >
+                    <IconButton onClick={showPass}>
                       {showPassword ? (
                         <VisibilityIcon />
                       ) : (

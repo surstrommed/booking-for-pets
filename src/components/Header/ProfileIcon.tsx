@@ -148,7 +148,11 @@ export const ProfileIcon = () => {
       )}
       <Box sx={profileIconStyles.flexGrow}>
         <Tooltip title="Open profile">
-          <IconButton onClick={handleOpenUserMenu} sx={profileIconStyles.main}>
+          <IconButton
+            onClick={handleOpenUserMenu}
+            sx={profileIconStyles.main}
+            data-testid="profile-icon"
+          >
             {!!Object.keys(currentUser)?.length ? (
               <>
                 {unreadUserMessages.length > 0 ||
@@ -221,7 +225,7 @@ export const ProfileIcon = () => {
                 </Typography>
               </MenuItem>
               <hr />
-              <MenuItem onClick={getProfile}>
+              <MenuItem onClick={getProfile} data-testid="profile-button">
                 <Typography textAlign="center">Profile</Typography>
               </MenuItem>
               <hr />
