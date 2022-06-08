@@ -8,25 +8,33 @@ import {
 } from "@mui/material";
 import AddBoxOutlinedIcon from "@mui/icons-material/AddBoxOutlined";
 import { wishlistStyles } from "./wishlistStyles";
-import ModalWindow from "../Auxiliary/ModalWindow";
+import { ModalWindow } from "../Auxiliary/ModalWindow";
 import {
   links,
   NEW_WISHLIST_MODAL_TITLE,
   sendSnackBarMessages,
 } from "../../helpers/consts";
-import { useSelector } from "react-redux";
-import { RootState } from "../../helpers/types";
-import { actionUpdateWishlists as onSelect } from "../../actions/thunks";
 import { CreateWishlist } from "./CreateWishlist";
 import useSnackBar from "./../Auxiliary/SnackBar";
-import { HotelModel, WishlistModel } from "src/server/api/api-models";
+import { HotelModel, WishlistModel } from "../../server/api/api-models";
+import { formateUser, updateJwtToken } from "../../helpers/functions";
+import { hotelAPI } from "../../store/reducers/HotelService";
+import { Preloader } from "../Auxiliary/Preloader";
+import { usersAPI } from "../../store/reducers/UserService";
 
 export const SelectWishlist = ({ modalWindowState, currentHotel }) => {
-  const promise = useSelector((state: RootState) => state.promise);
-  const auth = useSelector((state: RootState) => state.auth);
+  const currentUser = formateUser();
 
-  const currentUserWishlists = auth?.payload?.wishlists;
-  const allHotels = promise?.getHotels?.payload;
+  const {
+    data: allHotels,
+    error: hotelsError,
+    isLoading: hotelsLoading,
+  } = hotelAPI.useFetchAllHotelsQuery("");
+
+  const [userUpdate, { isLoading: userUpdateLoading, error: userUpdateError }] =
+    usersAPI.useUpdateUserMutation();
+
+  const currentUserWishlists = currentUser?.wishlists;
 
   const [openCreateWishlistWindow, setOpenCreateWishlistWindow] =
     useState(false);
@@ -38,7 +46,7 @@ export const SelectWishlist = ({ modalWindowState, currentHotel }) => {
 
   const [, sendSnackbar] = useSnackBar();
 
-  function handleSave(wishlistName: string) {
+  const handleSave = async (wishlistName: string) => {
     const isSavedIndex = (currentUserWishlists || []).findIndex(
       (wishlist: WishlistModel) => wishlist.name === wishlistName
     );
@@ -57,18 +65,30 @@ export const SelectWishlist = ({ modalWindowState, currentHotel }) => {
 
     filteredUserWishlists.push(filteredCurrentUserWishlist);
 
+    const response = await userUpdate({
+      ...currentUser,
+      password: currentUser?.password,
+      wishlists: filteredUserWishlists,
+    });
+
+    if (response?.data) {
+      updateJwtToken({ ...response?.data, password: currentUser?.password });
+    }
+
     if (typeof sendSnackbar === "function") {
       sendSnackbar({
         msg: sendSnackBarMessages.addedToWishlistMessage(wishlistName),
         variant: "success",
       });
+      modalWindowState(false);
     }
-
-    onSelect(filteredUserWishlists);
-  }
+  };
 
   return (
-    <div>
+    <Preloader
+      isLoading={hotelsLoading || userUpdateLoading}
+      error={hotelsError || userUpdateError}
+    >
       {openCreateWishlistWindow && (
         <ModalWindow
           title={NEW_WISHLIST_MODAL_TITLE}
@@ -113,6 +133,6 @@ export const SelectWishlist = ({ modalWindowState, currentHotel }) => {
           )
         )}
       </div>
-    </div>
+    </Preloader>
   );
 };

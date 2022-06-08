@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useFormik } from "formik";
 import {
   Button,
@@ -9,30 +9,24 @@ import {
 } from "@mui/material";
 import VisibilityIcon from "@mui/icons-material/Visibility";
 import VisibilityOffIcon from "@mui/icons-material/VisibilityOff";
-import { actionFullRegister as onRegister } from "../../actions/thunks";
 import { CustomTextField } from "./../Auxiliary/CustomTextField";
 import { authFormStyles, authModalStyles } from "./authStyles";
 import { signUpVS } from "./../../helpers/validationSchemes";
-import { IRegister, RegisterFormValues } from "./../../server/api/api-models";
-import { RootState } from "../../helpers/types";
-import { RESOLVED_PROMISE_STATUS } from "../../helpers/consts";
-import { useSelector } from "react-redux";
-import { useNavigate } from "react-router-dom";
+import { ISignUp, SignUpFormValues } from "./../../server/api/api-models";
+import { useLocation, useNavigate } from "react-router-dom";
+import { updateJwtToken } from "../../helpers/functions";
+import { authAPI } from "../../store/reducers/AuthService";
+import { Preloader } from "../Auxiliary/Preloader";
 
 export const SignUp = ({
   modal,
   signInOpenState,
   signUpOpenState,
-  promise,
-}: IRegister) => {
-  const promise = useSelector((state: RootState) => state.promise);
-
+}: ISignUp) => {
   const [showPassword, setShowPassword] = useState(false);
   const [showRetryPassword, setShowRetryPassword] = useState(false);
 
-  const navigate = useNavigate();
-
-  const initialValues: RegisterFormValues = {
+  const initialValues: SignUpFormValues = {
     email: "",
     login: "",
     firstName: "",
@@ -41,15 +35,32 @@ export const SignUp = ({
     retryPassword: "",
   };
 
+  const navigate = useNavigate();
+  const location = useLocation().pathname;
+
+  const [signup, { isLoading, error }] = authAPI.useSignupMutation();
+
   const formik = useFormik({
     initialValues: initialValues,
     validationSchema: signUpVS,
-    onSubmit: (values) => {
-      const signUpStatus =
-        promise?.["signup"]?.["status"] === RESOLVED_PROMISE_STATUS;
-      modal && signUpStatus && signUpOpenState(false);
+    onSubmit: async (values) => {
       const { email, login, firstName, lastName, password } = values;
-      onRegister({ email, login, firstName, lastName, password });
+      const response = await signup({
+        email,
+        login,
+        firstName,
+        lastName,
+        password,
+      });
+      if ("data" in response && !("error" in response)) {
+        updateJwtToken({ ...response?.data?.user, password });
+      } else {
+        return;
+      }
+      modal && signUpOpenState(false);
+      (location === "/signin" || location === "/signup") &&
+        !modal &&
+        navigate("/");
     },
   });
 
@@ -66,9 +77,15 @@ export const SignUp = ({
 
   const getSignIn = () => navigate("/signin");
 
+  useEffect(() => {
+    if (sessionStorage?.token && modal) {
+      signUpOpenState(false);
+    }
+  }, [sessionStorage?.token]);
+
   return (
-    <div style={modal ? authModalStyles.main : authFormStyles.main}>
-      <div>
+    <Preloader isLoading={isLoading} error={error?.data}>
+      <div style={modal ? authModalStyles.main : authFormStyles.main}>
         {modal || (
           <>
             <Typography
@@ -154,7 +171,6 @@ export const SignUp = ({
                     <IconButton
                       aria-label="toggle password visibility"
                       onClick={showPass}
-                      onMouseDown={showPass}
                     >
                       {showPassword ? (
                         <VisibilityIcon />
@@ -185,7 +201,6 @@ export const SignUp = ({
                     <IconButton
                       aria-label="toggle retry password visibility"
                       onClick={showRetryPass}
-                      onMouseDown={showRetryPass}
                     >
                       {showRetryPassword ? (
                         <VisibilityIcon />
@@ -224,6 +239,6 @@ export const SignUp = ({
           </Box>
         </form>
       </div>
-    </div>
+    </Preloader>
   );
 };

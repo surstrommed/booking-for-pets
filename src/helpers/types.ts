@@ -1,7 +1,13 @@
 import { AnyAction, ThunkAction, ThunkDispatch } from "@reduxjs/toolkit";
-import { store } from "../components/App";
+import { rootReducer, setupStore } from "../store/store";
 
-export type RootState = ReturnType<typeof store.getState>;
+export type RootState = ReturnType<typeof rootReducer>;
+
+export type AppStore = ReturnType<typeof setupStore>;
+
+export type GetState = AppStore["getState"];
+
+export type AppDispatch = AppStore["dispatch"];
 
 export type jwtCodeData = { email: string; login: string };
 

@@ -3,6 +3,7 @@
         "Horiz",
         "formik",
         "notistack",
+        "reduxjs",
         "signin",
         "signup"
     ],

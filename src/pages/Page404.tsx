@@ -5,7 +5,7 @@ import Typography from "@mui/material/Typography";
 import { pagesStyles } from "./pagesStyles";
 import { links } from "../helpers/consts";
 
-export default function Page404() {
+export const Page404 = () => {
   return (
     <div style={pagesStyles.page404.main} data-testid="error-page">
       <img src={links.errorSign} />
@@ -17,4 +17,4 @@ export default function Page404() {
       </Button>
     </div>
   );
-}
+};

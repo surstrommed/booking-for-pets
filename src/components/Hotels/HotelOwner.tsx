@@ -4,12 +4,11 @@ import { hotelPageStyles } from "./hotelsStyles";
 import { Link } from "react-router-dom";
 import { stringMonth } from "../../helpers/functions";
 import { links } from "../../helpers/consts";
-import { UserModel } from "src/server/api/api-models";
+import { UserModel } from "../../server/api/api-models";
 
 export const HotelOwner = ({ currentHotel, users }) => {
   const hotelOwner = (users || []).find(
-    (user: UserModel) =>
-      currentHotel.owner !== 0 && user.id === currentHotel.owner
+    (user: UserModel) => user.id === currentHotel.owner
   );
   return (
     <div style={hotelPageStyles.dFlex}>

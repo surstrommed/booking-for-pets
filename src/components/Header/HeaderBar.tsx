@@ -18,21 +18,17 @@ import useScrollTrigger from "@mui/material/useScrollTrigger";
 import { ProfileIcon } from "./ProfileIcon";
 import { Link, useNavigate } from "react-router-dom";
 import { useLocation } from "react-router-dom";
-import SearchBar from "./SearchBar";
-import { useDispatch, useSelector } from "react-redux";
-import {
-  actionSmallHeader,
-  actionBigHeader,
-  actionExpandSmallHeader,
-} from "./../../actions/types";
+import { SearchBar } from "./SearchBar";
 import { headerBar } from "./headerStyles";
-import ModalWindow from "./../Auxiliary/ModalWindow";
-import { Preloader } from "./../Auxiliary/Preloader";
+import { ModalWindow } from "./../Auxiliary/ModalWindow";
 import { SignIn } from "./../Auth/Signin";
 import { SignUp } from "./../Auth/Signup";
 import { ElevationScrollProps } from "../../server/api/api-models";
-import { ButtonEvent, RootState } from "../../helpers/types";
+import { ButtonEvent } from "../../helpers/types";
 import { SlideDialogCurrency } from "./SlideDialogCurrency";
+import { useAppDispatch, useAppSelector } from "../../hooks/redux";
+import { headerSlice } from "../../store/reducers/HeaderSlice";
+import { checkUser, formateUser } from "../../helpers/functions";
 
 const pages = ["For owners"];
 
@@ -45,7 +41,7 @@ const ElevationScroll = (props: ElevationScrollProps) => {
     target: window ? window() : undefined,
   });
 
-  const dispatch = useDispatch();
+  const dispatch = useAppDispatch();
 
   useEffect(() => {
     const headerBar = document.getElementsByClassName("Header");
@@ -53,10 +49,10 @@ const ElevationScroll = (props: ElevationScrollProps) => {
       headerBar[0].children[0].classList.contains("SmallHeader") &&
       !headerBar[0].children[0].classList.contains("WhiteBigHeader")
     ) {
-      dispatch(actionSmallHeader());
+      dispatch(headerSlice.actions.small());
     }
     if (headerBar[0].children[0].classList.contains("BigHeader")) {
-      dispatch(actionBigHeader());
+      dispatch(headerSlice.actions.big());
     }
   });
 
@@ -78,20 +74,12 @@ export const HeaderBar = (props) => {
   const [openSignUpModal, setOpenSignUpModal] = useState(false);
 
   const navigate = useNavigate();
-
-  const smallHeader = useSelector(
-    (state: RootState) => state.header.smallHeader
-  );
-  const bigHeader = useSelector((state: RootState) => state.header.bigHeader);
-  const expandSmallHeader = useSelector(
-    (state: RootState) => state.header.expandSmallHeader
-  );
-
-  const currentUser = useSelector((state: RootState) => state.auth?.payload);
-  const promise = useSelector((state: RootState) => state.promise);
-
   const location = useLocation().pathname;
-  const dispatch = useDispatch();
+  const dispatch = useAppDispatch();
+
+  const { smallHeader, bigHeader, expandSmallHeader } = useAppSelector(
+    (state) => state.header
+  );
 
   const handleOpenNavMenu = (event: ButtonEvent) => {
     setAnchorElNav(event.currentTarget);
@@ -103,7 +91,7 @@ export const HeaderBar = (props) => {
   const expandMenu = () => {
     const smallHeader = document.getElementsByClassName("SmallHeader");
     smallHeader[0].classList.add("WhiteBigHeader");
-    dispatch(actionExpandSmallHeader());
+    dispatch(headerSlice.actions.expand());
   };
 
   document.body.addEventListener("click", (e) => {
@@ -114,7 +102,7 @@ export const HeaderBar = (props) => {
     ) {
       const headerBar = document.getElementsByClassName("Header");
       headerBar[0].children[0].classList.remove("WhiteBigHeader");
-      dispatch(actionSmallHeader());
+      dispatch(headerSlice.actions.small());
     }
   });
 
@@ -137,17 +125,10 @@ export const HeaderBar = (props) => {
             <ModalWindow
               title={"Sign in"}
               body={
-                <Preloader
-                  promiseName={"signin"}
-                  promiseState={promise}
-                  sub={
-                    <SignIn
-                      modal
-                      signInOpenState={updateSignInModal}
-                      signUpOpenState={updateSignUpModal}
-                    />
-                  }
+                <SignIn
                   modal
+                  signInOpenState={updateSignInModal}
+                  signUpOpenState={updateSignUpModal}
                 />
               }
               type={"signin"}
@@ -158,17 +139,10 @@ export const HeaderBar = (props) => {
             <ModalWindow
               title={"Sign up"}
               body={
-                <Preloader
-                  promiseName={"signup"}
-                  promiseState={promise}
-                  sub={
-                    <SignUp
-                      modal
-                      signInOpenState={updateSignInModal}
-                      signUpOpenState={updateSignUpModal}
-                    />
-                  }
+                <SignUp
                   modal
+                  signInOpenState={updateSignInModal}
+                  signUpOpenState={updateSignUpModal}
                 />
               }
               type={"signup"}
@@ -265,7 +239,7 @@ export const HeaderBar = (props) => {
               <Button
                 sx={headerBar.headerButtons}
                 onClick={() =>
-                  currentUser
+                  checkUser(formateUser())
                     ? navigate("/for-owners")
                     : updateSignInModal(true)
                 }
@@ -275,7 +249,7 @@ export const HeaderBar = (props) => {
               <Button
                 sx={headerBar.headerButtons}
                 onClick={() =>
-                  currentUser
+                  checkUser(formateUser())
                     ? updateCurrencyModal(true)
                     : updateSignInModal(true)
                 }

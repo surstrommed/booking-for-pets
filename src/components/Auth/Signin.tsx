@@ -9,33 +9,42 @@ import {
 } from "@mui/material";
 import VisibilityIcon from "@mui/icons-material/Visibility";
 import VisibilityOffIcon from "@mui/icons-material/VisibilityOff";
-import { useSelector } from "react-redux";
-import { actionFullLogin as onLogin } from "../../actions/thunks";
 import { CustomTextField } from "./../Auxiliary/CustomTextField";
 import { authFormStyles, authModalStyles } from "./authStyles";
-import { ILogin, LoginFormValues } from "./../../server/api/api-models";
+import { ISignIn, SignInFormValues } from "./../../server/api/api-models";
 import { signInVS } from "../../helpers/validationSchemes";
-import { RootState } from "../../helpers/types";
-import { RESOLVED_PROMISE_STATUS } from "../../helpers/consts";
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
+import { authAPI } from "../../store/reducers/AuthService";
+import { updateJwtToken } from "../../helpers/functions";
+import { Preloader } from "../Auxiliary/Preloader";
 
-export const SignIn = ({ modal, signInOpenState, signUpOpenState }: ILogin) => {
-  const promise = useSelector((state: RootState) => state.promise);
-  const auth = useSelector((state: RootState) => state.auth);
-  const navigate = useNavigate();
-
+export const SignIn = ({
+  modal,
+  signInOpenState,
+  signUpOpenState,
+}: ISignIn) => {
   const [showPassword, setShowPassword] = useState(false);
-  const initialValues: LoginFormValues = { email: "", password: "" };
+  const initialValues: SignInFormValues = { email: "", password: "" };
+  const navigate = useNavigate();
+  const location = useLocation().pathname;
+
+  const [signin, { isLoading, error }] = authAPI.useSigninMutation();
 
   const formik = useFormik({
     initialValues: initialValues,
     validationSchema: signInVS,
-    onSubmit: (values) => {
-      const signInStatus =
-        promise?.["signin"]?.["status"] === RESOLVED_PROMISE_STATUS;
-      modal && signInStatus && signInOpenState(false);
+    onSubmit: async (values) => {
       const { email, password } = values;
-      onLogin(email, password);
+      const response = await signin({ email, password });
+      if ("data" in response && !("error" in response)) {
+        updateJwtToken({ ...response?.data?.user, password });
+      } else {
+        return;
+      }
+      modal && signInOpenState(false);
+      (location === "/signin" || location === "/signup") &&
+        !modal &&
+        navigate("/");
     },
   });
 
@@ -51,14 +60,14 @@ export const SignIn = ({ modal, signInOpenState, signUpOpenState }: ILogin) => {
   const getSignUp = () => navigate("/signup");
 
   useEffect(() => {
-    if (auth?.["payload"] && modal) {
+    if (sessionStorage?.token && modal) {
       signInOpenState(false);
     }
-  }, [auth?.["payload"]]);
+  }, [sessionStorage?.token]);
 
   return (
-    <div style={modal ? authModalStyles.main : authFormStyles.main}>
-      <div>
+    <Preloader isLoading={isLoading} error={error?.data}>
+      <div style={modal ? authModalStyles.main : authFormStyles.main}>
         {modal || (
           <>
             <Typography
@@ -105,7 +114,6 @@ export const SignIn = ({ modal, signInOpenState, signUpOpenState }: ILogin) => {
                     <IconButton
                       aria-label="toggle password visibility"
                       onClick={showPass}
-                      onMouseDown={showPass}
                     >
                       {showPassword ? (
                         <VisibilityIcon />
@@ -146,6 +154,6 @@ export const SignIn = ({ modal, signInOpenState, signUpOpenState }: ILogin) => {
           </Box>
         </form>
       </div>
-    </div>
+    </Preloader>
   );
 };

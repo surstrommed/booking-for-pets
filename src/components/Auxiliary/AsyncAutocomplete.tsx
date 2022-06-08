@@ -2,26 +2,26 @@ import React, { useState, useEffect } from "react";
 import TextField from "@mui/material/TextField";
 import Autocomplete from "@mui/material/Autocomplete";
 import CircularProgress from "@mui/material/CircularProgress";
-import { getHotels } from "./../../server/api/api";
 import { uniqueArray } from "../../helpers/functions";
 import { autocompleteStyles } from "./auxiliaryStyles";
-import { HotelModel } from "src/server/api/api-models";
+import { HotelModel } from "../../server/api/api-models";
+import { hotelAPI } from "../../store/reducers/HotelService";
 
 export const AsyncAutocomplete = ({ updateLocation }) => {
   const [open, setOpen] = useState(false);
   const [options, setOptions] = useState([]);
-  const loading = open && options.length === 0;
+
+  const { data: allHotels, isLoading: hotelsLoading } =
+    hotelAPI.useFetchAllHotelsQuery("");
 
   useEffect(() => {
     let active = true;
-    if (!loading) {
-      return undefined;
-    }
 
-    (async () => {
-      const citiesCountries = ((await getHotels()) || []).map(
+    (() => {
+      const citiesCountries = (allHotels || []).map(
         (hotel: HotelModel) => hotel.location
       );
+
       if (active) {
         setOptions([...uniqueArray(citiesCountries)]);
       }
@@ -29,7 +29,7 @@ export const AsyncAutocomplete = ({ updateLocation }) => {
     return () => {
       active = false;
     };
-  }, [loading]);
+  }, [open]);
 
   useEffect(() => {
     if (!open) {
@@ -56,7 +56,7 @@ export const AsyncAutocomplete = ({ updateLocation }) => {
       isOptionEqualToValue={(option, value) => option === value}
       getOptionLabel={(option) => option}
       options={options}
-      loading={loading}
+      loading={hotelsLoading}
       renderInput={(params) => (
         <TextField
           {...params}
@@ -65,7 +65,7 @@ export const AsyncAutocomplete = ({ updateLocation }) => {
             ...params.InputProps,
             endAdornment: (
               <>
-                {loading && (
+                {hotelsLoading && (
                   <CircularProgress
                     color="inherit"
                     size={20}

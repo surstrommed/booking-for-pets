@@ -11,26 +11,33 @@ import {
 } from "@mui/material";
 import CloseIcon from "@mui/icons-material/Close";
 import { wishlistVS } from "../../helpers/validationSchemes";
-import { actionUpdateWishlists as onUpdate } from "../../actions/thunks";
 import { WishlistModel } from "../../server/api/api-models";
 import { RENAME_ERROR_WISHLIST } from "../../helpers/consts";
 import { wishlistStyles } from "./wishlistStyles";
 import { wishlistName } from "../../helpers/types";
 import { useNavigate } from "react-router-dom";
+import { formateUser, updateJwtToken } from "../../helpers/functions";
+import { usersAPI } from "../../store/reducers/UserService";
+import { Preloader } from "../Auxiliary/Preloader";
 
 export const WishlistSettings = ({
   handleClose,
   currentWishlist,
   currentWishlists,
 }) => {
+  const currentUser = formateUser();
+
   const navigate = useNavigate();
 
   const initialValues: wishlistName = { wishlistName: "" };
 
+  const [userUpdate, { isLoading: userUpdateLoading, error: userUpdateError }] =
+    usersAPI.useUpdateUserMutation();
+
   const formik = useFormik({
     initialValues: initialValues,
     validationSchema: wishlistVS,
-    onSubmit: (values) => {
+    onSubmit: async (values) => {
       const currentWishlistIndex = (currentWishlists || []).findIndex(
         (wishlist: WishlistModel) => wishlist.name === currentWishlist.name
       );
@@ -46,9 +53,16 @@ export const WishlistSettings = ({
 
       filteredUserWishlists.push(filteredCurrentUserWishlist);
 
-      onUpdate(filteredUserWishlists);
+      const response = await userUpdate({
+        ...currentUser,
+        password: currentUser?.password,
+        wishlists: filteredUserWishlists,
+      });
 
-      navigate(`/wishlists/wishlist/${values.wishlistName}`);
+      if (response?.data) {
+        updateJwtToken({ ...response?.data, password: currentUser?.password });
+        navigate(`/wishlists/wishlist/${values.wishlistName}`);
+      }
     },
   });
 
@@ -58,18 +72,25 @@ export const WishlistSettings = ({
     errors.wishlistName = RENAME_ERROR_WISHLIST;
   }
 
-  function deleteWishlist() {
+  const deleteWishlist = async () => {
     const filteredCurrentWishlists = (currentWishlists || []).filter(
       (wishlist: WishlistModel) => wishlist.name !== currentWishlist.name
     );
 
-    onUpdate(filteredCurrentWishlists);
+    const response = await userUpdate({
+      ...currentUser,
+      password: currentUser?.password,
+      wishlists: filteredCurrentWishlists,
+    });
 
-    navigate("/wishlists");
-  }
+    if (response?.data) {
+      updateJwtToken({ ...response?.data, password: currentUser?.password });
+      navigate("/wishlists");
+    }
+  };
 
   return (
-    <div>
+    <Preloader isLoading={userUpdateLoading} error={userUpdateError?.data}>
       <AppBar sx={wishlistStyles.wishlistAppBar}>
         <Toolbar>
           <IconButton
@@ -129,6 +150,6 @@ export const WishlistSettings = ({
           </Button>
         </form>
       </Box>
-    </div>
+    </Preloader>
   );
 };

@@ -1,40 +1,16 @@
 import React from "react";
-import CryptoJS from "crypto-js";
 import ErrorIcon from "@mui/icons-material/Error";
-import { jwtCodeData } from "./types";
-import { HotelModel } from "../server/api/api-models";
-import { stringMonthsArray, apiErrors } from "./consts";
+import { UserModel, IJwtHelper, WishlistModel } from "../server/api/api-models";
+import {
+  stringMonthsArray,
+  apiErrors,
+  SECRET_KEY,
+  sendSnackBarMessages,
+} from "./consts";
+import { Jwt, create, verify } from "njwt";
 
 export const stringMonth = (monthNumber: number) => {
   return stringMonthsArray[monthNumber];
-};
-
-export const jwtDecode = (token: string) => {
-  const arrToken = token.split(".");
-  const base64Token = atob(arrToken[1]);
-  return JSON.parse(base64Token);
-};
-
-const base64url = (source: string) => {
-  let encodedSource = CryptoJS.enc.Base64.stringify(source);
-  encodedSource = encodedSource.replace(/=+$/, "");
-  encodedSource = encodedSource.replace(/\+/g, "-");
-  encodedSource = encodedSource.replace(/\//g, "_");
-  return encodedSource;
-};
-
-export const jwtCode = (data: jwtCodeData) => {
-  const header = {
-    alg: "HS256",
-    typ: "JWT",
-  };
-  const stringifiedHeader = CryptoJS.enc.Utf8.parse(JSON.stringify(header));
-  const encodedHeader = base64url(stringifiedHeader);
-  const stringifiedData = CryptoJS.enc.Utf8.parse(JSON.stringify(data));
-  const encodedData = base64url(stringifiedData);
-  let token = encodedHeader + "." + encodedData;
-  token = encodedHeader + "." + encodedData + "." + CryptoJS.SHA256(token);
-  return token;
 };
 
 export const checkError = (checkString: string) => {
@@ -91,28 +67,128 @@ export const createUniqueId = () => {
   return result;
 };
 
-export const getUniqueId = (entityData: HotelModel[]) => {
-  const emptyHotelIndex = entityData.findIndex(
-    (hotel: HotelModel) => hotel.owner === 0
-  );
-
-  if (emptyHotelIndex !== -1) {
-    return entityData[emptyHotelIndex].id;
-  }
-
-  const uniqueId = createUniqueId();
-  const matchId = entityData.findIndex(
-    (hotel: HotelModel) => hotel.id === uniqueId
-  );
-
-  if (matchId === -1) {
-    return uniqueId;
-  } else {
-    getUniqueId(entityData);
-  }
-};
-
 export const setTabsProps = (index: number) => ({
   id: `simple-tab-${index}`,
   "aria-controls": `simple-tabpanel-${index}`,
 });
+
+export const jwtHelper = ({
+  payload,
+  key,
+  token,
+  type = "create",
+}: IJwtHelper) => {
+  let jwt: Jwt | string = "";
+  if (type === "create") {
+    try {
+      jwt = create(payload, key).compact();
+    } catch (e) {
+      return e;
+    }
+  }
+  if (type === "verify") {
+    try {
+      jwt = verify(token, key);
+    } catch (e) {
+      return e;
+    }
+  }
+  return jwt;
+};
+
+export const formateUser = () => {
+  const { body: jwtBody } = jwtHelper({
+    token: sessionStorage?.token,
+    key: SECRET_KEY,
+    type: "verify",
+  });
+
+  const currentUser = { ...jwtBody };
+
+  if (currentUser?.iat) {
+    delete currentUser.iat;
+  }
+  if (currentUser?.exp) {
+    delete currentUser.exp;
+  }
+  if (currentUser?.jti) {
+    delete currentUser.jti;
+  }
+
+  return currentUser;
+};
+
+export const checkUser = (payload: UserModel) => {
+  if (
+    payload?.id &&
+    payload?.email &&
+    payload?.login &&
+    payload?.firstName &&
+    payload?.lastName &&
+    payload?.createdAt &&
+    (payload?.pictureUrl || payload?.pictureUrl === null) &&
+    payload?.currencyId &&
+    Array.isArray(payload?.wishlists)
+  ) {
+    return true;
+  } else {
+    return false;
+  }
+};
+
+export const updateJwtToken = (payload) => {
+  let jwtToken = "";
+  jwtToken = jwtHelper({
+    payload: payload,
+    key: SECRET_KEY,
+    type: "create",
+  });
+  sessionStorage.setItem("token", jwtToken);
+};
+
+export const unsaveHotelFromWishlist = async ({
+  hotelData,
+  isSaved,
+  currentUser,
+  userUpdate,
+  userUpdateError,
+  sendSnackbar,
+}) => {
+  const currentUserWishlists = currentUser?.wishlists;
+
+  const isSavedIndex = (currentUserWishlists || []).findIndex(
+    (wishlist: WishlistModel) => wishlist.hotelsId.includes(hotelData.id)
+  );
+
+  const filteredHotelsId = isSaved.hotelsId.filter(
+    (hotelId: string) => hotelId !== hotelData.id
+  );
+
+  const filteredUserWishlists = [...currentUserWishlists];
+
+  filteredUserWishlists.splice(isSavedIndex, 1);
+
+  const filteredCurrentUserWishlist = {
+    ...currentUserWishlists[isSavedIndex],
+    hotelsId: filteredHotelsId,
+  };
+
+  filteredUserWishlists.push(filteredCurrentUserWishlist);
+
+  const response = await userUpdate({
+    ...currentUser,
+    password: currentUser?.password,
+    wishlists: filteredUserWishlists,
+  });
+
+  if (response?.data) {
+    updateJwtToken({ ...response?.data, password: currentUser?.password });
+  }
+
+  if (typeof sendSnackbar === "function" && !userUpdateError?.data) {
+    sendSnackbar({
+      msg: sendSnackBarMessages.removedFromWishlistMessage(isSaved?.name),
+      variant: "error",
+    });
+  }
+};

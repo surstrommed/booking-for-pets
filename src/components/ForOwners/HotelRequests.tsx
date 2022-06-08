@@ -1,15 +1,9 @@
 import React, { useState } from "react";
-import { RootState } from "../../helpers/types";
-import { useSelector } from "react-redux";
-import {
-  actionFullHotelUpdate as onHotelUpdate,
-  actionFullSendNotification as onSendNotification,
-} from "../../actions/thunks";
 import { Tabs, Tab, Box } from "@mui/material";
 import { forOwnersStyles } from "./forOwnersStyles";
 import { useParams } from "react-router-dom";
 import useSnackBar from "../Auxiliary/SnackBar";
-import ModalWindow from "../Auxiliary/ModalWindow";
+import { ModalWindow } from "../Auxiliary/ModalWindow";
 import { RequestNotification } from "./RequestNotification";
 import {
   clearPastFreeRooms,
@@ -21,7 +15,6 @@ import {
 } from "../Hotels/bookingFunctions";
 import {
   NOTIFICATION_MESSAGE_MODAL,
-  RESOLVED_PROMISE_STATUS,
   CONFIRMED_REQUEST_MESSAGE,
   REJECTED_REQUEST_MESSAGE,
   PENDING_REQUEST_MESSAGE,
@@ -37,8 +30,16 @@ import {
   UserRequestModel,
 } from "../../server/api/api-models";
 import { RequestsTab } from "./RequestsTab";
-import { createUniqueId, setTabsProps } from "../../helpers/functions";
+import {
+  createUniqueId,
+  formateUser,
+  setTabsProps,
+} from "../../helpers/functions";
 import { TabPanelProps } from "../../server/api/api-models";
+import { hotelAPI } from "../../store/reducers/HotelService";
+import { usersAPI } from "../../store/reducers/UserService";
+import { Preloader } from "../Auxiliary/Preloader";
+import { notificationAPI } from "../../store/reducers/NotificationService";
 
 const TabPanel = (props: TabPanelProps) => {
   const { children, value, index, ...other } = props;
@@ -57,7 +58,7 @@ const TabPanel = (props: TabPanelProps) => {
 };
 
 export const HotelRequests = () => {
-  const promise = useSelector((state: RootState) => state.promise);
+  const currentUser = formateUser();
 
   const { hotelId } = useParams();
   const [value, setValue] = useState(0);
@@ -70,11 +71,30 @@ export const HotelRequests = () => {
     setValue(newValue);
   };
 
-  const { payload: allHotels } = promise.getHotels || [];
-  const { payload: allUsers } = promise.getUsers || [];
+  const {
+    data: allHotels,
+    error: hotelsError,
+    isLoading: hotelsLoading,
+  } = hotelAPI.useFetchAllHotelsQuery("");
+
+  const {
+    data: allUsers,
+    error: usersError,
+    isLoading: usersLoading,
+  } = usersAPI.useFetchAllUsersQuery("");
+
+  const [
+    createNotification,
+    { isLoading: createNotificationLoading, error: createNotificationError },
+  ] = notificationAPI.useCreateNotificationMutation();
+
+  const [
+    updateHotel,
+    { isLoading: updateHotelLoading, error: updateHotelError },
+  ] = hotelAPI.useUpdateHotelMutation();
 
   const currentHotel = allHotels?.find(
-    (hotel: HotelModel) => hotel.id === hotelId && hotel.owner !== 0
+    (hotel: HotelModel) => hotel.id === hotelId
   );
 
   const currentHotelOwner = allUsers?.find(
@@ -145,8 +165,8 @@ export const HotelRequests = () => {
         userId: currentRequest.usersId,
       });
 
-      onHotelUpdate({
-        id: hotelId,
+      updateHotel({
+        ...currentHotel,
         userRequests: [...currentUserRequests, changedHotelStatus],
         freeRooms: { ...freeRooms },
         disableUserDates: {
@@ -155,13 +175,13 @@ export const HotelRequests = () => {
         disableUsersDates: [...disableUsersDates],
       });
     } else {
-      onHotelUpdate({
-        id: hotelId,
+      updateHotel({
+        ...currentHotel,
         userRequests: [...currentUserRequests, changedHotelStatus],
       });
     }
 
-    onSendNotification({
+    createNotification({
       id: createUniqueId(),
       text: ownerNotification.length > 0 ? ownerNotification : requestMessage,
       status: UNREAD_NOTIFICATION,
@@ -169,15 +189,14 @@ export const HotelRequests = () => {
       toId: currentHotel.userRequests[currentRequestIndex].usersId,
     });
 
-    if (typeof sendSnackbar === "function") {
-      promise.hotelUpdate.status === RESOLVED_PROMISE_STATUS &&
-        sendSnackbar({
-          msg:
-            type === CONFIRMED_REQUEST_MESSAGE
-              ? CONFIRMED_REQUEST_OWNER
-              : REJECTED_REQUEST_OWNER,
-          variant: type === CONFIRMED_REQUEST_MESSAGE ? "success" : "error",
-        });
+    if (typeof sendSnackbar === "function" && !updateHotelError?.data) {
+      sendSnackbar({
+        msg:
+          type === CONFIRMED_REQUEST_MESSAGE
+            ? CONFIRMED_REQUEST_OWNER
+            : REJECTED_REQUEST_OWNER,
+        variant: type === CONFIRMED_REQUEST_MESSAGE ? "success" : "error",
+      });
     }
   };
 
@@ -202,61 +221,79 @@ export const HotelRequests = () => {
     })`;
 
   return (
-    <Box sx={forOwnersStyles.width100}>
-      {openNotificationModal && (
-        <ModalWindow
-          title={NOTIFICATION_MESSAGE_MODAL}
-          body={
-            <RequestNotification
-              updateNotificationMessage={updateNotificationMessage}
-              typeIndex={typeIndex}
-              requestConfirm={requestConfirm}
-              requestReject={requestReject}
+    <Preloader
+      isLoading={
+        hotelsLoading ||
+        usersLoading ||
+        createNotificationLoading ||
+        updateHotelLoading
+      }
+      error={
+        hotelsError?.data ||
+        usersError?.data ||
+        createNotificationError?.data ||
+        updateHotelError?.data
+      }
+    >
+      <Box sx={forOwnersStyles.width100}>
+        {openNotificationModal && (
+          <ModalWindow
+            title={NOTIFICATION_MESSAGE_MODAL}
+            body={
+              <RequestNotification
+                updateNotificationMessage={updateNotificationMessage}
+                typeIndex={typeIndex}
+                requestConfirm={requestConfirm}
+                requestReject={requestReject}
+              />
+            }
+            type={"notification"}
+            modalWindowState={updateNotificationModal}
+          />
+        )}
+        <Box sx={forOwnersStyles.tabsBox}>
+          <Tabs
+            value={value}
+            onChange={handleChange}
+            aria-label="basic tabs example"
+            textColor="secondary"
+          >
+            <Tab
+              label={tabLabel(PENDING_REQUEST_MESSAGE)}
+              {...setTabsProps(0)}
             />
-          }
-          type={"notification"}
-          modalWindowState={updateNotificationModal}
-        />
-      )}
-      <Box sx={forOwnersStyles.tabsBox}>
-        <Tabs
-          value={value}
-          onChange={handleChange}
-          aria-label="basic tabs example"
-          textColor="secondary"
-        >
-          <Tab label={tabLabel(PENDING_REQUEST_MESSAGE)} {...setTabsProps(0)} />
-          <Tab
-            label={tabLabel(CONFIRMED_REQUEST_MESSAGE)}
-            {...setTabsProps(1)}
+            <Tab
+              label={tabLabel(CONFIRMED_REQUEST_MESSAGE)}
+              {...setTabsProps(1)}
+            />
+            <Tab
+              label={tabLabel(REJECTED_REQUEST_MESSAGE)}
+              {...setTabsProps(2)}
+            />
+          </Tabs>
+        </Box>
+        <TabPanel value={value} index={0}>
+          <RequestsTab
+            type={PENDING_REQUEST_MESSAGE}
+            openNotificationModalWindow={openNotificationModalWindow}
+            currentHotel={currentHotel}
           />
-          <Tab
-            label={tabLabel(REJECTED_REQUEST_MESSAGE)}
-            {...setTabsProps(2)}
+        </TabPanel>
+        <TabPanel value={value} index={1}>
+          <RequestsTab
+            type={CONFIRMED_REQUEST_MESSAGE}
+            openNotificationModalWindow={openNotificationModalWindow}
+            currentHotel={currentHotel}
           />
-        </Tabs>
+        </TabPanel>
+        <TabPanel value={value} index={2}>
+          <RequestsTab
+            type={REJECTED_REQUEST_MESSAGE}
+            openNotificationModalWindow={openNotificationModalWindow}
+            currentHotel={currentHotel}
+          />
+        </TabPanel>
       </Box>
-      <TabPanel value={value} index={0}>
-        <RequestsTab
-          type={PENDING_REQUEST_MESSAGE}
-          openNotificationModalWindow={openNotificationModalWindow}
-          currentHotel={currentHotel}
-        />
-      </TabPanel>
-      <TabPanel value={value} index={1}>
-        <RequestsTab
-          type={CONFIRMED_REQUEST_MESSAGE}
-          openNotificationModalWindow={openNotificationModalWindow}
-          currentHotel={currentHotel}
-        />
-      </TabPanel>
-      <TabPanel value={value} index={2}>
-        <RequestsTab
-          type={REJECTED_REQUEST_MESSAGE}
-          openNotificationModalWindow={openNotificationModalWindow}
-          currentHotel={currentHotel}
-        />
-      </TabPanel>
-    </Box>
+    </Preloader>
   );
 };

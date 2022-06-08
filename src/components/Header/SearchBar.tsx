@@ -8,7 +8,7 @@ import { searchBar } from "./headerStyles";
 import { AsyncAutocomplete } from "./../Auxiliary/AsyncAutocomplete";
 import { useNavigate } from "react-router-dom";
 
-export default function SearchBar({ styles }) {
+export const SearchBar = ({ styles }) => {
   const [location, setLocation] = useState("");
   const [arrivalValue, setArrivalValue] = useState<string | null>(
     new Date(new Date().getTime() + 24 * 60 * 60 * 1000).toString()
@@ -111,4 +111,4 @@ export default function SearchBar({ styles }) {
       </ButtonGroup>
     </div>
   );
-}
+};

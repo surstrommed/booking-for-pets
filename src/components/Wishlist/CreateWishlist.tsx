@@ -2,33 +2,53 @@ import React from "react";
 import { useFormik } from "formik";
 import { CustomTextField } from "../Auxiliary/CustomTextField";
 import { Button, Typography } from "@mui/material";
-import { useSelector } from "react-redux";
-import { actionUpdateWishlists as onCreateWishlist } from "../../actions/thunks";
-import useSnackBar from "./../Auxiliary/SnackBar";
 import { wishlistVS } from "../../helpers/validationSchemes";
 import { sendSnackBarMessages } from "../../helpers/consts";
 import { WishlistModel } from "../../server/api/api-models";
 import { ALREADY_EXIST_WISHLIST } from "../../helpers/consts";
-import { wishlistName, RootState } from "../../helpers/types";
+import { wishlistName } from "../../helpers/types";
+import { formateUser, updateJwtToken } from "../../helpers/functions";
+import { usersAPI } from "../../store/reducers/UserService";
+import { Preloader } from "../Auxiliary/Preloader";
+import useSnackBar from "../Auxiliary/SnackBar";
 
 export const CreateWishlist = ({ modalWindowState, hotelData }) => {
-  const auth = useSelector((state: RootState) => state.auth);
+  const currentUser = formateUser();
 
-  const currentUserWishlists = auth?.payload?.wishlists;
+  const currentUserWishlists = currentUser?.wishlists;
   const initialValues: wishlistName = { wishlistName: "" };
+
+  const [userUpdate, { isLoading: userUpdateLoading, error: userUpdateError }] =
+    usersAPI.useUpdateUserMutation();
+
+  const [, sendSnackbar] = useSnackBar();
 
   const formik = useFormik({
     initialValues: initialValues,
     validationSchema: wishlistVS,
-    onSubmit: (values) => {
+    onSubmit: async (values) => {
       const wishlists = [
         ...currentUserWishlists,
         { name: values.wishlistName, hotelsId: [hotelData.id] },
       ];
 
-      modalWindowState(false);
+      const response = await userUpdate({
+        ...currentUser,
+        password: currentUser?.password,
+        wishlists,
+      });
 
-      onCreateWishlist(wishlists);
+      if (response?.data) {
+        updateJwtToken({ ...response?.data, password: currentUser?.password });
+      }
+
+      if (typeof sendSnackbar === "function" && !userUpdateError?.data) {
+        sendSnackbar({
+          msg: sendSnackBarMessages.createdWishlistMessage(values.wishlistName),
+          variant: "success",
+        });
+        modalWindowState(false);
+      }
     },
   });
 
@@ -42,20 +62,8 @@ export const CreateWishlist = ({ modalWindowState, hotelData }) => {
     errors.wishlistName = ALREADY_EXIST_WISHLIST;
   }
 
-  const [, sendSnackbar] = useSnackBar();
-
-  function sendSnackBar() {
-    values.wishlistName &&
-      !errors.wishlistName &&
-      typeof sendSnackbar === "function" &&
-      sendSnackbar({
-        msg: sendSnackBarMessages.createdWishlistMessage(values.wishlistName),
-        variant: "success",
-      });
-  }
-
   return (
-    <div>
+    <Preloader isLoading={userUpdateLoading} error={userUpdateError}>
       <form onSubmit={handleSubmit}>
         <CustomTextField
           id="wishlistName"
@@ -70,20 +78,14 @@ export const CreateWishlist = ({ modalWindowState, hotelData }) => {
           fullWidth
         />
         <Typography variant="caption" display="block" gutterBottom>
-          From 2 to 20 characters
+          From 2 to 20 characters without spaces
         </Typography>
         <br />
         <hr />
-        <Button
-          type="submit"
-          variant="contained"
-          color="secondary"
-          fullWidth
-          onClick={sendSnackBar}
-        >
+        <Button type="submit" variant="contained" color="secondary" fullWidth>
           Create wishlist
         </Button>
       </form>
-    </div>
+    </Preloader>
   );
 };

@@ -4,14 +4,14 @@ import { ImageList, ImageListItem, Button } from "@mui/material";
 import { links } from "../../helpers/consts";
 
 export const HotelGallery = ({ currentHotel, updateOpenDialogStatus }) => {
-  function formatImageSrc(image: string, size: number, rows = 1, cols = 1) {
+  const formatImageSrc = (image: string, size: number, rows = 1, cols = 1) => {
     return {
       src: `${image}?w=${size * cols}&h=${size * rows}&fit=crop&auto=format`,
       srcSet: `${image}?w=${size * cols}&h=${
         size * rows
       }&fit=crop&auto=format&dpr=2 2x`,
     };
-  }
+  };
   const hotelPhotos = (currentHotel?.photos || []).map(
     (photo: string, index: number) => ({
       img: photo,

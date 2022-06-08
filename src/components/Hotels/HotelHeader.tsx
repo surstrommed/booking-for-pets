@@ -5,18 +5,21 @@ import { hotelPageStyles } from "./hotelsStyles";
 import IosShareOutlinedIcon from "@mui/icons-material/IosShareOutlined";
 import GradeOutlinedIcon from "@mui/icons-material/GradeOutlined";
 import GradeIcon from "@mui/icons-material/Grade";
-import ModalWindow from "./../Auxiliary/ModalWindow";
+import { ModalWindow } from "./../Auxiliary/ModalWindow";
 import { SelectWishlist } from "../Wishlist/SelectWishlist";
-import { useSelector } from "react-redux";
-import { RootState } from "../../helpers/types";
-import { actionUpdateWishlists as onUnsave } from "../../actions/thunks";
 import useSnackBar from "./../Auxiliary/SnackBar";
 import { ShareWindow } from "./../Share/ShareWindow";
-import { sendSnackBarMessages } from "../../helpers/consts";
 import { WishlistModel } from "../../server/api/api-models";
+import {
+  formateUser,
+  unsaveHotelFromWishlist,
+  updateJwtToken,
+} from "../../helpers/functions";
+import { usersAPI } from "../../store/reducers/UserService";
+import { Preloader } from "../Auxiliary/Preloader";
 
-export const HotelHeader = ({ currentHotel }) => {
-  const auth = useSelector((state: RootState) => state.auth);
+export const HotelHeader = ({ hotelData }) => {
+  const currentUser = formateUser();
 
   const [openWishlistWindow, setOpenWishlistWindow] = useState(false);
   const [openShareWindow, setOpenShareWindow] = useState(false);
@@ -30,53 +33,24 @@ export const HotelHeader = ({ currentHotel }) => {
     setOpenShareWindow(value);
   };
 
-  const currentUserWishlists = auth?.payload?.wishlists;
+  const currentUserWishlists = currentUser?.wishlists;
 
   const isSaved = (currentUserWishlists || []).find((wishlist: WishlistModel) =>
-    wishlist.hotelsId.includes(currentHotel.id)
+    wishlist.hotelsId.includes(hotelData.id)
   );
 
-  function handleUnsave() {
-    const isSavedIndex = (currentUserWishlists || []).findIndex(
-      (wishlist: WishlistModel) => wishlist.hotelsId.includes(currentHotel.id)
-    );
-
-    const filteredHotelsId = isSaved.hotelsId.filter(
-      (hotelId: string) => hotelId !== currentHotel.id
-    );
-
-    const filteredUserWishlists = [...currentUserWishlists];
-
-    filteredUserWishlists.splice(isSavedIndex, 1);
-
-    const filteredCurrentUserWishlist = {
-      ...currentUserWishlists[isSavedIndex],
-      hotelsId: filteredHotelsId,
-    };
-
-    filteredUserWishlists.push(filteredCurrentUserWishlist);
-
-    if (typeof sendSnackbar === "function") {
-      sendSnackbar({
-        msg: sendSnackBarMessages.removedFromWishlistMessage(isSaved?.name),
-        variant: "error",
-      });
-    }
-
-    onUnsave(filteredUserWishlists);
-  }
-
-  const [saved] = useState(isSaved ? true : false);
+  const [userUpdate, { isLoading: userUpdateLoading, error: userUpdateError }] =
+    usersAPI.useUpdateUserMutation();
 
   return (
-    <div>
+    <Preloader isLoading={userUpdateLoading} error={userUpdateError?.data}>
       {openWishlistWindow && (
         <ModalWindow
           title={"Your choice"}
           body={
             <SelectWishlist
               modalWindowState={updateWishlistWindow}
-              currentHotel={currentHotel}
+              currentHotel={hotelData}
             />
           }
           modalWindowState={updateWishlistWindow}
@@ -90,7 +64,7 @@ export const HotelHeader = ({ currentHotel }) => {
         />
       )}
       <Typography variant="h3" gutterBottom component="div">
-        {currentHotel?.name}
+        {hotelData?.name}
       </Typography>
       <Typography
         sx={hotelPageStyles.blockInfo}
@@ -100,9 +74,9 @@ export const HotelHeader = ({ currentHotel }) => {
       >
         <div>
           <ScrollLink to="reviews" style={hotelPageStyles.link}>
-            {currentHotel?.reviews?.length} review(s)
+            {hotelData?.reviews?.length} review(s)
           </ScrollLink>{" "}
-          · {currentHotel?.location}
+          · {hotelData?.location}
         </div>
         <div style={hotelPageStyles.alignCenter}>
           <Button
@@ -119,11 +93,22 @@ export const HotelHeader = ({ currentHotel }) => {
             color="secondary"
             variant="text"
             style={hotelPageStyles.link}
-            disabled={!auth?.token}
-            onClick={saved ? handleUnsave : () => setOpenWishlistWindow(true)}
+            disabled={!Object.keys(currentUser)?.length}
+            onClick={() =>
+              isSaved
+                ? unsaveHotelFromWishlist({
+                    hotelData,
+                    isSaved,
+                    currentUser,
+                    userUpdate,
+                    userUpdateError,
+                    sendSnackbar,
+                  })
+                : setOpenWishlistWindow(true)
+            }
           >
             <span style={hotelPageStyles.alignCenter}>
-              {saved ? (
+              {isSaved ? (
                 <>
                   <GradeIcon />
                   <span>Saved</span>
@@ -138,6 +123,6 @@ export const HotelHeader = ({ currentHotel }) => {
           </Button>
         </div>
       </Typography>
-    </div>
+    </Preloader>
   );
 };

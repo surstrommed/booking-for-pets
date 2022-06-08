@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import {
   Box,
   Avatar,
@@ -11,15 +11,11 @@ import {
 } from "@mui/material";
 import AccountCircleIcon from "@mui/icons-material/AccountCircle";
 import MenuIcon from "@mui/icons-material/Menu";
-import { useSelector } from "react-redux";
-import { actionAuthLogout as actionLogOut } from "../../actions/types";
-import { RootState } from "../../helpers/types";
-import ModalWindow from "./../Auxiliary/ModalWindow";
+import { ModalWindow } from "./../Auxiliary/ModalWindow";
 import { SignIn } from "./../Auth/Signin";
 import { SignUp } from "./../Auth/Signup";
-import { Preloader } from "./../Auxiliary/Preloader";
 import { profileIconStyles } from "./headerStyles";
-import { links } from "../../helpers/consts";
+import { links, privateRoutes } from "../../helpers/consts";
 import {
   NotificationModel,
   HotelModel,
@@ -29,14 +25,22 @@ import {
   UNREAD_NOTIFICATION,
   PENDING_REQUEST_MESSAGE,
 } from "../../helpers/consts";
-import { useNavigate } from "react-router-dom";
-
-type ButtonEvent = React.MouseEvent<HTMLButtonElement>;
+import { useNavigate, useLocation } from "react-router-dom";
+import { ButtonEvent } from "../../helpers/types";
+import { notificationAPI } from "../../store/reducers/NotificationService";
+import { formateUser } from "../../helpers/functions";
+import { Preloader } from "../Auxiliary/Preloader";
+import { hotelAPI } from "../../store/reducers/HotelService";
 
 export const ProfileIcon = () => {
-  const promise = useSelector((state: RootState) => state.promise);
-  const auth = useSelector((state: RootState) => state.auth);
+  const currentUser = formateUser();
   const navigate = useNavigate();
+  const location = useLocation().pathname;
+
+  useEffect(() => {
+    const routeCheck = privateRoutes.some((route) => location.includes(route));
+    !sessionStorage?.token && routeCheck && navigate("/signin");
+  }, [sessionStorage?.token]);
 
   const [anchorElUser, setAnchorElUser] = useState(null);
   const [openSignInModal, setOpenSignInModal] = useState(false);
@@ -66,47 +70,62 @@ export const ProfileIcon = () => {
 
   const getNotifications = () => navigate("/notifications");
 
+  const goHome = () => navigate("/");
+
   const openSignIn = () => setOpenSignInModal(true);
 
   const openSignUp = () => setOpenSignUpModal(true);
 
-  const unreadUserMessages = (promise.getNotifications?.payload || []).filter(
+  const getLogOut = () => {
+    sessionStorage.removeItem("token");
+    handleCloseUserMenu();
+  };
+
+  const {
+    data: allNotifications,
+    error: notificationError,
+    isLoading: notificationLoading,
+  } = notificationAPI.useFetchAllNotificationsQuery("");
+
+  const {
+    data: allHotels,
+    error: hotelsError,
+    isLoading: hotelsLoading,
+  } = hotelAPI.useFetchAllHotelsQuery("");
+
+  const unreadUserMessages = (allNotifications || []).filter(
     (notification: NotificationModel) =>
-      notification.toId === auth?.payload?.id &&
+      notification.toId === currentUser?.id &&
       notification.status === UNREAD_NOTIFICATION
   );
 
-  const currentUserHotels = (promise.getHotels?.payload || []).filter(
-    (hotel: HotelModel) => hotel.owner === auth?.payload?.id
+  const currentUserHotels = (allHotels || []).filter(
+    (hotel: HotelModel) => hotel.owner === currentUser?.id
   );
 
   const countPendingBookingRequests = (currentUserHotels || []).reduce(
     (total: number, curHotel: HotelModel) =>
       total +
-      curHotel.userRequests.filter(
-        (request: UserRequestModel) =>
-          request.status === PENDING_REQUEST_MESSAGE
-      ).length,
+        curHotel?.userRequests?.filter(
+          (request: UserRequestModel) =>
+            request?.status === PENDING_REQUEST_MESSAGE
+        )?.length || 0,
     0
   );
 
   return (
-    <>
+    <Preloader
+      isLoading={hotelsLoading || notificationLoading}
+      data={hotelsError?.data || notificationError?.data}
+    >
       {openSignInModal && (
         <ModalWindow
           title={"Sign in"}
           body={
-            <Preloader
-              promiseName={"signin"}
-              promiseState={promise}
-              sub={
-                <SignIn
-                  modal
-                  signInOpenState={updateSignInModal}
-                  signUpOpenState={updateSignUpModal}
-                />
-              }
+            <SignIn
               modal
+              signInOpenState={updateSignInModal}
+              signUpOpenState={updateSignUpModal}
             />
           }
           type={"signin"}
@@ -117,17 +136,10 @@ export const ProfileIcon = () => {
         <ModalWindow
           title={"Sign up"}
           body={
-            <Preloader
-              promiseName={"signup"}
-              promiseState={promise}
-              sub={
-                <SignUp
-                  modal
-                  signInOpenState={updateSignInModal}
-                  signUpOpenState={updateSignUpModal}
-                />
-              }
+            <SignUp
               modal
+              signInOpenState={updateSignInModal}
+              signUpOpenState={updateSignUpModal}
             />
           }
           type={"signup"}
@@ -137,14 +149,14 @@ export const ProfileIcon = () => {
       <Box sx={profileIconStyles.flexGrow}>
         <Tooltip title="Open profile">
           <IconButton onClick={handleOpenUserMenu} sx={profileIconStyles.main}>
-            {auth?.token ? (
+            {!!Object.keys(currentUser)?.length ? (
               <>
                 {unreadUserMessages.length > 0 ||
                 countPendingBookingRequests > 0 ? (
                   <Badge badgeContent={""} color="warning">
                     <MenuIcon sx={profileIconStyles.menuIcon} />
                     <Avatar
-                      src={auth?.payload?.pictureUrl || links.noAvatar}
+                      src={currentUser?.pictureUrl || links.noAvatar}
                       sx={profileIconStyles.avatarIcon}
                     />
                   </Badge>
@@ -152,7 +164,7 @@ export const ProfileIcon = () => {
                   <>
                     <MenuIcon sx={profileIconStyles.menuIcon} />
                     <Avatar
-                      src={auth?.payload?.pictureUrl || links.noAvatar}
+                      src={currentUser?.pictureUrl || links.noAvatar}
                       sx={profileIconStyles.avatarIcon}
                     />
                   </>
@@ -182,7 +194,7 @@ export const ProfileIcon = () => {
           open={Boolean(anchorElUser)}
           onClose={handleCloseUserMenu}
         >
-          {sessionStorage.authToken ? (
+          {!!Object.keys(currentUser)?.length ? (
             <div>
               <MenuItem onClick={getUserHotels}>
                 <Typography
@@ -213,8 +225,14 @@ export const ProfileIcon = () => {
                 <Typography textAlign="center">Profile</Typography>
               </MenuItem>
               <hr />
-              <MenuItem onClick={actionLogOut}>
+              <MenuItem onClick={getLogOut}>
                 <Typography textAlign="center">Logout</Typography>
+              </MenuItem>
+            </div>
+          ) : location === "/signin" || location === "/signup" ? (
+            <div>
+              <MenuItem onClick={goHome}>
+                <Typography textAlign="center">Go home</Typography>
               </MenuItem>
             </div>
           ) : (
@@ -229,6 +247,6 @@ export const ProfileIcon = () => {
           )}
         </Menu>
       </Box>
-    </>
+    </Preloader>
   );
 };

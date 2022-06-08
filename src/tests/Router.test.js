@@ -4,20 +4,17 @@ import { SignIn } from "../components/Auth/Signin";
 import { SignUp } from "../components/Auth/Signup";
 import { Provider } from "react-redux";
 import { BrowserRouter, MemoryRouter } from "react-router-dom";
-import { ThemeProvider } from "@mui/material";
-import App, { store } from "../components/App";
-import { theme } from "../assets/theme";
 import "@testing-library/jest-dom";
+import { setupStore } from "../store/store";
+import { App } from "../components/App";
 
 describe("ROUTES TESTS", () => {
   it("Sign in router test", async () => {
     const signin = (
-      <Provider store={store}>
-        <ThemeProvider theme={theme}>
-          <BrowserRouter>
-            <SignIn />
-          </BrowserRouter>
-        </ThemeProvider>
+      <Provider store={setupStore()}>
+        <BrowserRouter>
+          <SignIn />
+        </BrowserRouter>
       </Provider>
     );
 
@@ -30,12 +27,10 @@ describe("ROUTES TESTS", () => {
 
   it("Sign up router test", async () => {
     const signup = (
-      <Provider store={store}>
-        <ThemeProvider theme={theme}>
-          <BrowserRouter>
-            <SignUp />
-          </BrowserRouter>
-        </ThemeProvider>
+      <Provider store={setupStore()}>
+        <BrowserRouter>
+          <SignUp />
+        </BrowserRouter>
       </Provider>
     );
 

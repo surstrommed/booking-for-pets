@@ -1,10 +1,11 @@
 import React from "react";
-import { RootState } from "../../helpers/types";
+import { FetchBaseQueryError } from "@reduxjs/toolkit/dist/query";
+import { SerializedError } from "@reduxjs/toolkit";
+import { JSONMap } from "njwt";
 
 export interface JsonModel {
   users: UserModel[];
   hotels: HotelModel[];
-  currency: CurrencyModel[];
   notifications: NotificationModel[];
 }
 
@@ -25,9 +26,8 @@ export interface UserModel {
   lastName?: string;
   password?: string;
   createdAt?: number;
-  pictureUrl?: string | null;
+  pictureUrl?: string | null | File;
   currencyId?: number;
-  notifications?: NotificationModel[];
   wishlists?: WishlistModel[];
 }
 
@@ -56,7 +56,7 @@ export interface CurrencyModel {
 }
 
 export interface NotificationModel {
-  id: string;
+  id?: string;
   text?: string;
   status?: string;
   fromId?: number | null;
@@ -81,13 +81,13 @@ export interface UserRequestModel {
   id: string;
 }
 
-export interface IRegister {
+export interface ISignUp {
   modal?: boolean;
   signInOpenState?: (value: boolean) => void;
   signUpOpenState?: (value: boolean) => void;
 }
 
-export interface RegisterFormValues {
+export interface SignUpFormValues {
   email: string;
   login: string;
   firstName: string;
@@ -96,13 +96,13 @@ export interface RegisterFormValues {
   retryPassword: string;
 }
 
-export interface ILogin {
+export interface ISignIn {
   modal?: boolean;
   signInOpenState?: (value: boolean) => void;
   signUpOpenState?: (value: boolean) => void;
 }
 
-export interface LoginFormValues {
+export interface SignInFormValues {
   email: string;
   password: string;
 }
@@ -117,9 +117,9 @@ export interface IModal {
 }
 
 export interface IPreloader {
-  promiseName: string;
-  promiseState: object;
-  sub: React.ReactElement | string | number;
+  isLoading: boolean;
+  error: FetchBaseQueryError | SerializedError | string;
+  children: React.ReactElement | string | number;
   modal?: boolean;
 }
 
@@ -201,6 +201,19 @@ export interface IReview {
   owner: IOwner;
 }
 
-export interface FetchDataModel {
-  id?: string;
+export interface ICurrency {
+  disclaimer: string;
+  license: string;
+  timestamp: Date | number;
+  base: string;
+  rates: {
+    [sign: string]: number;
+  };
+}
+
+export interface IJwtHelper {
+  payload?: JSONMap;
+  key?: string;
+  token?: string;
+  type: string;
 }

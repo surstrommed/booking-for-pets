@@ -1,19 +1,14 @@
 import React, { useState, useEffect } from "react";
-import { useSelector } from "react-redux";
 import {
   createUniqueId,
   formatDate,
+  formateUser,
   formatStringDate,
 } from "../../helpers/functions";
-import { sendSnackBarMessages } from "../../helpers/consts";
-import { RootState } from "../../helpers/types";
+import { sendSnackBarMessages, siteCurrencyList } from "../../helpers/consts";
 import { useParams } from "react-router-dom";
 import { useFormik } from "formik";
-import {
-  actionFullHotelUpdate as onBooking,
-  actionFullSendNotification as onSendNotification,
-} from "./../../actions/thunks";
-import FullWindowGallery from "./FullWindowGallery";
+import { FullWindowGallery } from "./FullWindowGallery";
 import { HotelReviews } from "./HotelReviews";
 import { HotelOwner } from "./HotelOwner";
 import { HotelHeader } from "./HotelHeader";
@@ -25,7 +20,6 @@ import {
 } from "../../server/api/api-models";
 import { hotelPageVS } from "./../../helpers/validationSchemes";
 import useSnackBar from "./../Auxiliary/SnackBar";
-import Page404 from "../../pages/Page404";
 import { hotelPageStyles } from "./hotelsStyles";
 import { HotelModel, CurrencyModel } from "../../server/api/api-models";
 import {
@@ -33,24 +27,54 @@ import {
   EMPTY_NOTIFICATION,
   UNREAD_NOTIFICATION,
 } from "../../helpers/consts";
+import { hotelAPI } from "../../store/reducers/HotelService";
+import { currencyAPI } from "../../store/reducers/CurrencyService";
+import { Preloader } from "../Auxiliary/Preloader";
+import { usersAPI } from "../../store/reducers/UserService";
+import { notificationAPI } from "../../store/reducers/NotificationService";
 
 export const HotelPage = () => {
-  const promise = useSelector((state: RootState) => state.promise);
-  const auth = useSelector((state: RootState) => state.auth);
-  const currencyList = useSelector((state: RootState) => state.currencyList);
+  const currentUser = formateUser();
 
   const { hotelId } = useParams();
   const [openDialog, setOpenDialog] = useState(false);
-  const { payload: hotelsList } = promise.getHotels;
 
-  const currentHotel = hotelsList?.find(
-    (hotel: HotelModel) => hotel.id === hotelId && hotel.owner !== 0
+  const {
+    data: allHotels,
+    error: hotelsError,
+    isLoading: hotelsLoading,
+  } = hotelAPI.useFetchAllHotelsQuery("");
+
+  const {
+    data: currencyList,
+    error: currencyError,
+    isLoading: currencyLoading,
+  } = currencyAPI.useFetchAllCurrencyQuery("");
+
+  const {
+    data: usersList,
+    error: usersError,
+    isLoading: usersLoading,
+  } = usersAPI.useFetchAllUsersQuery("");
+
+  const [
+    updateHotel,
+    { isLoading: updateHotelLoading, error: updateHotelError },
+  ] = hotelAPI.useUpdateHotelMutation();
+
+  const [
+    createNotification,
+    { isLoading: createNotificationLoading, error: createNotificationError },
+  ] = notificationAPI.useCreateNotificationMutation();
+
+  const currentHotel = (allHotels || [])?.find(
+    (hotel: HotelModel) => hotel.id === hotelId
   );
 
-  const currencySiteList = currencyList?.currency;
-  const currencyExchangeList = currencyList?.exchangeList;
-  const currentCurrency = (currencySiteList || []).find(
-    (currency: CurrencyModel) => auth?.payload?.currencyId === currency?.id
+  const currencyExchangeList = currencyList?.rates;
+
+  const currentCurrency = (siteCurrencyList || []).find(
+    (currency: CurrencyModel) => currentUser?.currencyId === currency?.id
   ) || { name: "USD", sign: "$" };
 
   const initialValues: HotelPageFormValues = {
@@ -68,7 +92,7 @@ export const HotelPage = () => {
     validateOnChange: false,
     validateOnBlur: true,
 
-    onSubmit: (values) => {
+    onSubmit: (values, { resetForm }) => {
       const formattedDateArrival = Date.parse(formatDate(values.dateArrival));
       const formattedDateDeparture = Date.parse(
         formatDate(values.dateDeparture)
@@ -78,7 +102,7 @@ export const HotelPage = () => {
         arrivalDate: formattedDateArrival,
         departureDate: formattedDateDeparture,
         animalsNumber: +values.numberAnimals,
-        usersId: auth.payload.id,
+        usersId: currentUser?.id,
         message:
           values.message.trim().length === 0
             ? EMPTY_NOTIFICATION
@@ -87,19 +111,19 @@ export const HotelPage = () => {
         id: createUniqueId(),
       };
 
-      // onBooking({
-      //   id: currentHotel?.id,
-      //   userRequests: [...currentHotel.userRequests, userRequest],
-      // });
+      updateHotel({
+        ...currentHotel,
+        userRequests: [...currentHotel.userRequests, userRequest],
+      });
 
-      onSendNotification({
+      createNotification({
         id: createUniqueId(),
         text:
           values.message.trim().length === 0
             ? EMPTY_NOTIFICATION
             : values.message,
         status: UNREAD_NOTIFICATION,
-        fromId: auth.payload.id,
+        fromId: currentUser.id,
         toId: currentHotel.owner,
       });
 
@@ -118,7 +142,8 @@ export const HotelPage = () => {
         values.dateDeparture &&
         values.dateDeparture &&
         values.numberAnimals &&
-        typeof sendSnackbar === "function"
+        typeof sendSnackbar === "function" &&
+        !updateHotelError?.data
       ) {
         sendSnackbar({
           msg: sendSnackBarMessages.hotelBookedMessage(
@@ -129,6 +154,8 @@ export const HotelPage = () => {
           variant: "success",
         });
       }
+
+      resetForm();
     },
   });
 
@@ -136,8 +163,8 @@ export const HotelPage = () => {
     const formattedDate = date && Date.parse(formatDate(date));
     return (
       currentHotel?.disableUsersDates?.includes(formattedDate) ||
-      (auth?.payload?.id &&
-        currentHotel?.disableUserDates?.[auth.payload.id]?.includes(
+      (currentUser?.id &&
+        currentHotel?.disableUserDates?.[currentUser.id]?.includes(
           formattedDate
         ))
     );
@@ -192,41 +219,49 @@ export const HotelPage = () => {
   };
 
   return (
-    <>
-      {currentHotel ? (
-        <div style={hotelPageStyles.main}>
-          {openDialog && (
-            <FullWindowGallery
-              updateOpenDialogStatus={updateOpenDialogStatus}
-              gallery={galleryHotelPhotos}
-            />
-          )}
-          <HotelHeader currentHotel={currentHotel} />
-          <HotelGallery
-            currentHotel={currentHotel}
+    <Preloader
+      isLoading={
+        hotelsLoading ||
+        currencyLoading ||
+        usersLoading ||
+        updateHotelLoading ||
+        createNotificationLoading
+      }
+      error={
+        hotelsError?.data ||
+        currencyError?.data ||
+        usersError?.data ||
+        updateHotelError?.data ||
+        createNotificationError?.data
+      }
+    >
+      <div style={hotelPageStyles.main}>
+        {openDialog && (
+          <FullWindowGallery
             updateOpenDialogStatus={updateOpenDialogStatus}
+            gallery={galleryHotelPhotos}
           />
-          <HotelDescription
-            hotelDescriptionData={{
-              currentHotel,
-              formik,
-              currentCurrency,
-              currencyExchangeList,
-              disableBookingDates,
-              auth,
-            }}
-          />
-          <hr />
-          <HotelReviews currentHotel={currentHotel} />
-          <hr />
-          <HotelOwner
-            currentHotel={currentHotel}
-            users={promise.getUsers.payload}
-          />
-        </div>
-      ) : (
-        <Page404 />
-      )}
-    </>
+        )}
+        <HotelHeader hotelData={currentHotel} />
+        <HotelGallery
+          currentHotel={currentHotel}
+          updateOpenDialogStatus={updateOpenDialogStatus}
+        />
+        <HotelDescription
+          hotelDescriptionData={{
+            currentHotel,
+            formik,
+            currentCurrency,
+            currencyExchangeList,
+            disableBookingDates,
+            currentUser,
+          }}
+        />
+        <hr />
+        <HotelReviews currentHotel={currentHotel} />
+        <hr />
+        <HotelOwner currentHotel={currentHotel} users={usersList} />
+      </div>
+    </Preloader>
   );
 };

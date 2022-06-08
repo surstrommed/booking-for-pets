@@ -2,10 +2,15 @@
 /* eslint-disable @typescript-eslint/no-var-requires */
 const { resolve } = require("path");
 const HtmlWebpackPlugin = require("html-webpack-plugin");
+const NodePolyfillPlugin = require("node-polyfill-webpack-plugin");
 
 module.exports = {
   resolve: {
     extensions: [".js", ".jsx", ".ts", ".tsx"],
+    // fallback: {
+    //   crypto: false,
+    //   "crypto-browserify": require.resolve("crypto-browserify"),
+    // },
   },
   context: resolve(__dirname, "../../src"),
   module: {
@@ -32,7 +37,10 @@ module.exports = {
       },
     ],
   },
-  plugins: [new HtmlWebpackPlugin({ template: "index.html" })],
+  plugins: [
+    new HtmlWebpackPlugin({ template: "index.html" }),
+    new NodePolyfillPlugin(),
+  ],
   performance: {
     hints: false,
   },

@@ -3,14 +3,14 @@ import { Backdrop, Box, Modal, Fade, Typography } from "@mui/material";
 import { modalWindowStyles } from "./auxiliaryStyles";
 import { IModal } from "../../server/api/api-models";
 
-export default function ModalWindow({
+export const ModalWindow = ({
   title,
   body,
   type,
   signInOpenState,
   signUpOpenState,
   modalWindowState,
-}: IModal) {
+}: IModal) => {
   const [open, setOpen] = useState(true);
 
   const handleClose = () => {
@@ -68,4 +68,4 @@ export default function ModalWindow({
       </Modal>
     </div>
   );
-}
+};

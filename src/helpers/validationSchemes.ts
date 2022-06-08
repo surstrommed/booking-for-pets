@@ -97,7 +97,7 @@ export const wishlistVS = Yup.object().shape({
   wishlistName: Yup.string()
     .matches(
       validateWishlistName,
-      "Wishlist name can be from 2 to 20 characters"
+      "Wishlist name can be from 2 to 20 characters without spaces"
     )
     .required("Wishlist name is required"),
 });

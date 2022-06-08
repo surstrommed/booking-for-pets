@@ -1,61 +1,34 @@
 import React from "react";
 import "./../assets/scss/App.scss";
-import { Main } from "./../pages/Main";
+import { Router } from "../pages/Router";
 import { HeaderBar } from "./Header/HeaderBar";
-import { configureStore, combineReducers } from "@reduxjs/toolkit";
-import {
-  sessionStoredReducer,
-  promiseReducer,
-  authReducer,
-  headerReducer,
-  currencyReducer,
-} from "./../reducers/index";
 import { ThemeProvider } from "@mui/material/styles";
 import { theme } from "./../assets/theme";
-import {
-  actionGetHotels,
-  actionGetUsers,
-  actionGetNotifications,
-} from "./../actions/index";
-import {
-  actionFullGetCurrencyExchange,
-  actionFullGetCurrencyList,
-} from "../actions/thunks";
-import { Provider } from "react-redux";
 import { SnackbarProvider } from "notistack";
+import { debounce } from "debounce";
+import { saveSessionStorageState, setupStore } from "../store/store";
+import { Provider } from "react-redux";
 
-const rootReducer = combineReducers({
-  promise: sessionStoredReducer(promiseReducer, "promise"),
-  header: headerReducer,
-  auth: sessionStoredReducer(authReducer, "auth"),
-  currencyList: sessionStoredReducer(currencyReducer, "currencyList"),
-});
+export const store = setupStore();
 
-export const store = configureStore({
-  reducer: rootReducer,
-  middleware: (getDefaultMiddleware) =>
-    getDefaultMiddleware({ serializableCheck: false }),
-});
+store.subscribe(
+  debounce(() => {
+    sessionStorage.removeItem("appState");
+    saveSessionStorageState(() => store.getState());
+  }, 1000)
+);
 
-export const { getState } = store;
-
-// store.dispatch(actionGetNotifications());
-// store.dispatch(actionGetUsers());
-// store.dispatch(actionGetHotels());
-// store.dispatch(actionFullGetCurrencyList());
-// store.dispatch(actionFullGetCurrencyExchange());
-
-export default function App() {
+export const App = () => {
   return (
-    <SnackbarProvider maxSnack={1}>
-      <Provider store={store}>
-        <ThemeProvider theme={theme}>
-          <div className="App">
+    <Provider store={store}>
+      <ThemeProvider theme={theme}>
+        <div className="App">
+          <SnackbarProvider maxSnack={1}>
             <HeaderBar />
-            <Main />
-          </div>
-        </ThemeProvider>
-      </Provider>
-    </SnackbarProvider>
+            <Router />
+          </SnackbarProvider>
+        </div>
+      </ThemeProvider>
+    </Provider>
   );
-}
+};

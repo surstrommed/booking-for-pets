@@ -1,11 +1,5 @@
 import { formatStringDate } from "./functions";
 
-export const PENDING_PROMISE_STATUS = "PENDING";
-
-export const RESOLVED_PROMISE_STATUS = "RESOLVED";
-
-export const REJECTED_PROMISE_STATUS = "REJECTED";
-
 export const PENDING_REQUEST_MESSAGE = "Pending";
 
 export const CONFIRMED_REQUEST_MESSAGE = "Confirmed";
@@ -17,8 +11,6 @@ export const UNREAD_NOTIFICATION = "Unread";
 export const READ_NOTIFICATION = "Read";
 
 export const EMPTY_NOTIFICATION = "Empty";
-
-export const DELETED_NOTIFICATION = "Deleted";
 
 export const NOTIFICATION_MESSAGE_MODAL =
   "You can write the message you want to send to the user or leave the field blank and send";
@@ -51,6 +43,8 @@ export const DEFAULT_CURRENCY_ID = 1;
 
 export const MAX_ANIMALS = 10;
 
+export const SECRET_KEY = "666666";
+
 export const sendSnackBarMessages = {
   selectedCurrencyMessage: (currencyName: string) =>
     `You have selected currency: ${currencyName}`,
@@ -63,6 +57,7 @@ export const sendSnackBarMessages = {
       Date.parse(arrivalDate.toString())
     )} to ${formatStringDate(Date.parse(departureDate.toString()))}`,
   changedAvatarMessage: () => "Your avatar has been changed",
+  removedAvatarMessage: () => "You avatar has been deleted",
   changedPasswordMessage: () => "Your password has been changed",
   changedPersonalDataMessage: () => "Your personal date has been changed",
   copiedMessage: () => "The hotel link has been copied!",
@@ -87,6 +82,10 @@ export const links = {
   twitterLink: "https://twitter.com/intent/tweet?url=link_to_be_shared",
   noImage: "https://i.ibb.co/LCjP65p/noImage.jpg",
   errorSign: "https://i.ibb.co/yFHZ4GN/404.png",
+  currencyChange:
+    "https://openexchangerates.org/api/latest.json?app_id=68546b0af6d145a7a1f7260446e53927",
+  uploadImage:
+    "https://api.imgbb.com/1/upload?key=478a8e5dc3d296b8693734b3983d5902",
 };
 
 export const apiErrors = [
@@ -109,4 +108,22 @@ export const stringMonthsArray = [
   "October",
   "November",
   "December",
+];
+
+export const privateRoutes = [
+  "/profile",
+  "/for-owners",
+  "/for-owners/hotels",
+  "/notifications",
+  "/wishlists",
+];
+
+export const siteCurrencyList = [
+  {
+    id: 1,
+    name: "USD",
+    sign: "$",
+  },
+  { id: 2, name: "EUR", sign: "€" },
+  { id: 3, name: "UAH", sign: "₴" },
 ];

@@ -1,9 +1,9 @@
 export const changeProfileStyles = {
   avatarCard: {
     border: "1px solid #DCDCDC",
-    margin: "5% 0 0 5%",
+    marginTop: "5%",
     maxWidth: 345,
-    padding: 2,
+    padding: 5,
   },
   avatarBadge: {
     display: "block",
