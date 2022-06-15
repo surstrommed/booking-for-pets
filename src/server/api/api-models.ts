@@ -100,7 +100,7 @@ export interface ISignIn {
   modal?: boolean;
   signInOpenState?: (value: boolean) => void;
   signUpOpenState?: (value: boolean) => void;
-  onSubmit?: any;
+  onSubmit?: React.SyntheticEvent;
 }
 
 export interface SignInFormValues {
