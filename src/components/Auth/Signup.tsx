@@ -168,10 +168,7 @@ export const SignUp = ({
               InputProps={{
                 endAdornment: (
                   <InputAdornment position="end">
-                    <IconButton
-                      aria-label="toggle password visibility"
-                      onClick={showPass}
-                    >
+                    <IconButton onClick={showPass}>
                       {showPassword ? (
                         <VisibilityIcon />
                       ) : (
@@ -198,10 +195,7 @@ export const SignUp = ({
               InputProps={{
                 endAdornment: (
                   <InputAdornment position="end">
-                    <IconButton
-                      aria-label="toggle retry password visibility"
-                      onClick={showRetryPass}
-                    >
+                    <IconButton onClick={showRetryPass}>
                       {showRetryPassword ? (
                         <VisibilityIcon />
                       ) : (

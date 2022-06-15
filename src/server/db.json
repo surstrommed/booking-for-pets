@@ -156,16 +156,10 @@
         {
           "name": "Test",
           "hotelsId": []
-        },
-        {
-          "name": "SasAss",
-          "hotelsId": [
-            "w0ebO"
-          ]
         }
       ],
       "id": 1,
-      "password": "$2a$10$Uqos8iazvfyM098eHvoafurN1WPiQ/h0iTJ8Q3UkIMN/v/R80SPRG"
+      "password": "$2a$10$zu69Z5rDYhq7LQKxaTyPjOvHO30toMXPAJ4wOyGTOz44CoFLpergW"
     }
   ],
   "hotels": [

@@ -5,7 +5,7 @@ import { authAPI } from "./reducers/AuthService";
 import { notificationAPI } from "./reducers/NotificationService";
 import { hotelAPI } from "./reducers/HotelService";
 import { usersAPI } from "./reducers/UserService";
-import { GetState } from "../helpers/types";
+import { AppStore } from "../helpers/types";
 
 export const loadSessionStorageState = () => {
   try {
@@ -17,7 +17,7 @@ export const loadSessionStorageState = () => {
   }
 };
 
-export const saveSessionStorageState = async (state: GetState) => {
+export const saveSessionStorageState = async (state: AppStore) => {
   try {
     const serializedState = JSON.stringify(state);
     sessionStorage.setItem("appState", serializedState);
